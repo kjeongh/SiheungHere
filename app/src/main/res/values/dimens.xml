@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    상세정보 다이얼로그    -->
+<!--icon-->
+    <dimen name="info_icon_size">16dp</dimen>
+    <dimen name="info_icon_margin">3dp</dimen>
+<!--이름-->
+    <dimen name="info_title_margin">3dp</dimen>
+    <dimen name="info_title_textsize">14dp</dimen>
+<!--이미지-->
+    <dimen name="info_image_width">96dp</dimen>
+    <dimen name="info_image_height">64dp</dimen>
+    <dimen name="info_image_margin">14dp</dimen>
+<!--상세정보-->
+    <dimen name="info_detailBox_marginvertical">6dp</dimen>
+    <dimen name="info_detail_margintop">4dp</dimen>
+    <dimen name="info_smallicon_size">14dp</dimen>
+    <dimen name="info_smallicon_marginright">7dp</dimen>
+    <dimen name="info_detail_textsize">12dp</dimen>
+<!--버튼-->
+    <dimen name="info_button_margintop">6dp</dimen>
+</resources>

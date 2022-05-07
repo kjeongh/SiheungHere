@@ -10,5 +10,8 @@
         android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 19a0f867c256056dc710305dfae221cf8c04d61f
 </LinearLayout>

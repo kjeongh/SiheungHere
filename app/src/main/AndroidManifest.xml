@@ -3,18 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tukorea.siheunghere">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+<<<<<<< HEAD
         android:theme="@style/Theme.SiheungHere"
         tools:replace="android:appComponentFactory">
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="6p452oohwx" />
+=======
+        android:theme="@style/Theme.SiheungHere">
+>>>>>>> 19a0f867c256056dc710305dfae221cf8c04d61f
 
         <activity
             android:name=".MainActivity"
@@ -25,6 +33,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:name=".SuggestActivity"></activity>
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="6p452oohwx" />
+
     </application>
 
 </manifest>
