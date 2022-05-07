@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/iconScrollBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/icon_badminton"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_badminton"/>
+
+            <ImageButton
+                android:id="@+id/icon_baseball"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_baseball"/>
+
+            <ImageButton
+                android:id="@+id/icon_cafe"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_cafe"/>
+
+            <ImageButton
+                android:id="@+id/icon_classroom"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_classroom"/>
+
+            <ImageButton
+                android:id="@+id/icon_experience"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_experience"/>
+
+            <ImageButton
+                android:id="@+id/icon_cooling_center"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_cooling_center"/>
+
+            <ImageButton
+                android:id="@+id/icon_futsal"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_futsal"/>
+
+            <ImageButton
+                android:id="@+id/icon_parking"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_parking"/>
+
+            <ImageButton
+                android:id="@+id/icon_gallery"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_gallery"/>
+
+            <ImageButton
+                android:id="@+id/icon_livingsport"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_livingsport"/>
+
+            <ImageButton
+                android:id="@+id/icon_meeting"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_meeting"/>
+
+            <ImageButton
+                android:id="@+id/icon_park"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_park"/>
+
+            <ImageButton
+                android:id="@+id/icon_practice_room"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_practice_room"/>
+
+            <ImageButton
+                android:id="@+id/icon_soccer_field"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_soccer_field"/>
+
+            <ImageButton
+                android:id="@+id/icon_theater"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_theater"/>
+
+            <ImageButton
+                android:id="@+id/icon_toilet"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_toilet"/>
+
+            <ImageButton
+                android:id="@+id/icon_wifi"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@color/white"
+                android:src="@drawable/icon_wifi"/>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
+</LinearLayout>

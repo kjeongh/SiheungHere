@@ -1,0 +1,9 @@
+diff a/app/src/main/java/com/tukorea/siheunghere/MainActivity.kt b/app/src/main/java/com/tukorea/siheunghere/MainActivity.kt	(rejected hunks)
+@@ -19,7 +19,6 @@
+         setContentView(R.layout.activity_main)
+ 
+         mapView = findViewById(R.id.map_view)
+-        mapView.onCreate(savedInstanceState)
+         //mapView.onCreate(savedInstanceState)
+ 
+     }
