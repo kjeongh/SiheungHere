@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     // - 각 자원과 현위치의 거리를 return
     // - 그 중 일정거리 내에 있는 것들만
     // - 지도 카메라도 그 자원들을 다 비추기 위해 멀어지기
+    // -
 
     // 3. 그 외의 것
     // - 자원 필터링 -> 위에서 거리계산된 것들 중에서 선택한 자원만 보여주면 될듯
