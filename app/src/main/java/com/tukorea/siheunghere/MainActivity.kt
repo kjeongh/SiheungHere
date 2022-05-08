@@ -2,18 +2,18 @@ package com.tukorea.siheunghere
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import androidx.appcompat.app.AlertDialog
-import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.LocationTrackingMode
+import android.widget.Toast
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
-import com.naver.maps.map.overlay.InfoWindow
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.icon_scroll.*
 import com.tukorea.siheunghere.VariableOnMap as VM
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -32,53 +32,48 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     // 3. 그 외의 것
     // - 자원 필터링 -> 위에서 거리계산된 것들 중에서 선택한 자원만 보여주면 될듯
 
-    private lateinit var mapView: MapView
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
-    private lateinit var dialogView : View
-    val infoWindow = InfoWindow()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mapView = findViewById(R.id.map_view)
-        mapView.onCreate(savedInstanceState)
+        map_view.onCreate(savedInstanceState)
 
         // onMapReady() 콜백 메서드가 호출
-        mapView.getMapAsync(this)
+        map_view.getMapAsync(this)
 
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
-
     }
 
     override fun onStart() {
         super.onStart()
-        mapView.onStart()
+        map_view.onStart()
     }
     override fun onResume() {
         super.onResume()
-        mapView.onResume()
+        map_view.onResume()
     }
     override fun onPause() {
         super.onPause()
-        mapView.onPause()
+        map_view.onPause()
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        mapView.onSaveInstanceState(outState)
+        map_view.onSaveInstanceState(outState)
     }
     override fun onStop() {
         super.onStop()
-        mapView.onStop()
+        map_view.onStop()
     }
     override fun onDestroy() {
         super.onDestroy()
-        mapView.onDestroy()
+        map_view.onDestroy()
     }
     override fun onLowMemory() {
         super.onLowMemory()
-        mapView.onLowMemory()
+        map_view.onLowMemory()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

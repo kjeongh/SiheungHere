@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SiheungHere">
 
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="6p452oohwx" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
