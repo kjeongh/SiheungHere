@@ -10,6 +10,4 @@ class RetrofitBuilder {
         .client(OkHttpClient())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
-    val naverMapApi = retrofit.create(NaverMapApi::class.java)
 }
