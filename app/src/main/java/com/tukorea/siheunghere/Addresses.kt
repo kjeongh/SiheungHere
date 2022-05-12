@@ -1,6 +1,6 @@
 package com.tukorea.siheunghere
 
-data class Addresses(
+data class Addresses (
     val addressElements: List<AddressElement>,
     val distance: Double,
     val englishAddress: String,
