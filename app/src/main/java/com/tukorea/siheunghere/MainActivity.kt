@@ -31,15 +31,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // < ----- 구현해야할 것 ----- >
     // 1. 자원을 저장할 데이터 객체(주소, 종류, 전화번호, 사진) -> 생각나면 더 적기
-    // - 각 marker 아이콘 설정
 
     // 2. 현위치와 거리계산
-    // - 각 자원과 현위치의 거리를 return
+    // - 각 자원과 현위치의 거리를 return(mysql은 현위치 반경 특정 거리 이내 데이터만 뽑을 수 있음)
     // - 그 중 일정거리 내에 있는 것들만
-    // - 지도 카메라도 그 자원들을 다 비추기 위해 멀어지기
+    // - 지도 카메라도 그 자원들을 다 비추기 위해 멀어지기(시간 되면 구현 필수 X)
+    // - 지도를 움직인 뒤, 지도의 중심을 기반으로도 검색 가능하게끔(네이버지도 이 위치에서 재검색과 동일한 기능)
 
-    // 3. 그 외의 것
-    // - 자원 필터링 -> 위에서 거리계산된 것들 중에서 선택한 자원만 보여주면 될듯
+    // 3. 자원 필터링
+    // - 위에서 거리계산된 것들 중에서 선택한 자원만 보여주면 될듯
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
@@ -124,11 +124,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     val longtitude = post!!.addresses[0].x.toDouble()
                     val latitude = post!!.addresses[0].y.toDouble()
                     makeMarker(latitude, longtitude, R.drawable.map_toilet)
-                    Log.e("res", response.body().toString())
                 }
 
                 override fun onFailure(call: Call<GeoResponse?>?, t: Throwable?) {}
             })
-
     }
 }

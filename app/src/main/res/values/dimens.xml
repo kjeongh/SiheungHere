@@ -19,4 +19,8 @@
     <dimen name="info_detail_textsize">12dp</dimen>
 <!--버튼-->
     <dimen name="info_button_margintop">6dp</dimen>
+
+<!--    지도화면      -->
+    <dimen name="btn_textsize">10sp</dimen>
+    <dimen name="btn_margintop">10dp</dimen>
 </resources>
