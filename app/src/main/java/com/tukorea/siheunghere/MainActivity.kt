@@ -1,5 +1,6 @@
 package com.tukorea.siheunghere
 
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -100,7 +101,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         dialog.showDialog()
         true
     }
-
     //NaverMap 객체가 준비되면 호출되는 함수
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
