@@ -28,7 +28,8 @@
 <!--            <Button-->
 <!--                android:id="@+id/TestBtn"-->
 <!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_height="wrap_co+
+9ntent"-->
 <!--                android:text="주소변환" />-->
 <!--            <EditText-->
 <!--                android:id="@+id/TestEdt"-->
@@ -37,12 +38,12 @@
 <!--                android:hint="주소를 입력하세요">-->
 <!--            </EditText>-->
             <Button
-                android:padding="14dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
                 android:id="@+id/ResearchBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="이 위치에서 재검색"
-                android:textSize="@dimen/btn_textsize"
                 android:layout_marginVertical="@dimen/btn_margintop"
                 android:background="@drawable/round_button">
             </Button>
