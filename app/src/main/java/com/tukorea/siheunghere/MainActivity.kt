@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // < ----- 구현해야할 것 ----- >
     // 1. 자원을 저장할 데이터 객체(주소, 종류, 전화번호, 사진) -> 생각나면 더 적기
-    // - 주소 -> 좌표 변환
     // - 각 marker 아이콘 설정
 
     // 2. 현위치와 거리계산
@@ -55,48 +54,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
 
-//        map_view.onCreate(savedInstanceState)
-//
-//        // onMapReady() 콜백 메서드가 호출
-//        map_view.getMapAsync(this)
 
         mapFragment.getMapAsync(this)
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
 
+        //test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
         TestBtn.setOnClickListener {
             searchAddress(TestEdt.text.toString());
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-//        map_view.onStart()
-    }
-    override fun onResume() {
-        super.onResume()
-//        map_view.onResume()
-    }
-    override fun onPause() {
-        super.onPause()
-//        map_view.onPause()
-    }
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-//        map_view.onSaveInstanceState(outState)
-    }
-    override fun onStop() {
-        super.onStop()
-//        map_view.onStop()
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-//        map_view.onDestroy()
-    }
-    override fun onLowMemory() {
-        super.onLowMemory()
-//        map_view.onLowMemory()
-    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         //현위치 요청 결과 코드
@@ -122,22 +90,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         dialog.showDialog()
         true
     }
+
     //NaverMap 객체가 준비되면 호출되는 함수
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
 
+        makeMarker(37.56683771710133, 126.97864942520158, R.drawable.map_badminton)
+    }
+
+    //마커 생성 함수
+    private fun makeMarker(latitude : Double, longtitude: Double, resourceid: Int) {
         val marker = Marker()
-        marker.position = LatLng(37.56683771710133, 126.97864942520158)
-        marker.icon = OverlayImage.fromResource(R.drawable.map_badminton)
+        marker.position = LatLng(latitude, longtitude)
+        marker.icon = OverlayImage.fromResource(resourceid)
         marker.width = VM.MARKER_SIZE
         marker.height = VM.MARKER_SIZE
         marker.map = naverMap
 
         marker.onClickListener = listener
     }
-
     private fun searchAddress(query: String) {
         val retrofit = RetrofitBuilder().retrofit
 
@@ -148,14 +121,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     response: Response<GeoResponse>
                 ) {
                     val post: GeoResponse? = response.body()
-                    val longitude = post!!.addresses[0].x
-                    val latitude = post!!.addresses[0].y
-                    val marker = Marker()
-                    marker.position = LatLng(latitude.toDouble(), longitude.toDouble())
-                    marker.icon = OverlayImage.fromResource(R.drawable.map_toilet)
-                    marker.width = VM.MARKER_SIZE
-                    marker.height = VM.MARKER_SIZE
-                    marker.map = naverMap
+                    val longtitude = post!!.addresses[0].x.toDouble()
+                    val latitude = post!!.addresses[0].y.toDouble()
+                    makeMarker(latitude, longtitude, R.drawable.map_toilet)
                     Log.e("res", response.body().toString())
                 }
 

@@ -36,11 +36,5 @@
                 android:hint="주소를 입력하세요">
             </EditText>
         </LinearLayout>
-
     </FrameLayout>
-
-<!--    <com.naver.maps.map.MapView-->
-<!--        android:id="@+id/map_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent" />-->
 </LinearLayout>
