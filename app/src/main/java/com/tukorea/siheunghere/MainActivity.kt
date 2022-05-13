@@ -2,6 +2,7 @@ package com.tukorea.siheunghere
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
@@ -33,11 +34,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
+    private lateinit var scrollBar: LinearLayout//
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         map_view.onCreate(savedInstanceState)
+        scrollBar = findViewById<LinearLayout>(R.id.iconScrollBar)
+        scrollBar.bringToFront()
 
         // onMapReady() 콜백 메서드가 호출
         map_view.getMapAsync(this)
