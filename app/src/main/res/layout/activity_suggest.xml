@@ -4,15 +4,48 @@
     android:layout_height="match_parent">
 
     <!-- 건의 내용 게시판 -->
+
     <LinearLayout
         android:id="@+id/suggestList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
 
-        <!--자원 스크롤바-->
+        <!--타이틀바와 스크롤바-->
+        <include layout="@layout/main_title"/>
         <include layout="@layout/icon_scroll"/>
+
+        <!--미리보기용 건의글 아이템-->
+        <include layout="@layout/suggest_item"/>
+        <include layout="@layout/suggest_item"/>
+        <include layout="@layout/suggest_item"/>
+        <include layout="@layout/suggest_item"/>
+        <include layout="@layout/suggest_item"/>
+        <include layout="@layout/suggest_item"/>
+        <include layout="@layout/suggest_item"/>
+
+        <!-- 작성 -->
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="새 건의글 작성"/>
+
+        </RelativeLayout>
+
+
+
+
 
     </LinearLayout>
 
@@ -22,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <TextView
             android:layout_width="match_parent"

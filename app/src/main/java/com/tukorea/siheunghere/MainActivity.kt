@@ -34,20 +34,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
-    private lateinit var scrollBar: LinearLayout//
+
+    private lateinit var scrollBar: LinearLayout
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         map_view.onCreate(savedInstanceState)
+
         scrollBar = findViewById<LinearLayout>(R.id.iconScrollBar)
-        scrollBar.bringToFront()
+        scrollBar.bringToFront() //지도와 타이틀바 겹치기
 
         // onMapReady() 콜백 메서드가 호출
         map_view.getMapAsync(this)
 
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
+
+
     }
 
     override fun onStart() {
@@ -119,4 +124,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         marker.onClickListener = listener
     }
+
+
+
 }

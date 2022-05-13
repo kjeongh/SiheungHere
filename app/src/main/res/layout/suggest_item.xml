@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:orientation="horizontal">
+
+    <!--건의글 아이템 레이아웃-->
+
+    <TextView
+        android:id="@+id/suggestList_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_vertical"
+        android:text="101"
+        android:textSize="@dimen/info_detail_textsize" />
+
+    <ImageView
+        android:layout_width="@dimen/info_icon_size"
+        android:layout_height="@dimen/info_icon_size"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/info_location" />
+
+    <TextView
+        android:id="@+id/suggestList_addr"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="주소 미리보기 - 시흥시 정왕동 \r\nxxx-xxx \r\n 줄바꿈은 자동"
+        android:textSize="@dimen/info_detail_textsize" />
+
+    <ImageView
+        android:layout_width="@dimen/info_icon_size"
+        android:layout_height="@dimen/info_icon_size"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/etc_agree"/>
+
+    <TextView
+        android:id="@+id/suggestList_agreeNum"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/info_detail_textsize"
+        android:text="1000" />
+
+</LinearLayout>
