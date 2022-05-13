@@ -31,7 +31,7 @@
             android:textSize="20dp"
             android:layout_margin="20dp"/>
 
-        <!-- 스크롤바 -->
+        <!-- 스크롤 뷰 -->
         <include layout="@layout/icon_scroll"/>
 
         <!-- 자원종류 -->
