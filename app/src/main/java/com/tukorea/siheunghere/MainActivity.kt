@@ -2,6 +2,14 @@ package com.tukorea.siheunghere
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+<<<<<<< HEAD
+=======
+import android.util.Log
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.GsonBuilder
+>>>>>>> c0381c46ccbed83d8350e391c2c2bd9152e250ab
 import android.widget.LinearLayout
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -12,6 +20,17 @@ import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.activity_main.*
+<<<<<<< HEAD
+=======
+import kotlinx.android.synthetic.main.icon_scroll.*
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+>>>>>>> c0381c46ccbed83d8350e391c2c2bd9152e250ab
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
 import com.tukorea.siheunghere.VariableOnMap as VM
 
@@ -34,6 +53,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var scrollBar: LinearLayout//
 
+<<<<<<< HEAD
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_main)
@@ -89,6 +109,41 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onLowMemory() {
         super.onLowMemory()
         map_view.onLowMemory()
+=======
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        scrollBar = findViewById<LinearLayout>(R.id.iconScrollBar)
+        scrollBar.bringToFront()
+
+        val fm = supportFragmentManager
+        val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
+            ?: MapFragment.newInstance().also {
+                fm.beginTransaction().add(R.id.map, it).commit()
+            }
+
+
+        mapFragment.getMapAsync(this)
+        //현위치 받아오기
+        locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
+
+        //슬라이딩 드로어 화살표 변경
+        slidingdrawer.setOnDrawerOpenListener {
+            handle.setImageResource(R.drawable.etc_arrow_down)
+        }
+        slidingdrawer.setOnDrawerCloseListener {
+            handle.setImageResource(R.drawable.etc_arrow_up)
+        }
+        // 테스트용
+        // 슬라이딩 드로어 어댑터 설정
+        val mapAdaptor = SlidingDrawerAdapter(this)
+        mapListView.adapter = mapAdaptor
+      //test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
+//        TestBtn.setOnClickListener {
+//            searchAddress(TestEdt.text.toString());
+//        }
+
+>>>>>>> c0381c46ccbed83d8350e391c2c2bd9152e250ab
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
