@@ -60,9 +60,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
 
         //test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
-        TestBtn.setOnClickListener {
-            searchAddress(TestEdt.text.toString());
-        }
+//        TestBtn.setOnClickListener {
+//            searchAddress(TestEdt.text.toString());
+//        }
     }
 
 
