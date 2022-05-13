@@ -7,17 +7,21 @@
     android:layout_gravity="bottom"
     >
     <SlidingDrawer
+        android:id="@+id/slidingdrawer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:content="@+id/content"
         android:handle="@+id/handle"
         android:topOffset="240dp"
         >
-        <Button
+        <ImageButton
             android:id="@+id/handle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            ></Button>
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/etc_arrow_up"
+            android:background="@color/clear"
+            ></ImageButton>
 
         <LinearLayout
             android:id="@+id/content"
