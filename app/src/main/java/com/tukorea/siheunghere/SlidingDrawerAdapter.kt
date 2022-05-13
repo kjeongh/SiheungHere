@@ -23,6 +23,9 @@ class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
     var PhoneText = arrayOf(
         "문의전화 : 031-310-6008", "문의전화 : 031-310-6008", "문의전화 : 031-310-6008", "문의전화 : 031-310-6008", "문의전화 : 031-310-6008", "문의전화 : 031-310-6008"
     )
+    var KmText = arrayOf(
+        "0.5 km", "1.0 km", "1.5 km", "2.0 km", "2.5 km"
+    )
 
 
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
@@ -32,6 +35,7 @@ class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
         listView.mapName.text = NameText[p0]
         listView.mapAddress.text = AddressText[p0]
         listView.mapPhone.text = PhoneText[p0]
+        listView.mapKm.text = KmText[p0]
 
         return listView
     }
