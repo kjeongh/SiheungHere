@@ -1,9 +1,9 @@
 package com.tukorea.siheunghere
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
 
     private lateinit var scrollBar: LinearLayout
-
+    private lateinit var titleBar_suggestBtn: ImageButton
+    private lateinit var titleBar_menuBtn: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,15 +47,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         scrollBar = findViewById<LinearLayout>(R.id.iconScrollBar)
         scrollBar.bringToFront() //지도와 타이틀바 겹치기
 
+        titleBar_suggestBtn = findViewById<ImageButton>(R.id.title_suggestBtn)
+        titleBar_menuBtn = findViewById<ImageButton>(R.id.title_menuBtn)
+
         // onMapReady() 콜백 메서드가 호출
         map_view.getMapAsync(this)
 
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
 
-
-
-
+        titleBar_suggestBtn.setOnClickListener() {
+            var intent = Intent(applicationContext, SuggestActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onStart() {
@@ -85,6 +90,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onLowMemory()
         map_view.onLowMemory()
     }
+
+
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         //현위치 요청 결과 코드
