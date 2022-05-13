@@ -13,7 +13,7 @@
         android:visibility="visible">
 
         <!--타이틀바와 스크롤바-->
-        <include layout="@layout/main_title"/>
+        <include layout="@layout/title"/>
         <include layout="@layout/icon_scroll"/>
 
         <!--미리보기용 건의글 아이템-->

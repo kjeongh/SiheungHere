@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <!--타이틀바-->
-    <include layout="@layout/main_title"/>
+    <include layout="@layout/title"/>
 
 
     <FrameLayout
