@@ -3,173 +3,351 @@
     android:id="@+id/iconScrollBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/clear">
 
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:scrollbars="none"
+        android:background="@color/clear">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@color/clear">
 
-            <ImageButton
-                android:id="@+id/icon_badminton"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_badminton"/>
+            <!--배드민턴장-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
 
-            <ImageButton
-                android:id="@+id/icon_baseball"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_baseball"/>
+                <ImageButton
+                    android:id="@+id/icon_badminton"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_badminton"/>
 
-            <ImageButton
-                android:id="@+id/icon_cafe"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_cafe"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="배드민턴장"/>
 
-            <ImageButton
-                android:id="@+id/icon_classroom"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_classroom"/>
+            </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/icon_experience"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_experience"/>
 
-            <ImageButton
-                android:id="@+id/icon_cooling_center"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_cooling_center"/>
+            <!--야구장-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
 
-            <ImageButton
-                android:id="@+id/icon_futsal"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_futsal"/>
+                <ImageButton
+                    android:id="@+id/icon_baseball"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_baseball"/>
 
-            <ImageButton
-                android:id="@+id/icon_parking"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_parking"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="야구장"/>
 
-            <ImageButton
-                android:id="@+id/icon_gallery"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_gallery"/>
+            </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/icon_livingsport"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_livingsport"/>
+            <!--카페-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
 
-            <ImageButton
-                android:id="@+id/icon_meeting"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_meeting"/>
+                <ImageButton
+                    android:id="@+id/icon_cafe"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_cafe"/>
 
-            <ImageButton
-                android:id="@+id/icon_park"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_park"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="카페"/>
 
-            <ImageButton
-                android:id="@+id/icon_practice_room"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_practice_room"/>
+            </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/icon_soccer_field"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_soccer_field"/>
 
-            <ImageButton
-                android:id="@+id/icon_theater"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_theater"/>
+            <!--강의실-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
 
-            <ImageButton
-                android:id="@+id/icon_toilet"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_toilet"/>
+                <ImageButton
+                    android:id="@+id/icon_classroom"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_classroom"/>
 
-            <ImageButton
-                android:id="@+id/icon_wifi"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:src="@drawable/icon_wifi"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="강의실"/>
+
+           </LinearLayout>
+
+            <!--체험/견학-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_experience"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_experience"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="체험/견학"/>
+
+            </LinearLayout>
+
+            <!--무더위쉼터-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_cooling_center"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_cooling_center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="무더위쉼터"/>
+
+            </LinearLayout>
+
+            <!--풋살장-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_futsal"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_futsal"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="풋살장"/>
+
+            </LinearLayout>
+
+            <!--주차장-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_parking"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_parking"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="주차장"/>
+
+            </LinearLayout>
+
+            <!--갤러리/공방-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_gallery"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_gallery"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="갤러리/공방"/>
+
+            </LinearLayout>
+
+            <!--생활체육시설-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_livingsport"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_livingsport"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="생활체육시설"/>
+
+            </LinearLayout>
+
+            <!--회의실-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_meeting"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_meeting"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="회의실"/>
+
+            </LinearLayout>
+
+            <!--공원-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_park"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_park"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="공원"/>
+
+            </LinearLayout>
+
+            <!--연습실/학원-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_practice_room"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_practice_room"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="연습실/학원"/>
+
+            </LinearLayout>
+
+            <!--잔디구장-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_soccer_field"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_soccer_field"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="잔디구장"/>
+
+            </LinearLayout>
+
+            <!--공연장-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_theater"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_theater"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="공연장"/>
+
+            </LinearLayout>
+
+            <!--화장실-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_toilet"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_toilet"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="화장실"/>
+
+            </LinearLayout>
+
+            <!--와이파이-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin"
+>
+                <ImageButton
+                    android:id="@+id/icon_wifi"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_wifi"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="와이파이"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </HorizontalScrollView>
 
 
 </LinearLayout>
+

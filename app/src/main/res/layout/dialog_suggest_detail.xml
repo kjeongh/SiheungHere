@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/info_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/info_title_margin"
+        android:layout_gravity="center"
+        android:text="건의글 상세보기"
+        android:textSize="@dimen/info_title_textsize"
+        android:textStyle="bold" />
+
+    <com.naver.maps.map.MapView
+        android:id="@+id/map_view"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="11dp"
+            android:layout_height="@dimen/info_smallicon_size"
+            android:layout_marginRight="@dimen/info_smallicon_marginright"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/info_location" />
+
+        <TextView
+            android:id="@+id/suggestDetail_txtAddr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/info_detail_textsize"
+            android:text="주소" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="11dp"
+            android:layout_height="@dimen/info_smallicon_size"
+            android:layout_marginRight="@dimen/info_smallicon_marginright"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/info_location" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/info_detail_textsize"
+            android:text="건의사유" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="미리보기. 건의글 상세보기를 클릭할 경우 이곳에 건의 사유에 대한 설명이 적혀 있다."/>
+
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/detail_agreeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_centerHorizontal="true"
+            android:text="동의"
+            app:backgroundTint="#DD8503"></Button>
+
+        <Button
+            android:id="@+id/detail_editBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@+id/detail_agreeBtn"
+            android:text="수정"
+            app:backgroundTint="#DD8503"></Button>
+
+        <Button
+            android:id="@+id/detail_closeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/detail_agreeBtn"
+            android:text="닫기"
+            app:backgroundTint="#DD8503"></Button>
+    </RelativeLayout>
+
+
+</LinearLayout>

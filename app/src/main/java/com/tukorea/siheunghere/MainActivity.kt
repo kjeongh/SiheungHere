@@ -6,6 +6,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
+import android.widget.LinearLayout
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -24,6 +27,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import kotlinx.android.synthetic.main.main_slidingdrawer.*
 import com.tukorea.siheunghere.VariableOnMap as VM
 
 
@@ -43,10 +47,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
+    private lateinit var scrollBar: LinearLayout//
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        scrollBar = findViewById<LinearLayout>(R.id.iconScrollBar)
+        scrollBar.bringToFront()
 
         val fm = supportFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
@@ -59,10 +66,22 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
 
-        //test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
+        //슬라이딩 드로어 화살표 변경
+        slidingdrawer.setOnDrawerOpenListener {
+            handle.setImageResource(R.drawable.etc_arrow_down)
+        }
+        slidingdrawer.setOnDrawerCloseListener {
+            handle.setImageResource(R.drawable.etc_arrow_up)
+        }
+        // 테스트용
+        // 슬라이딩 드로어 어댑터 설정
+        val mapAdaptor = SlidingDrawerAdapter(this)
+        mapListView.adapter = mapAdaptor
+      //test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
 //        TestBtn.setOnClickListener {
 //            searchAddress(TestEdt.text.toString());
 //        }
+
     }
 
 

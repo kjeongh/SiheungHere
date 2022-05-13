@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--아이콘 스크롤바 아이콘 이미지 스타일-->
+    <style name="scrollBar_iconStyle">
+        <item name="android:layout_width">55dp</item>
+        <item name="android:layout_height">55dp</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:background">@color/clear</item>
+    </style>
+
+    <!--아이큰 스크롤바 아이콘 배경 스타일-->
+    <style name="scrollBar_backgroundStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:orientation">vertical</item>
+
+    </style>
+
+
+
+</resources>
