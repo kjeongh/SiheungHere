@@ -3,8 +3,6 @@ package com.tukorea.siheunghere
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
-import android.widget.Toast
-import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.geometry.LatLng
@@ -14,7 +12,7 @@ import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.icon_scroll.*
+import kotlinx.android.synthetic.main.main_slidingdrawer.*
 import com.tukorea.siheunghere.VariableOnMap as VM
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -36,19 +34,33 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var scrollBar: LinearLayout//
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        map_view.onCreate(savedInstanceState)
-        scrollBar = findViewById<LinearLayout>(R.id.iconScrollBar)
-        scrollBar.bringToFront()
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+            map_view.onCreate(savedInstanceState)
+            scrollBar = findViewById<LinearLayout>(R.id.iconScrollBar)
+            scrollBar.bringToFront()
 
-        // onMapReady() 콜백 메서드가 호출
-        map_view.getMapAsync(this)
+            // onMapReady() 콜백 메서드가 호출
+            map_view.getMapAsync(this)
 
-        //현위치 받아오기
-        locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
-    }
+            //현위치 받아오기
+            locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
+
+            //슬라이딩 드로어 화살표 변경
+            slidingdrawer.setOnDrawerOpenListener {
+                handle.setImageResource(R.drawable.etc_arrow_down)
+            }
+            slidingdrawer.setOnDrawerCloseListener {
+                handle.setImageResource(R.drawable.etc_arrow_up)
+            }
+            // 테스트용
+            // 슬라이딩 드로어 어댑터 설정
+            val mapAdaptor = SlidingDrawerAdapter(this)
+            mapListView.adapter = mapAdaptor
+
+
+        }
 
     override fun onStart() {
         super.onStart()

@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <!--자원 스크롤바-->
         <include layout="@layout/icon_scroll"/>
 
@@ -22,6 +23,11 @@
             android:id="@+id/map_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <include layout="@layout/main_slidingdrawer"/>
+
+
+
     </FrameLayout>
 
 </LinearLayout>
