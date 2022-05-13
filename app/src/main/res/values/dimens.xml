@@ -19,4 +19,8 @@
     <dimen name="info_detail_textsize">12dp</dimen>
 <!--버튼-->
     <dimen name="info_button_margintop">6dp</dimen>
+<!--아이콘 스크롤바-->
+    <dimen name="scrollBar_textSize">12sp</dimen>
+    <dimen name="scrollBar_margin">8dp</dimen>
+
 </resources>
