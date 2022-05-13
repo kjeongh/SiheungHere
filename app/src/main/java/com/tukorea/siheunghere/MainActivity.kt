@@ -1,14 +1,8 @@
 package com.tukorea.siheunghere
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.GsonBuilder
 import android.widget.LinearLayout
-import com.naver.maps.map.NaverMap
-import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -18,15 +12,9 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.icon_scroll.*
-import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
 import com.tukorea.siheunghere.VariableOnMap as VM
 
