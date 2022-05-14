@@ -126,4 +126,4 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
 }
-/*테스트용으로 주석 추가*/
+/*충돌 테스트를 위해 주석 내용 바꾸기*/
