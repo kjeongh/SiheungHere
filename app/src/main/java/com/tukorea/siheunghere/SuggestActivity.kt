@@ -2,7 +2,7 @@ package com.tukorea.siheunghere
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.title.*
+import kotlinx.android.synthetic.main.main_title.*
 
 
 class SuggestActivity : AppCompatActivity() {
