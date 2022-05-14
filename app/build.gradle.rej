@@ -1,0 +1,10 @@
+diff a/app/build.gradle b/app/build.gradle	(rejected hunks)
+@@ -17,7 +17,7 @@
+         targetSdk 32
+         versionCode 1
+         versionName "1.0"
+-
++        multiDexEnabled true
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+ 
+ 

@@ -5,6 +5,11 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+// local.properties 사용을 위함
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+
 android {
     compileSdk 32
 
@@ -14,10 +19,11 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
         multiDexEnabled true
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        buildConfigField("String", "CLIENT_ID", properties['CLIENT_ID'])
+        buildConfigField("String", "CLIENT_SECRET", properties['CLIENT_SECRET'])
     }
 
     buildTypes {
@@ -30,6 +36,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -50,4 +57,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.naver.maps:map-sdk:3.15.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 }

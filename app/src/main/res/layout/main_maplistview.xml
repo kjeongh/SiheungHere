@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    >
+
+    <ImageView
+        android:id="@+id/mapImg"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/testimg"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|left"
+        android:layout_marginLeft="8dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/mapName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(ABC행복학습타운) 모임터(210호)"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:id="@+id/mapAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="경기도 시흥시 소래산길 11"
+            android:layout_marginBottom="5dp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/mapPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="문의전화 : 031-310-6008"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                >
+                <TextView
+                    android:id="@+id/mapKm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.5 km"
+                    android:textColor="@color/blue"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
