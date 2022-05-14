@@ -13,8 +13,8 @@
         android:visibility="visible">
 
         <!--타이틀바와 스크롤바-->
-        <include layout="@layout/title"/>
-        <include layout="@layout/icon_scroll"/>
+        <include layout="@layout/main_title"/>
+        <include layout="@layout/main_icon_scroll"/>
 
         <!--미리보기용 건의글 아이템-->
         <include layout="@layout/suggest_item"/>
@@ -65,7 +65,7 @@
             android:layout_margin="20dp"/>
 
         <!-- 스크롤 뷰 -->
-        <include layout="@layout/icon_scroll"/>
+        <include layout="@layout/main_icon_scroll"/>
 
         <!-- 자원종류 -->
         <LinearLayout

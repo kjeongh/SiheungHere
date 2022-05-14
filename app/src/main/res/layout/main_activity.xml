@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <!--타이틀바-->
-    <include layout="@layout/title"/>
+    <include layout="@layout/main_title"/>
 
         <FrameLayout
             android:id="@+id/frame_map"
@@ -27,7 +27,7 @@
                 android:orientation="vertical">
                 <!--자원 스크롤바-->
                 <include
-                    layout="@layout/icon_scroll"
+                    layout="@layout/main_icon_scroll"
                     android:layout_gravity="top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
