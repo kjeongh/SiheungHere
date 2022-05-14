@@ -19,10 +19,15 @@
     <dimen name="info_detail_textsize">12dp</dimen>
 <!--버튼-->
     <dimen name="info_button_margintop">6dp</dimen>
-<!--    지도화면      -->
+<!--지도화면-->
     <dimen name="btn_textsize">10sp</dimen>
     <dimen name="btn_margintop">5dp</dimen>
 <!--아이콘 스크롤바-->
     <dimen name="scrollBar_textSize">12sp</dimen>
     <dimen name="scrollBar_margin">8dp</dimen>
+<!--이전, 다음 버튼-->
+    <dimen name="previous_next_icon">30dp</dimen>
+<!--페이지 번호-->
+    <dimen name="page_num_size">20sp</dimen>
+
 </resources>

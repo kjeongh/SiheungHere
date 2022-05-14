@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center"
-    android:layout_gravity="bottom"
-    >
+    android:layout_gravity="bottom">
     <SlidingDrawer
         android:id="@+id/slidingdrawer"
         android:layout_width="wrap_content"
@@ -37,11 +36,8 @@
 
             </ListView>
 
-
-
         </LinearLayout>
 
     </SlidingDrawer>
-
 
 </LinearLayout>
