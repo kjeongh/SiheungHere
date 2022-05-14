@@ -14,13 +14,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-<<<<<<< HEAD
-
         multiDexEnabled true
-
-=======
-        multiDexEnabled true
->>>>>>> c0381c46ccbed83d8350e391c2c2bd9152e250ab
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

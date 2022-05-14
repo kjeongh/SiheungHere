@@ -19,17 +19,10 @@
     <dimen name="info_detail_textsize">12dp</dimen>
 <!--버튼-->
     <dimen name="info_button_margintop">6dp</dimen>
-<<<<<<< HEAD
-<!--아이콘 스크롤바-->
-    <dimen name="scrollBar_textSize">12sp</dimen>
-    <dimen name="scrollBar_margin">8dp</dimen>
-
-=======
 <!--    지도화면      -->
     <dimen name="btn_textsize">10sp</dimen>
     <dimen name="btn_margintop">10dp</dimen>
 <!--아이콘 스크롤바-->
     <dimen name="scrollBar_textSize">12sp</dimen>
     <dimen name="scrollBar_margin">8dp</dimen>
->>>>>>> c0381c46ccbed83d8350e391c2c2bd9152e250ab
 </resources>

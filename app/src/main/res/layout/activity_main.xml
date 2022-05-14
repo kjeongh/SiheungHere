@@ -9,11 +9,6 @@
 
     <!--타이틀바-->
     <include layout="@layout/title"/>
-<<<<<<< HEAD
-
-
-=======
->>>>>>> c0381c46ccbed83d8350e391c2c2bd9152e250ab
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -63,11 +58,5 @@
         </FrameLayout>
 
         <include layout="@layout/main_slidingdrawer"/>
-
-
-
-<<<<<<< HEAD
-=======
     </FrameLayout>
->>>>>>> c0381c46ccbed83d8350e391c2c2bd9152e250ab
 </LinearLayout>
