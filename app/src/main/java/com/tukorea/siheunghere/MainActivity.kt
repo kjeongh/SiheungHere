@@ -41,8 +41,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        
-        iconScrollBar.bringToFront() //지도와 타이틀바 겹치기
+
 
         val fm = supportFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
@@ -55,6 +54,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
 
+        //타이틀바 건의글 게시판 이동 버튼
         title_suggestBtn.setOnClickListener() {
             var intent = Intent(applicationContext, SuggestActivity::class.java)
             startActivity(intent)
