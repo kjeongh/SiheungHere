@@ -4,8 +4,6 @@ package com.tukorea.siheunghere
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.*
-import android.widget.LinearLayout
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -15,9 +13,8 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
-import kotlinx.android.synthetic.main.icon_scroll.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
-import kotlinx.android.synthetic.main.title.*
+import kotlinx.android.synthetic.main.main_title.*
 import com.tukorea.siheunghere.VariableOnMap as VM
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -41,7 +38,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.main_activity)
 
 
         val fm = supportFragmentManager
