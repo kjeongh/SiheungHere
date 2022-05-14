@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.view.Window
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.item_point.*
+import kotlinx.android.synthetic.main.main_item_point.*
 
 class MapDialog(context : Context) {
 
