@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:content="@+id/content"
         android:handle="@+id/handle"
-        android:topOffset="245dp"
+        android:topOffset="240dp"
         >
         <ImageButton
             android:id="@+id/handle"
