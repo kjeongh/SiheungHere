@@ -4,6 +4,8 @@
     android:layout_height="300dp"
     android:orientation="vertical">
 
+    <!--메뉴 버튼 클릭시 나오는 메뉴의 헤더-->
+    <!--시흥시 마스코트-->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -124,6 +124,4 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
             marker.onClickListener = listener
         }
-//다시 충돌 테스트
 }
-//충돌충돌
