@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'com.google.gms.google-services'
 }
+apply plugin: 'kotlin-android'
 
 // local.properties 사용을 위함
 Properties properties = new Properties()
