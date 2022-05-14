@@ -23,6 +23,7 @@ import com.tukorea.siheunghere.VariableOnMap as VM
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // < ----- 구현해야할 것 ----- >
+    // < test >
     // 1. 자원을 저장할 데이터 객체(주소, 종류, 전화번호, 사진) -> 생각나면 더 적기
     // - 주소 -> 좌표 변환
     // - 각 marker 아이콘 설정
