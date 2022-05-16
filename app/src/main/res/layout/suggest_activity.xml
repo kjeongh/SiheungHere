@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <!--타이틀바-->
         <include layout="@layout/main_title"/>
@@ -91,17 +91,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
+
+        <!--타이틀바-->
+        <include layout="@layout/main_title"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="새 건의글 작성"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_margin="20dp"/>
 
-        <!-- 스크롤 뷰 -->
-        <include layout="@layout/main_icon_scroll"/>
 
         <!-- 자원종류 -->
         <LinearLayout
@@ -112,14 +113,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="자원 종류"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_margin="10dp"/>
             </LinearLayout>
             <LinearLayout
@@ -129,11 +130,14 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <EditText
+                    android:id="@+id/iconEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="와이파이"
-                    android:textSize="20dp"
-                    android:layout_margin="10dp"/>
+                    android:hint="자원을 설정해 주세요."
+                    android:textSize="20sp"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/black"
+                    android:enabled="false"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -146,14 +150,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="위치"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_margin="10dp"/>
             </LinearLayout>
             <LinearLayout
@@ -163,11 +167,14 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <EditText
+                    android:id="@+id/mapEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="경기도 시흥시"
-                    android:textSize="20dp"
-                    android:layout_margin="10dp"/>
+                    android:hint="위치를 설정해 주세요."
+                    android:textSize="20sp"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/black"
+                    android:enabled="false"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -180,14 +187,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="건의 사유"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_margin="10dp"/>
             </LinearLayout>
             <LinearLayout
@@ -196,13 +203,26 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
-
                 <EditText
+                    android:id="@+id/memoEdit"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:text="만들어 주세요."
-                    android:textSize="20dp" />
+                    android:layout_height="0dp"
+                    android:layout_weight="8"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:hint="내용 작성"
+                    android:textSize="20sp"
+                    android:maxLength="100"/>
+                <TextView
+                    android:id="@+id/memoLimitEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="0/100"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -215,14 +235,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="비밀번호"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_margin="10dp"/>
             </LinearLayout>
             <LinearLayout
@@ -232,15 +252,30 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <EditText
+                    android:id="@+id/pwEdit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="****"
-                    android:textSize="20dp"
-                    android:layout_margin="10dp"/>
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:hint="비밀번호를 입력하세요."
+                    android:textSize="20sp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="textPassword"
+                    android:maxLength="20"/>
+                <TextView
+                    android:id="@+id/pwLimitEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="0/20"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"/>
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 작성 -->
+        <!-- 작성 버튼 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -248,6 +283,7 @@
             android:gravity="center"
             android:orientation="horizontal">
             <Button
+                android:id="@+id/submitBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#DD8503"
