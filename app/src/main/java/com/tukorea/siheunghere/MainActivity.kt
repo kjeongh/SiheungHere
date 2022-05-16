@@ -4,6 +4,7 @@ package com.tukorea.siheunghere
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -13,8 +14,12 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
 import kotlinx.android.synthetic.main.main_title.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import com.tukorea.siheunghere.VariableOnMap as VM
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -109,19 +114,43 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             true
         }
 
-        //NaverMap 객체가 준비되면 호출되는 함수
-        override fun onMapReady(naverMap: NaverMap) {
-            this.naverMap = naverMap
-            naverMap.locationSource = locationSource
-            naverMap.locationTrackingMode = LocationTrackingMode.Follow
+    //NaverMap 객체가 준비되면 호출되는 함수
+    override fun onMapReady(naverMap: NaverMap) {
+        this.naverMap = naverMap
+        naverMap.locationSource = locationSource
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
 
-            val marker = Marker()
-            marker.position = LatLng(37.56683771710133, 126.97864942520158)
-            marker.icon = OverlayImage.fromResource(R.drawable.map_badminton)
-            marker.width = VM.MARKER_SIZE
-            marker.height = VM.MARKER_SIZE
-            marker.map = naverMap
+        makeMarker(37.56683771710133, 126.97864942520158, R.drawable.map_badminton)
+    }
 
-            marker.onClickListener = listener
-        }
+    //마커 생성 함수
+    private fun makeMarker(latitude : Double, longtitude: Double, resourceid: Int) {
+        val marker = Marker()
+        marker.position = LatLng(latitude, longtitude)
+        marker.icon = OverlayImage.fromResource(resourceid)
+        marker.width = VM.MARKER_SIZE
+        marker.height = VM.MARKER_SIZE
+        marker.map = naverMap
+
+        marker.onClickListener = listener
+    }
+    private fun searchAddress(query: String) {
+        val retrofit = RetrofitBuilder().retrofit
+
+        retrofit.create(NaverMapApi::class.java).searchAddress(query)
+            .enqueue(object : Callback<GeoResponse> {
+                override fun onResponse(
+                    call: Call<GeoResponse>,
+                    response: Response<GeoResponse>
+                ) {
+                    val post: GeoResponse? = response.body()
+                    val longtitude = post!!.addresses[0].x.toDouble()
+                    val latitude = post!!.addresses[0].y.toDouble()
+                    makeMarker(latitude, longtitude, R.drawable.map_toilet)
+                }
+
+                override fun onFailure(call: Call<GeoResponse?>?, t: Throwable?) {}
+            })
+
+    }
 }
