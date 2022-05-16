@@ -137,7 +137,7 @@
                     android:textSize="20sp"
                     android:layout_margin="10dp"
                     android:textColor="@color/black"
-                    android:enabled="false"/>
+                    android:focusable="false"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -174,7 +174,7 @@
                     android:textSize="20sp"
                     android:layout_margin="10dp"
                     android:textColor="@color/black"
-                    android:enabled="false"/>
+                    android:focusable="false"/>
             </LinearLayout>
         </LinearLayout>
 
