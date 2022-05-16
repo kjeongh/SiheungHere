@@ -4,7 +4,6 @@ package com.tukorea.siheunghere
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -33,10 +32,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     // 2. 현위치와 거리계산
     // - 각 자원과 현위치의 거리를 return
     // - 그 중 일정거리 내에 있는 것들만
-    // - 지도 카메라도 그 자원들을 다 비추기 위해 멀어지기
+    // - 이 위치에서 재검색 누르면 선택한 자원 필터는 초기화
 
     // 3. 그 외의 것
     // - 자원 필터링 -> 위에서 거리계산된 것들 중에서 선택한 자원만 보여주면 될듯
+    // - 마커 생성 함수가 return 하는 marker는 각 객체에 변수로 저장
+    // - 필터링으로 걸러지는 자원 제외, marker를 다 null로 설정(안보이게)
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
@@ -82,6 +83,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 //            searchAddress(TestEdt.text.toString());
 //        }
 
+        ResearchBtn.setOnClickListener {
+            val camerapos = naverMap.cameraPosition
+            makeMarker(camerapos.target.latitude, camerapos.target.longitude, R.drawable.map_cafe)
+        }
     }
         override fun onRequestPermissionsResult(
             requestCode: Int,
@@ -119,12 +124,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         this.naverMap = naverMap
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
-
+        naverMap.minZoom = 8.0
         makeMarker(37.56683771710133, 126.97864942520158, R.drawable.map_badminton)
     }
 
     //마커 생성 함수
-    private fun makeMarker(latitude : Double, longtitude: Double, resourceid: Int) {
+    private fun makeMarker(latitude : Double, longtitude: Double, resourceid: Int): Marker {
         val marker = Marker()
         marker.position = LatLng(latitude, longtitude)
         marker.icon = OverlayImage.fromResource(resourceid)
@@ -133,7 +138,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         marker.map = naverMap
 
         marker.onClickListener = listener
+
+        return marker
     }
+
     private fun searchAddress(query: String) {
         val retrofit = RetrofitBuilder().retrofit
 
