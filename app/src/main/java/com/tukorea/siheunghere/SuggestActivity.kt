@@ -41,11 +41,11 @@ class SuggestActivity : AppCompatActivity() {
         }
         // 건의 내용 제한 표시 <100자>
         memoEdit.addTextChangedListener {
-            memoLimit.text = memoEdit.text.toString().utf8Size().toString() + "/100"
+            memoLimit.text = memoEdit.text.toString().length.toString() + "/100"
         }
         // 비밀번호 제한 표시 <20자>
         pwEdit.addTextChangedListener {
-            pwLimit.text = pwEdit.text.toString().utf8Size().toString() + "/20"
+            pwLimit.text = pwEdit.text.toString().length.toString() + "/20"
         }
         // 현재 작성 내용 파이어베이스 제출
         submitBtn.setOnClickListener {
@@ -64,13 +64,13 @@ class SuggestActivity : AppCompatActivity() {
                 dlg.setPositiveButton("제출"){ dialog, which ->
                     // hashMap 생성해서 Firestore 제출
                     val suggest = hashMapOf(
-                        "자원종류" to iconEdit.text.toString(),
-                        "위치" to mapEdit.text.toString(),
-                        "건의사유" to memoEdit.text.toString(),
-                        "비밀번호" to pwEdit.text.toString(),
-                        "추천수" to 0,
+                        "resourceType" to iconEdit.text.toString(),
+                        "suggestAddr" to mapEdit.text.toString(),
+                        "suggestReason" to memoEdit.text.toString(),
+                        "password" to pwEdit.text.toString(),
+                        "agreeNum" to 0
                     )
-                    db.collection("suggest")
+                    db.collection("suggests")
                         .add(suggest)
                         .addOnSuccessListener { documentReference ->
                             // 제출 성공 시
