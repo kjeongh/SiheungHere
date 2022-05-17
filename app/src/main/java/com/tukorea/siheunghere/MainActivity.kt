@@ -4,6 +4,9 @@ package com.tukorea.siheunghere
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -26,7 +29,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     // < ----- 구현해야할 것 ----- >
     // < test >
     // 1. 자원을 저장할 데이터 객체(주소, 종류, 전화번호, 사진) -> 생각나면 더 적기
-    // - 주소 -> 좌표 변환
     // - 각 marker 아이콘 설정
 
     // 2. 현위치와 거리계산
@@ -47,14 +49,28 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.main_activity)
 
 
+        // map fragment 불러오기
         val fm = supportFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
             ?: MapFragment.newInstance().also {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
 
+        // 공유자원 database
+        val db = Firebase.firestore
+        db.collection("shared").get().addOnSuccessListener { result ->
+            for (document in result) {
+                var address = document.get("address")
+                //각 document는 id를 불러올 수 있다. 이 id를 활용해 주소 -> 위도, 경도 변환한 것을 데이터베이스에 넣자
+                document.id
+            }
+        }
+            .addOnFailureListener { exception ->
+            }
 
+        //navermap 준비되면 호출되는 함수
         mapFragment.getMapAsync(this)
+
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
 
@@ -79,9 +95,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         //test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
-//        TestBtn.setOnClickListener {
-//            searchAddress(TestEdt.text.toString());
-//        }
+        TestBtn.setOnClickListener {
+            searchAddress(TestEdt.text.toString());
+        }
 
         ResearchBtn.setOnClickListener {
             val camerapos = naverMap.cameraPosition
@@ -138,7 +154,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         marker.map = naverMap
 
         marker.onClickListener = listener
-
         return marker
     }
 
@@ -159,6 +174,5 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 override fun onFailure(call: Call<GeoResponse?>?, t: Throwable?) {}
             })
-
     }
 }
