@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- 건의 내용 게시판 -->
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <!--타이틀바-->
         <include layout="@layout/main_title"/>
@@ -30,58 +30,46 @@
             android:id="@+id/suggestListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="8">
+            android:visibility="visible">
         </ListView>
 
-        <!-- 페이지 표시 및 넘기기 버튼 -->
+        <!--페이징-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:layout_marginHorizontal="20dp">
 
-            <TextView
-                android:id="@+id/pageDivision"
-                android:layout_width="wrap_content"
+            <com.lakue.pagingbutton.LakuePagingButton
+                android:id="@+id/paging_btnList"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:textSize="@dimen/page_num_size"
-                android:text=" / "/>
+                android:layout_centerHorizontal="true"/>
 
-            <TextView
-                android:id="@+id/suggest_currentPage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/pageDivision"
-                android:textSize="@dimen/page_num_size"
-                android:text="11"/>
+                    <!--이전 페이지 번호-->
+<!--                    <ImageButton-->
+<!--                        android:layout_width="@dimen/previous_next_icon"-->
+<!--                        android:layout_height="@dimen/previous_next_icon"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:layout_toLeftOf="@id/paging_btnList"-->
+<!--                        android:background="@color/white"-->
+<!--                        android:src="@drawable/etc_page_previous"/>-->
 
-            <TextView
-                android:id="@+id/suggest_totalPage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/pageDivision"
-                android:textSize="@dimen/page_num_size"
-                android:text="40"/>
-
-            <ImageButton
-                android:layout_width="@dimen/previous_next_icon"
-                android:layout_height="@dimen/previous_next_icon"
-                android:scaleType="centerCrop"
-                android:layout_alignParentLeft="true"
-                android:background="@color/white"
-                android:src="@drawable/etc_page_previous"/>
-
-            <ImageButton
-                android:layout_width="@dimen/previous_next_icon"
-                android:layout_height="@dimen/previous_next_icon"
-                android:scaleType="centerCrop"
-                android:layout_alignParentRight="true"
-                android:background="@color/white"
-                android:src="@drawable/etc_page_next"/>
+                    <!--다음 페이지 번호-->
+<!--                    <ImageButton-->
+<!--                        android:layout_width="@dimen/previous_next_icon"-->
+<!--                        android:layout_height="@dimen/previous_next_icon"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:layout_toRightOf="@id/paging_btnList"-->
+<!--                        android:background="@color/white"-->
+<!--                        android:src="@drawable/etc_page_next"/>-->
 
         </RelativeLayout>
+
+        <!--페이징-->
+
+
+
+
 
     </LinearLayout>
 
@@ -91,7 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <!--타이틀바-->
         <include layout="@layout/main_title"/>

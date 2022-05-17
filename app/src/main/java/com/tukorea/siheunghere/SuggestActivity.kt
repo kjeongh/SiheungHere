@@ -11,9 +11,12 @@ import androidx.core.widget.addTextChangedListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.main_icon_scroll.*
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.*
+import com.lakue.pagingbutton.OnPageSelectListener
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
-import okio.utf8Size
 
 
 class SuggestActivity : AppCompatActivity() {
@@ -93,17 +96,56 @@ class SuggestActivity : AppCompatActivity() {
 
         }
 
-        val suggestList = ArrayList<SuggestData>(5)
-        suggestList.add(SuggestData(10,"경기도 시흥시 새재로 19윤성빌딩 5층 502호",1000))
-        suggestList.add(SuggestData(11,"경기도 시흥시 새재로 19윤성빌딩 5층 502호",1020))
-        suggestList.add(SuggestData(12,"경기도 시흥시 새재로 19윤성빌딩 5층 502호",1230))
-        suggestList.add(SuggestData(13,"경기도 시흥시 새재로 19윤성빌딩 5층 502호",4320))
-        suggestList.add(SuggestData(14,"경기도 시흥시 새재로 19윤성빌딩 5층 502호",1520))
 
 
-        val suggestListAdapter = SuggestListViewAdapter(this, suggestList)
+        var collection : CollectionReference = db.collection("suggests")
+        var suggests = ArrayList<QueryDocumentSnapshot>()
+        collection.get().addOnCompleteListener(OnCompleteListener<QuerySnapshot>{
+            fun onComplete(task : Task<QuerySnapshot>) {
+                if(task.isSuccessful) {
+                    for(document : QueryDocumentSnapshot in task.result) {
+                        suggests.add(document)
+                    }
+                }
+            }
+        })
+
+        var suggestListAdapter = SuggestListViewAdapter(this, suggests)
         suggestListView.adapter = suggestListAdapter
 
+
+        //임시로 지정해둔 최대 페이지 번호
+        var max_page = 10
+
+        //한 번에 표시되는 버튼 수 (기본값 : 5)
+        paging_btnList.setPageItemCount(4)
+
+
+        //총 페이지 버튼 수와 현재 페이지 설정
+        paging_btnList.addBottomPageButton(max_page, 1)
+
+        //페이지 리스너를 클릭했을 때의 이벤트
+        paging_btnList.setOnPageSelectListener(object : OnPageSelectListener {
+            //PrevButton Click
+            override fun onPageBefore(now_page: Int) {
+                //prev 버튼클릭 - 버튼 재설정되고 그려짐
+                paging_btnList.addBottomPageButton(max_page, now_page)
+                //해당 페이지에 대한 소스 코드 작성
+                //...
+            }
+
+            override fun onPageCenter(now_page: Int) {
+                //...
+            }
+
+            //NextButton Click
+            override fun onPageNext(now_page: Int) {
+                //next 버튼클릭 - 버튼 재설정되고 그려짐
+                paging_btnList.addBottomPageButton(max_page, now_page)
+                //해당 페이지에 대한 소스 코드 작성
+                //...
+            }
+        })
     }
 
     // 자원선택 스크롤 다이얼로그 띄우고 iconEdit 변경
