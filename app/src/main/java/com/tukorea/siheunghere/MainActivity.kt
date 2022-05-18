@@ -44,6 +44,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
 
+    var longtitude : Double = 0.0
+    var latitude : Double = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -62,7 +65,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             for (document in result) {
                 var address = document.get("address")
                 //각 document는 id를 불러올 수 있다. 이 id를 활용해 주소 -> 위도, 경도 변환한 것을 데이터베이스에 넣자
-                document.id
+                var docId = document.id
+
+                searchAddress(address as String)
+                var myLongtitude = longtitude
+                var myLatitude = latitude
+                val shared = hashMapOf(
+                    "name" to "${document.get("name")}",
+                    "kind" to "${document.get("kind")}",
+                    "tel" to "${document.get("tel")}",
+                    "address" to "${address}",
+                    "latitude" to myLongtitude,
+                    "longtitude" to myLatitude
+                )
+
+                db.collection("shared").document("${docId}")
+                    .set(shared)
+                    .addOnSuccessListener { Log.d("db", "DocumentSnapshot successfully written!") }
+                    .addOnFailureListener { e -> Log.w("db", "Error writing document", e) }
             }
         }
             .addOnFailureListener { exception ->
@@ -167,11 +187,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     response: Response<GeoResponse>
                 ) {
                     val post: GeoResponse? = response.body()
-                    val longtitude = post!!.addresses[0].x.toDouble()
-                    val latitude = post!!.addresses[0].y.toDouble()
-                    makeMarker(latitude, longtitude, R.drawable.map_toilet)
+                    longtitude = post!!.addresses[0].x.toDouble()
+                    latitude = post!!.addresses[0].y.toDouble()
                 }
-
                 override fun onFailure(call: Call<GeoResponse?>?, t: Throwable?) {}
             })
     }
