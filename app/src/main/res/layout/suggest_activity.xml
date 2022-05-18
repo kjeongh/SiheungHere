@@ -26,48 +26,34 @@
        <include layout="@layout/main_icon_scroll"/>
 
         <!--건의글 리스트-->
-        <ListView
-            android:id="@+id/suggestListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
-        </ListView>
+<!--        <ListView-->
+<!--            android:id="@+id/suggestListView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:visibility="visible">-->
+<!--        </ListView>-->
 
-        <!--페이징-->
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp">
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:gravity="center">
 
+            <Button
+                android:id="@+id/newSuggestBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="새 건의글 작성하기"/>
+
+            <!--페이징-->
             <com.lakue.pagingbutton.LakuePagingButton
                 android:id="@+id/paging_btnList"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"/>
-
-                    <!--이전 페이지 번호-->
-<!--                    <ImageButton-->
-<!--                        android:layout_width="@dimen/previous_next_icon"-->
-<!--                        android:layout_height="@dimen/previous_next_icon"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:layout_toLeftOf="@id/paging_btnList"-->
-<!--                        android:background="@color/white"-->
-<!--                        android:src="@drawable/etc_page_previous"/>-->
-
-                    <!--다음 페이지 번호-->
-<!--                    <ImageButton-->
-<!--                        android:layout_width="@dimen/previous_next_icon"-->
-<!--                        android:layout_height="@dimen/previous_next_icon"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:layout_toRightOf="@id/paging_btnList"-->
-<!--                        android:background="@color/white"-->
-<!--                        android:src="@drawable/etc_page_next"/>-->
-
-        </RelativeLayout>
-
-        <!--페이징-->
-
-
+                android:layout_centerHorizontal="true" />
+        </LinearLayout>
 
 
 

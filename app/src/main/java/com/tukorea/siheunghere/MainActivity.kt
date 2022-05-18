@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
 
+
         //슬라이딩 드로어 화살표 변경
         slidingdrawer.setOnDrawerOpenListener {
             handle.setImageResource(R.drawable.etc_arrow_down)

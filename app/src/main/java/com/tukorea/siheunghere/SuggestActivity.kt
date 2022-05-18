@@ -3,8 +3,10 @@ package com.tukorea.siheunghere
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -31,6 +33,20 @@ class SuggestActivity : AppCompatActivity() {
         //다시 건의글 버튼 누르면 홈화면으로 돌아감
         title_suggestBtn.setOnClickListener() {
             finish()
+        }
+
+        //타이틀바 타이틀 버튼 - 홈 화면 이동
+        title_titleBtn.setOnClickListener() {
+            var intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+
+        //새 건의글 작성
+        newSuggestBtn.setOnClickListener() {
+            suggestList.visibility = View.INVISIBLE
+            suggestWrite.visibility = View.VISIBLE
+
         }
         
         // 자원 아이콘 선택 다이얼로그
@@ -110,8 +126,8 @@ class SuggestActivity : AppCompatActivity() {
             }
         })
 
-        var suggestListAdapter = SuggestListViewAdapter(this, suggests)
-        suggestListView.adapter = suggestListAdapter
+//        var suggestListAdapter = SuggestListViewAdapter(this, suggests)
+//        suggestListView.adapter = suggestListAdapter
 
 
         //임시로 지정해둔 최대 페이지 번호
