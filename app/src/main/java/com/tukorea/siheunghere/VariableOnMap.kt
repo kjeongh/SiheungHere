@@ -4,4 +4,5 @@ package com.tukorea.siheunghere
 object VariableOnMap {
     const val MARKER_SIZE = 120                                 // Marker 설정 크기
     const val LOCATION_PERMISSTION_REQUEST_CODE = 1000          // 현위치 요청 코드
+    const val MIN_ZOOM = 8.0                                    // 줌 아웃 최대치
 }
