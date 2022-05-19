@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.firebase.firestore.ktx.firestore
@@ -15,12 +16,21 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
 import com.lakue.pagingbutton.OnPageSelectListener
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.LocationTrackingMode
+import com.naver.maps.map.MapFragment
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
 import kotlinx.android.synthetic.main.suggest_map_dialog.*
 
 
-class SuggestActivity : AppCompatActivity() {
+class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    private lateinit var naverMap: NaverMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +52,13 @@ class SuggestActivity : AppCompatActivity() {
         // 위치 선택 다이얼로그
         val Mapdialog = MapDialog(this)
         mapEdit.setOnClickListener {
+            val fm = supportFragmentManager
+            val mapFragment = fm.findFragmentById(R.id.map_fragment) as MapFragment?
+                ?: MapFragment.newInstance().also {
+                    fm.beginTransaction().add(R.id.map_fragment, it).commit()
+                }
+
+            mapFragment.getMapAsync(this)
             Mapdialog.showDialog()
         }
         // 건의 내용 제한 표시 <100자>
@@ -161,6 +178,8 @@ class SuggestActivity : AppCompatActivity() {
         }
         init {
             dialog.setContentView(R.layout.suggest_map_dialog)
+
+            //확인 버튼
             dialog.positiveBtn.setOnClickListener {
                 dialog.dismiss()
             }
@@ -203,6 +222,17 @@ class SuggestActivity : AppCompatActivity() {
                 }
             }
         }
+
+    }
+
+    override fun onMapReady(naverMap: NaverMap) {
+        this.naverMap = naverMap
+        val marker = Marker()
+        marker.position = LatLng(37.56683771710133, 126.97864942520158)
+        marker.icon = OverlayImage.fromResource(R.drawable.map_badminton)
+        marker.width = VariableOnMap.MARKER_SIZE
+        marker.height = VariableOnMap.MARKER_SIZE
+        marker.map = naverMap
 
     }
 
