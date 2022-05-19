@@ -55,12 +55,14 @@
                 android:layout_marginRight="10dp">
 
                 <Button
+                    android:id="@+id/DistBtn1"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:text="@string/radius_distance1"
                     android:textSize="@dimen/btn_textsize"
                     android:background="@drawable/circle_button"></Button>
                 <Button
+                    android:id="@+id/DistBtn2"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:text="@string/radius_distance2"
@@ -69,6 +71,7 @@
                     android:layout_marginTop="@dimen/btn_margintop">
                 </Button>
                 <Button
+                    android:id="@+id/DistBtn3"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:text="@string/radius_distance3"

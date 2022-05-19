@@ -2,9 +2,12 @@ package com.tukorea.siheunghere
 
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
@@ -30,8 +33,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     // - 각 marker 아이콘 설정
 
     // 2. 현위치와 거리계산
-    // - 각 자원과 현위치의 거리를 return
-    // - 그 중 일정거리 내에 있는 것들만
+    // - 위치 중심으로 그려진 원 안에 있는 자원들만 데이터베이스에서 읽어오기
     // - 이 위치에서 재검색 누르면 선택한 자원 필터는 초기화
 
     // 3. 그 외의 것
@@ -39,16 +41,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     // - 마커 생성 함수가 return 하는 marker는 각 객체에 변수로 저장
     // - 필터링으로 걸러지는 자원 제외, marker를 다 null로 설정(안보이게)
 
-    private lateinit var naverMap: NaverMap
+    // 지도 관련 변수
+    private lateinit var naverMap: NaverMap                     // 지도 객체
     private lateinit var uiSettings : UiSettings                // 지도 UI 세팅 객체
-    private lateinit var locationSource: FusedLocationSource
+    private lateinit var locationSource: FusedLocationSource    // 현위치 중심
     private lateinit var circle: CircleOverlay                  // 현위치 or 지도중심점(이 위치에서 재검색 할 경우) 중심으로 그려질 원(거리 계산)
     private lateinit var cameraPos: CameraPosition              // 지도 중심점 위치(LatLng)
+
+    // 공유자원 검색 관련 변수
+    // 특정 위치를 중심으로 한 경계 좌표들
+    private var northLatitude: Double = 0.0
+    private var southLatitude: Double = 0.0
+    private var eastLongtitude: Double = 0.0
+    private var westLongtitude: Double = 0.0
+
+    //데이터베이스 관련 변수
+    private lateinit var db: FirebaseFirestore
+    private lateinit var sharedRef: CollectionReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-
 
         // map fragment 불러오기
         val fm = supportFragmentManager
@@ -62,6 +75,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
 
+        db = Firebase.firestore
+        sharedRef = db.collection("shared")
         // 공유자원 database
         //changeAddresstoCoord()
 
@@ -90,13 +105,22 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 //            searchAddress(TestEdt.text.toString());
 //        }
 
+        // 위치 재검색 버튼
         ResearchBtn.setOnClickListener {
             cameraPos = naverMap.cameraPosition
             makeMarker(cameraPos.target, R.drawable.map_cafe)
-            makeCircle(cameraPos.target, 1500.0)
         }
 
-
+        // 검색할 반지름 거리 설정 버튼
+        DistBtn1.setOnClickListener {
+            makeCircle(cameraPos.target, VM.DISTANCE_1)
+        }
+        DistBtn2.setOnClickListener {
+            makeCircle(cameraPos.target,  VM.DISTANCE_2)
+        }
+        DistBtn3.setOnClickListener {
+            makeCircle(cameraPos.target,  VM.DISTANCE_3)
+        }
     }
     override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         //현위치 요청 결과 코드
@@ -121,7 +145,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         true
     }
 
-    //NaverMap 객체가 준비되면 호출되는 함수
+    // NaverMap 객체가 준비되면 호출되는 함수
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
         this.uiSettings = naverMap.uiSettings
@@ -133,7 +157,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         makeMarker(LatLng(37.56683771710133, 126.97864942520158), R.drawable.map_badminton)
     }
 
-    //마커 생성 함수
+    // 마커 생성 함수
     private fun makeMarker(pos: LatLng, resourceid: Int): Marker {
         val marker = Marker()
         marker.position = pos
@@ -146,18 +170,26 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         return marker
     }
 
+    // 지정한 위치를 중심으로 원을 그리는 함수(for 거리 계산)
     private fun makeCircle(center: LatLng, radius: Double){
         circle = CircleOverlay(center, radius)
         circle.map = naverMap
         var boundary = circle.bounds
+        northLatitude = boundary.northLatitude
+        southLatitude = boundary.southLatitude
+        eastLongtitude = boundary.eastLongitude
+        westLongtitude = boundary.westLongitude
+
+        // 경계 위도와 경도 받기 -> 완료
+        // 경계에 포함되어 있는 document만 불러오기
+        // 그것만 marker 띄우기
     }
 
     //db에 있는 공유자원의 주소를 위도, 경도로 변환해 db에 넣음(데이터 준비, 앱 출시할 때는 없어질 코드)
     private fun changeAddresstoCoord(){
-        val db = Firebase.firestore
         val retrofit = RetrofitBuilder().retrofit
         //db에 있는 모든 document 가져오기
-        db.collection("shared").get().addOnSuccessListener { result ->
+        sharedRef.get().addOnSuccessListener { result ->
             for (document in result) {
                 var address = document.get("address")
                 //각 document의 주소를 불러와 searchAddress 함수를 호출해 주소 변환
