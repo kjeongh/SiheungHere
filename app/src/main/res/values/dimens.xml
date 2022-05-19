@@ -20,8 +20,8 @@
 <!--버튼-->
     <dimen name="info_button_margintop">6dp</dimen>
 <!--지도화면-->
-    <dimen name="btn_textsize">10sp</dimen>
-    <dimen name="btn_margintop">5dp</dimen>
+    <dimen name="btn_textsize">9sp</dimen>
+    <dimen name="btn_margintop">8dp</dimen>
 <!--아이콘 스크롤바-->
     <dimen name="scrollBar_textSize">12sp</dimen>
     <dimen name="scrollBar_margin">8dp</dimen>
