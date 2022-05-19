@@ -17,6 +17,7 @@ import com.google.firebase.firestore.*
 import com.lakue.pagingbutton.OnPageSelectListener
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
+import kotlinx.android.synthetic.main.suggest_map_dialog.*
 
 
 class SuggestActivity : AppCompatActivity() {
@@ -39,8 +40,9 @@ class SuggestActivity : AppCompatActivity() {
             dialog.showDialog()
         }
         // 위치 선택 다이얼로그
+        val Mapdialog = MapDialog(this)
         mapEdit.setOnClickListener {
-
+            Mapdialog.showDialog()
         }
         // 건의 내용 제한 표시 <100자>
         memoEdit.addTextChangedListener {
@@ -146,6 +148,24 @@ class SuggestActivity : AppCompatActivity() {
                 //...
             }
         })
+    }
+
+    // 위치선택 다이얼로그
+    inner class MapDialog(context : Context){
+        // 다이얼로그 생성
+        private val dialog = Dialog(context)
+
+        // 다이얼로그 띄우기
+        fun showDialog() {
+            dialog.show()
+        }
+        init {
+            dialog.setContentView(R.layout.suggest_map_dialog)
+            dialog.positiveBtn.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+
     }
 
     // 자원선택 스크롤 다이얼로그 띄우고 iconEdit 변경
