@@ -29,8 +29,10 @@ import kotlinx.android.synthetic.main.suggest_map_dialog.*
 
 
 class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
-
+    
+    // 다이얼로그에서 사용할 지도 객체와 마커
     private lateinit var naverMap: NaverMap
+    private val marker = Marker()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,20 +51,21 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
         iconEdit.setOnClickListener {
             dialog.showDialog()
         }
+
         // 위치 선택 다이얼로그
-
-
         val Mapdialog = MapDialog(this)
         mapEdit.setOnClickListener {
+            // NaverMap 객체 얻어오기
             val fm = supportFragmentManager
             val mapFragment = fm.findFragmentById(R.id.map_fragment) as MapFragment?
                 ?: MapFragment.newInstance().also {
                     fm.beginTransaction().add(R.id.map_fragment, it).commit()
                 }
             mapFragment.getMapAsync(this)
-
+            // 다이얼로그 출력
             Mapdialog.showDialog()
         }
+
         // 건의 내용 제한 표시 <100자>
         memoEdit.addTextChangedListener {
             memoLimit.text = memoEdit.text.toString().length.toString() + "/100"
@@ -71,6 +74,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
         pwEdit.addTextChangedListener {
             pwLimit.text = pwEdit.text.toString().length.toString() + "/20"
         }
+
         // 현재 작성 내용 파이어베이스 제출
         submitBtn.setOnClickListener {
             // 작성되지 않은 칸이 있는지 확인
@@ -227,18 +231,18 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    // 네이버 지도 준비
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
-        val marker = Marker()
-        marker.position = LatLng(37.56683771710133, 126.97864942520158)
-        marker.icon = OverlayImage.fromResource(R.drawable.map_badminton)
-        marker.width = VariableOnMap.MARKER_SIZE
-        marker.height = VariableOnMap.MARKER_SIZE
-        marker.map = naverMap
-
+        // 네이버 지도에서 선택시 마커 표시
         naverMap.setOnMapClickListener { point, coord ->
-            Toast.makeText(this, "${coord.latitude}, ${coord.longitude}",
-                Toast.LENGTH_SHORT).show()
+            mapEdit.setText(coord.latitude.toString() + ", " + coord.longitude.toString())
+            marker.position = LatLng(coord.latitude, coord.longitude)
+            marker.icon = OverlayImage.fromResource(R.drawable.etc_location)
+            marker.width = VariableOnMap.MARKER_SIZE
+            marker.height = VariableOnMap.MARKER_SIZE
+            marker.map = naverMap
+
         }
 
     }
