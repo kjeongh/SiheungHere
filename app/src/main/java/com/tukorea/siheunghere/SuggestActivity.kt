@@ -50,6 +50,8 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
             dialog.showDialog()
         }
         // 위치 선택 다이얼로그
+
+
         val Mapdialog = MapDialog(this)
         mapEdit.setOnClickListener {
             val fm = supportFragmentManager
@@ -57,8 +59,8 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
                 ?: MapFragment.newInstance().also {
                     fm.beginTransaction().add(R.id.map_fragment, it).commit()
                 }
-
             mapFragment.getMapAsync(this)
+
             Mapdialog.showDialog()
         }
         // 건의 내용 제한 표시 <100자>
@@ -170,7 +172,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
     // 위치선택 다이얼로그
     inner class MapDialog(context : Context){
         // 다이얼로그 생성
-        private val dialog = Dialog(context)
+        val dialog = Dialog(context)
 
         // 다이얼로그 띄우기
         fun showDialog() {
@@ -233,6 +235,11 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
         marker.width = VariableOnMap.MARKER_SIZE
         marker.height = VariableOnMap.MARKER_SIZE
         marker.map = naverMap
+
+        naverMap.setOnMapClickListener { point, coord ->
+            Toast.makeText(this, "${coord.latitude}, ${coord.longitude}",
+                Toast.LENGTH_SHORT).show()
+        }
 
     }
 
