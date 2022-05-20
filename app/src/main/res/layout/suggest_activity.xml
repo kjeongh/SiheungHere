@@ -22,38 +22,60 @@
             android:textSize="20dp"
             android:layout_margin="20dp"/>
 
-        <!--스크롤롤바-->
+        <!--스크롤바-->
        <include layout="@layout/main_icon_scroll"/>
 
-        <!--건의글 리스트-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/suggest_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="450dp">
+
+
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+
+<!--        &lt;!&ndash;건의글 리스트&ndash;&gt;-->
 <!--        <ListView-->
 <!--            android:id="@+id/suggestListView"-->
 <!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
+<!--            android:layout_height="450dp"-->
 <!--            android:visibility="visible">-->
 <!--        </ListView>-->
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:orientation="vertical"
             android:layout_gravity="bottom"
             android:gravity="center">
 
-            <Button
-                android:id="@+id/newSuggestBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="새 건의글 작성하기"/>
 
-            <!--페이징-->
-            <com.lakue.pagingbutton.LakuePagingButton
-                android:id="@+id/paging_btnList"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true" />
+            <ImageButton
+                android:id="@+id/newSuggestBtn"
+                style="@style/scrollBar_iconStyle"
+                android:layout_marginVertical="10dp"
+                android:src="@drawable/etc_plus">
+            </ImageButton>
+
+<!--            &lt;!&ndash;페이징&ndash;&gt;-->
+<!--            <com.lakue.pagingbutton.LakuePagingButton-->
+<!--                android:id="@+id/paging_btnList"-->
+<!--                android:layout_width="80dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerHorizontal="true" />-->
         </LinearLayout>
+    </LinearLayout>
+
 
 
 

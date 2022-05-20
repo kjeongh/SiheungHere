@@ -6,29 +6,39 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.main_icon_scroll.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
-import com.lakue.pagingbutton.OnPageSelectListener
+import com.lakue.pagingbutton.OnPageSelectListener //페이징
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
+import kotlinx.android.synthetic.main.suggest_item.view.*
 
 
 class SuggestActivity : AppCompatActivity() {
+
+    // Firebase Firestore 연결
+    val db = Firebase.firestore
+    var firestore : FirebaseFirestore? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.suggest_activity)
 
-        // Firebase Firestore 연결
-        val db = Firebase.firestore
+        firestore = FirebaseFirestore.getInstance()
+        suggest_recycler.adapter = RecyclerViewAdapter()
+        suggest_recycler.layoutManager = LinearLayoutManager(this)
 
         //다시 건의글 버튼 누르면 홈화면으로 돌아감
         title_suggestBtn.setOnClickListener() {
@@ -40,7 +50,6 @@ class SuggestActivity : AppCompatActivity() {
             var intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
         }
-
 
         //새 건의글 작성
         newSuggestBtn.setOnClickListener() {
@@ -66,6 +75,7 @@ class SuggestActivity : AppCompatActivity() {
         pwEdit.addTextChangedListener {
             pwLimit.text = pwEdit.text.toString().length.toString() + "/20"
         }
+
         // 현재 작성 내용 파이어베이스 제출
         submitBtn.setOnClickListener {
             // 작성되지 않은 칸이 있는지 확인
@@ -112,57 +122,50 @@ class SuggestActivity : AppCompatActivity() {
 
         }
 
-
-
-        var collection : CollectionReference = db.collection("suggests")
-        var suggests = ArrayList<QueryDocumentSnapshot>()
-        collection.get().addOnCompleteListener(OnCompleteListener<QuerySnapshot>{
-            fun onComplete(task : Task<QuerySnapshot>) {
-                if(task.isSuccessful) {
-                    for(document : QueryDocumentSnapshot in task.result) {
-                        suggests.add(document)
-                    }
-                }
-            }
-        })
-
-//        var suggestListAdapter = SuggestListViewAdapter(this, suggests)
-//        suggestListView.adapter = suggestListAdapter
-
-
-        //임시로 지정해둔 최대 페이지 번호
-        var max_page = 10
-
-        //한 번에 표시되는 버튼 수 (기본값 : 5)
-        paging_btnList.setPageItemCount(4)
-
-
-        //총 페이지 버튼 수와 현재 페이지 설정
-        paging_btnList.addBottomPageButton(max_page, 1)
-
-        //페이지 리스너를 클릭했을 때의 이벤트
-        paging_btnList.setOnPageSelectListener(object : OnPageSelectListener {
-            //PrevButton Click
-            override fun onPageBefore(now_page: Int) {
-                //prev 버튼클릭 - 버튼 재설정되고 그려짐
-                paging_btnList.addBottomPageButton(max_page, now_page)
-                //해당 페이지에 대한 소스 코드 작성
-                //...
-            }
-
-            override fun onPageCenter(now_page: Int) {
-                //...
-            }
-
-            //NextButton Click
-            override fun onPageNext(now_page: Int) {
-                //next 버튼클릭 - 버튼 재설정되고 그려짐
-                paging_btnList.addBottomPageButton(max_page, now_page)
-                //해당 페이지에 대한 소스 코드 작성
-                //...
-            }
-        })
     }
+
+    //건의글 리사이클러뷰 어댑터
+    inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        var suggestList : ArrayList<SuggestData> = arrayListOf()
+
+        init {
+            firestore?.collection("suggest")?.addSnapshotListener { querySnapshot, firebaseFireStoreException ->
+                suggestList.clear() //suggest리스트 비워줌
+
+                for(snapshot in querySnapshot!!.documents) { //suggestList에 데이터 추가
+                    var item = snapshot.toObject(SuggestData::class.java)
+                    suggestList.add(item!!)
+                }
+                notifyDataSetChanged() //업데이트
+            }
+       }
+
+        //ViewHolder클래스가 추상클래스이므로 구체화하여 사용
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        }
+
+        //xml파일 inflate하여 viewHolder생성하기
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            var view = LayoutInflater.from(parent.context).inflate(R.layout.suggest_item, parent, false)
+            return ViewHolder(view)
+        }
+
+        //onCreateViewHolder에서 만든 view와 실제 데이터 연결
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+             var viewHolder = (holder as ViewHolder).itemView
+
+            viewHolder.suggestList_addr.text = suggestList[position].suggestAddr
+            viewHolder.suggestList_agreeNum.text = suggestList[position].agreeNum.toString()
+        }
+
+        override fun getItemCount(): Int {
+            return suggestList.size
+        }
+    }
+
+
+
 
     // 자원선택 스크롤 다이얼로그 띄우고 iconEdit 변경
     inner class IconDialog(context : Context) {
