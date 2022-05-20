@@ -2,12 +2,13 @@ package com.tukorea.siheunghere
 
 
 import android.content.Intent
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.reflect.Field
 import com.tukorea.siheunghere.VariableOnMap as VM
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -52,12 +54,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     // 특정 위치를 중심으로 한 경계 좌표들
     private var northLatitude: Double = 0.0
     private var southLatitude: Double = 0.0
-    private var eastLongtitude: Double = 0.0
-    private var westLongtitude: Double = 0.0
+    private var eastLongitude: Double = 0.0
+    private var westLongitude: Double = 0.0
 
     //데이터베이스 관련 변수
     private lateinit var db: FirebaseFirestore
     private lateinit var sharedRef: CollectionReference
+    private lateinit var nearlatQuery: Query
+    private lateinit var nearlngQuery: Query
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +81,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         db = Firebase.firestore
         sharedRef = db.collection("shared")
-        // 공유자원 database
+
+
+        // 주소를 좌표로 변환해서 database에 넣기
         //changeAddresstoCoord()
 
         //타이틀바 건의글 게시판 이동 버튼
@@ -107,8 +113,39 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // 위치 재검색 버튼
         ResearchBtn.setOnClickListener {
+            // 지도 중심 좌표 get
             cameraPos = naverMap.cameraPosition
-            makeMarker(cameraPos.target, R.drawable.map_cafe)
+            makeCircle(cameraPos.target, VM.DISTANCE_3)
+
+            // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
+            nearlatQuery = sharedRef.whereGreaterThanOrEqualTo("latitude", "$southLatitude").whereLessThanOrEqualTo("latitude", "$northLatitude")
+                .whereGreaterThanOrEqualTo("longitude", "$westLongitude").whereLessThanOrEqualTo("longitude", "$eastLongitude")
+            nearlngQuery = sharedRef.whereGreaterThanOrEqualTo("longitude", "$westLongitude").whereLessThanOrEqualTo("longitude", "$eastLongitude")
+
+            // 복합 쿼리는 같은 필드에 있는 것만 된다.. -> 집합을 이용해서 해결??
+            var latResult = nearlatQuery.get().result
+            var lngResult = nearlngQuery.get().result
+            var wholeResult = mutableSetOf<QuerySnapshot>()
+            wholeResult.add(latResult)
+            wholeResult.add(lngResult)
+            // query를 이용해 해당하는 공유자원 데이터 가져오기
+            for (document in wholeResult) {
+                // 여기서부터 다시 진행
+            }
+/*            nearlatQuery.get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        Log.d(VM.TAG, "${document.id} => ${document.data}")
+                        var lat = document.get("latitude")
+                        var lng = document.get("longitude")
+                        var kind = document.get("kind").toString()
+                        var icon = resources.getIdentifier(kind, "drawable", packageName)
+                        makeMarker(LatLng(lat as Double, lng as Double), icon)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(VM.TAG, "Error getting documents: ", exception)
+                }*/
         }
 
         // 검색할 반지름 거리 설정 버튼
@@ -158,10 +195,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // 마커 생성 함수
-    private fun makeMarker(pos: LatLng, resourceid: Int): Marker {
+    private fun makeMarker(pos: LatLng, resourceId: Int): Marker {
         val marker = Marker()
         marker.position = pos
-        marker.icon = OverlayImage.fromResource(resourceid)
+        marker.icon = OverlayImage.fromResource(resourceId)
         marker.width = VM.MARKER_SIZE
         marker.height = VM.MARKER_SIZE
         marker.map = naverMap
@@ -173,12 +210,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     // 지정한 위치를 중심으로 원을 그리는 함수(for 거리 계산)
     private fun makeCircle(center: LatLng, radius: Double){
         circle = CircleOverlay(center, radius)
-        circle.map = naverMap
+        circle.map = null
         var boundary = circle.bounds
         northLatitude = boundary.northLatitude
         southLatitude = boundary.southLatitude
-        eastLongtitude = boundary.eastLongitude
-        westLongtitude = boundary.westLongitude
+        eastLongitude = boundary.eastLongitude
+        westLongitude = boundary.westLongitude
 
         // 경계 위도와 경도 받기 -> 완료
         // 경계에 포함되어 있는 document만 불러오기
@@ -191,6 +228,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         //db에 있는 모든 document 가져오기
         sharedRef.get().addOnSuccessListener { result ->
             for (document in result) {
+                Log.d(VM.TAG, "${document.id} => ${document.data}")
                 var address = document.get("address")
                 //각 document의 주소를 불러와 searchAddress 함수를 호출해 주소 변환
                 var docId = document.id
@@ -201,7 +239,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                             response: Response<GeoResponse>
                         ) {
                             val post: GeoResponse? = response.body()
-                            var longtitude = post!!.addresses[0].x.toDouble()
+                            var longitude = post!!.addresses[0].x.toDouble()
                             var latitude = post!!.addresses[0].y.toDouble()
                             val shared = hashMapOf(
                                 "name" to "${document.get("name")}",
@@ -209,7 +247,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 "tel" to "${document.get("tel")}",
                                 "address" to "${address}",
                                 "latitude" to latitude,
-                                "longtitude" to longtitude
+                                "longitude" to longitude
                             )
                             //위도와 경도까지 추가된 document를 덮어쓰기
                             db.collection("shared").document("${docId}")
@@ -220,24 +258,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         override fun onFailure(call: Call<GeoResponse?>?, t: Throwable?) {}
                     })
             }
-        }.addOnFailureListener { exception -> }
+        }.addOnFailureListener { exception -> Log.w(VM.TAG, "Error getting documents: ", exception) }
     }
 
-//    private fun searchAddress(query: String) {
-//        val retrofit = RetrofitBuilder().retrofit
-//
-//        retrofit.create(NaverMapApi::class.java).searchAddress(query)
-//            .enqueue(object : Callback<GeoResponse> {
-//                override fun onResponse(
-//                    call: Call<GeoResponse>,
-//                    response: Response<GeoResponse>
-//                ) {
-//                    val post: GeoResponse? = response.body()
-//                    longtitude = post!!.addresses[0].x.toDouble()
-//                    latitude = post!!.addresses[0].y.toDouble()
-//                }
-//                override fun onFailure(call: Call<GeoResponse?>?, t: Throwable?) {}
-//            })
-//    }
+/*    private fun searchAddress(query: String) {
+        val retrofit = RetrofitBuilder().retrofit
+
+        retrofit.create(NaverMapApi::class.java).searchAddress(query)
+            .enqueue(object : Callback<GeoResponse> {
+                override fun onResponse(
+                    call: Call<GeoResponse>,
+                    response: Response<GeoResponse>
+                ) {
+                    val post: GeoResponse? = response.body()
+                    longitude = post!!.addresses[0].x.toDouble()
+                    latitude = post!!.addresses[0].y.toDouble()
+                }
+                override fun onFailure(call: Call<GeoResponse?>?, t: Throwable?) {}
+            })
+    }*/
 
 }

@@ -8,4 +8,5 @@ object VariableOnMap {
     const val DISTANCE_1 = 1000.0                               // 검색할 반지름 거리 값(m)
     const val DISTANCE_2 = 1500.0
     const val DISTANCE_3 = 2000.0
+    const val TAG = "Firestore"
 }
