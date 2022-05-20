@@ -130,7 +130,7 @@ class SuggestActivity : AppCompatActivity() {
         var suggestList : ArrayList<SuggestData> = arrayListOf()
 
         init {
-            firestore?.collection("suggest")?.addSnapshotListener { querySnapshot, firebaseFireStoreException ->
+            firestore?.collection("suggests")?.addSnapshotListener { querySnapshot, firebaseFireStoreException ->
                 suggestList.clear() //suggest리스트 비워줌
 
                 for(snapshot in querySnapshot!!.documents) { //suggestList에 데이터 추가
