@@ -63,4 +63,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.github.lakue119:LakuePagingButton:1.0.0' //페이징
+    implementation 'androidx.cardview:cardview:1.0.0' //카드뷰
 }

@@ -11,6 +11,7 @@ import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.main_maplistview.view.*
 import kotlinx.android.synthetic.main.suggest_item.view.*
 
+//suggestListViewAdapter -> suggestRecyclerAdapter파일명 변경
 class SuggestListViewAdapter(val context: Context, val suggestList: ArrayList<QueryDocumentSnapshot>) : BaseAdapter() {
 
     val listView: View = LayoutInflater.from(context).inflate(R.layout.suggest_item, null)

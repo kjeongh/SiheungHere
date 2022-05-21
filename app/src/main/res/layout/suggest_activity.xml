@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <!--타이틀바-->
         <include layout="@layout/main_title"/>
@@ -22,54 +22,44 @@
             android:textSize="20dp"
             android:layout_margin="20dp"/>
 
-        <!--스크롤롤바-->
+        <!--스크롤바-->
        <include layout="@layout/main_icon_scroll"/>
 
-        <!--건의글 리스트-->
-        <ListView
-            android:id="@+id/suggestListView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
-        </ListView>
+            android:layout_height="match_parent">
 
-        <!--페이징-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <com.lakue.pagingbutton.LakuePagingButton
-                android:id="@+id/paging_btnList"
-                android:layout_width="80dp"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/suggest_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"/>
-
-                    <!--이전 페이지 번호-->
-<!--                    <ImageButton-->
-<!--                        android:layout_width="@dimen/previous_next_icon"-->
-<!--                        android:layout_height="@dimen/previous_next_icon"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:layout_toLeftOf="@id/paging_btnList"-->
-<!--                        android:background="@color/white"-->
-<!--                        android:src="@drawable/etc_page_previous"/>-->
-
-                    <!--다음 페이지 번호-->
-<!--                    <ImageButton-->
-<!--                        android:layout_width="@dimen/previous_next_icon"-->
-<!--                        android:layout_height="@dimen/previous_next_icon"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:layout_toRightOf="@id/paging_btnList"-->
-<!--                        android:background="@color/white"-->
-<!--                        android:src="@drawable/etc_page_next"/>-->
-
-        </RelativeLayout>
-
-        <!--페이징-->
+                android:layout_weight="2"
+                android:orientation="vertical"
+                android:layout_gravity="bottom"
+                android:gravity="center">
 
 
+                <ImageButton
+                    android:id="@+id/newSuggestBtn"
+                    style="@style/scrollBar_iconStyle"
+                    android:layout_marginVertical="10dp"
+                    android:src="@drawable/etc_plus">
+                </ImageButton>
 
+            </LinearLayout>
 
+        </FrameLayout>
 
     </LinearLayout>
 
@@ -79,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <!--타이틀바-->
         <include layout="@layout/main_title"/>
