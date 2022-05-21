@@ -5,10 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
@@ -60,8 +57,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     //데이터베이스 관련 변수
     private lateinit var db: FirebaseFirestore
     private lateinit var sharedRef: CollectionReference
-    private lateinit var nearlatQuery: Query
-    private lateinit var nearlngQuery: Query
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +79,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         // 주소를 좌표로 변환해서 database에 넣기
-        //changeAddresstoCoord()
+        changeAddresstoCoord()
 
         //타이틀바 건의글 게시판 이동 버튼
         title_suggestBtn.setOnClickListener() {
@@ -106,46 +101,53 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mapListView.adapter = mapAdaptor
 
 
-        //test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
-//        TestBtn.setOnClickListener {
-//            searchAddress(TestEdt.text.toString());
-//        }
+/*        test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
+        TestBtn.setOnClickListener {
+            searchAddress(TestEdt.text.toString());
+        }*/
 
         // 위치 재검색 버튼
         ResearchBtn.setOnClickListener {
-            // 지도 중심 좌표 get
+            // 지도 중심 좌표 get & 반경 그리기
             cameraPos = naverMap.cameraPosition
             makeCircle(cameraPos.target, VM.DISTANCE_3)
 
-            // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
-            nearlatQuery = sharedRef.whereGreaterThanOrEqualTo("latitude", "$southLatitude").whereLessThanOrEqualTo("latitude", "$northLatitude")
-                .whereGreaterThanOrEqualTo("longitude", "$westLongitude").whereLessThanOrEqualTo("longitude", "$eastLongitude")
-            nearlngQuery = sharedRef.whereGreaterThanOrEqualTo("longitude", "$westLongitude").whereLessThanOrEqualTo("longitude", "$eastLongitude")
+            var latResult = mutableSetOf<DocumentSnapshot>()
+            var lngResult = mutableSetOf<DocumentSnapshot>()
 
-            // 복합 쿼리는 같은 필드에 있는 것만 된다.. -> 집합을 이용해서 해결??
-            var latResult = nearlatQuery.get().result
-            var lngResult = nearlngQuery.get().result
-            var wholeResult = mutableSetOf<QuerySnapshot>()
-            wholeResult.add(latResult)
-            wholeResult.add(lngResult)
-            // query를 이용해 해당하는 공유자원 데이터 가져오기
-            for (document in wholeResult) {
-                // 여기서부터 다시 진행
-            }
-/*            nearlatQuery.get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        Log.d(VM.TAG, "${document.id} => ${document.data}")
-                        var lat = document.get("latitude")
-                        var lng = document.get("longitude")
-                        var kind = document.get("kind").toString()
+            // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
+            sharedRef.whereGreaterThan("latitude", southLatitude).whereLessThan("latitude", northLatitude).get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    latResult.add(document)
+                }
+                if(lngResult != null){
+                    var wholeResult = latResult.intersect(lngResult)
+                    for (doc in wholeResult) {
+                        var lat = doc.get("latitude")
+                        var lng = doc.get("longitude")
+                        var kind = "map_" + doc.get("kind").toString()
                         var icon = resources.getIdentifier(kind, "drawable", packageName)
                         makeMarker(LatLng(lat as Double, lng as Double), icon)
                     }
                 }
-                .addOnFailureListener { exception ->
-                    Log.w(VM.TAG, "Error getting documents: ", exception)
-                }*/
+            }
+
+
+            sharedRef.whereGreaterThan("longitude", westLongitude).whereLessThan("longitude", eastLongitude).get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    lngResult.add(document)
+                }
+                if(latResult != null){
+                    var wholeResult = latResult.intersect(lngResult)
+                    for (doc in wholeResult) {
+                        var lat = doc.get("latitude")
+                        var lng = doc.get("longitude")
+                        var kind = "map_" + doc.get("kind").toString()
+                        var icon = resources.getIdentifier(kind, "drawable", packageName)
+                        makeMarker(LatLng(lat as Double, lng as Double), icon)
+                    }
+                }
+            }
         }
 
         // 검색할 반지름 거리 설정 버튼
@@ -158,6 +160,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         DistBtn3.setOnClickListener {
             makeCircle(cameraPos.target,  VM.DISTANCE_3)
         }
+
     }
     override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         //현위치 요청 결과 코드
