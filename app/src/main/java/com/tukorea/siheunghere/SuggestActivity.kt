@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.firebase.firestore.ktx.firestore
@@ -14,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.main_icon_scroll.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import retrofit2.Call
 import com.google.firebase.firestore.*
 import com.lakue.pagingbutton.OnPageSelectListener
 import com.naver.maps.geometry.LatLng
@@ -23,9 +23,16 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
+import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
 import kotlinx.android.synthetic.main.suggest_map_dialog.*
+import retrofit2.Callback
+import retrofit2.Response
+import java.lang.Exception
+import java.net.HttpURLConnection
+import java.net.URL
+
 
 
 class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -33,6 +40,8 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
     // 다이얼로그에서 사용할 지도 객체와 마커
     private lateinit var naverMap: NaverMap
     private val marker = Marker()
+    private var longitude : Double = 0.0
+    private var latitude : Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +60,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
         iconEdit.setOnClickListener {
             dialog.showDialog()
         }
+
 
         // 위치 선택 다이얼로그
         val Mapdialog = MapDialog(this)
@@ -96,7 +106,10 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
                         "suggestAddr" to mapEdit.text.toString(),
                         "suggestReason" to memoEdit.text.toString(),
                         "password" to pwEdit.text.toString(),
-                        "agreeNum" to 0
+                        "agreeNum" to 0,
+                        "latitude" to latitude,
+                        "longitude" to longitude,
+
                     )
                     db.collection("suggests")
                         .add(suggest)
@@ -234,14 +247,35 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
     // 네이버 지도 준비
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
-        // 네이버 지도에서 선택시 마커 표시
+        // 현재 위치에서 시작
+        naverMap.locationSource = FusedLocationSource(this, VariableOnMap.LOCATION_PERMISSTION_REQUEST_CODE)
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
+        // 해당 좌표 클릭 시 이벤트
         naverMap.setOnMapClickListener { point, coord ->
-            mapEdit.setText(coord.latitude.toString() + ", " + coord.longitude.toString())
-            marker.position = LatLng(coord.latitude, coord.longitude)
+            //네이버 지도에서 선택시 마커 표시
+            marker.position = LatLng(coord.latitude, coord.longitude)   // 좌표
+            // 데이터 베이스에 저장할 좌표 설정
+            latitude = coord.latitude
+            longitude = coord.longitude
             marker.icon = OverlayImage.fromResource(R.drawable.etc_location)
             marker.width = VariableOnMap.MARKER_SIZE
             marker.height = VariableOnMap.MARKER_SIZE
             marker.map = naverMap
+            var coords = coord.longitude.toString() + "," + coord.latitude.toString()
+            
+            // 좌표 -> 주소 변환 APi 실행
+            RetrofitBuilder.getApiService().reverseGeo(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET, coords, "json", "roadaddr,addr").enqueue(object : Callback<ReverseGeoResponse> {
+                // api 호출 성공시
+                override fun onResponse(call: Call<ReverseGeoResponse>, response: Response<ReverseGeoResponse>) {
+                    // 위치 표시 텍스트에 주소 출력
+                    mapEdit.setText(response.body().toString())
+                    //Log.d("Test", response.body().toString())
+                }
+                // api 호출 실패시
+                override fun onFailure(call: Call<ReverseGeoResponse>, t: Throwable) {
+                    Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
+                }
+            })
 
         }
 
