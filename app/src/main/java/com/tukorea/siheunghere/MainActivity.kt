@@ -159,9 +159,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun searchAddress(query: String) {
-        val retrofit = RetrofitBuilder().retrofit
-
-        retrofit.create(NaverMapApi::class.java).searchAddress(query)
+        val retrofit = RetrofitBuilder.getApiService()
+            .searchAddress(query)
             .enqueue(object : Callback<GeoResponse> {
                 override fun onResponse(
                     call: Call<GeoResponse>,

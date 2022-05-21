@@ -19,14 +19,34 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.main_icon_scroll.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import retrofit2.Call
 import com.google.firebase.firestore.*
-import com.lakue.pagingbutton.OnPageSelectListener //페이징
+import com.lakue.pagingbutton.OnPageSelectListener
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.LocationTrackingMode
+import com.naver.maps.map.MapFragment
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
+import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
+import kotlinx.android.synthetic.main.suggest_map_dialog.*
+import retrofit2.Callback
+import retrofit2.Response
 import kotlinx.android.synthetic.main.suggest_item.view.*
 
 
-class SuggestActivity : AppCompatActivity() {
+
+
+class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
+    
+    // 다이얼로그에서 사용할 지도 객체와 마커
+    private lateinit var naverMap: NaverMap
+    private val marker = Marker()
+    private var longitude : Double = 0.0
+    private var latitude : Double = 0.0
 
     // Firebase Firestore 연결
     val db = Firebase.firestore
@@ -63,10 +83,22 @@ class SuggestActivity : AppCompatActivity() {
         iconEdit.setOnClickListener {
             dialog.showDialog()
         }
-        // 위치 선택 다이얼로그
-        mapEdit.setOnClickListener {
 
+
+        // 위치 선택 다이얼로그
+        val Mapdialog = MapDialog(this)
+        mapEdit.setOnClickListener {
+            // NaverMap 객체 얻어오기
+            val fm = supportFragmentManager
+            val mapFragment = fm.findFragmentById(R.id.map_fragment) as MapFragment?
+                ?: MapFragment.newInstance().also {
+                    fm.beginTransaction().add(R.id.map_fragment, it).commit()
+                }
+            mapFragment.getMapAsync(this)
+            // 다이얼로그 출력
+            Mapdialog.showDialog()
         }
+
         // 건의 내용 제한 표시 <100자>
         memoEdit.addTextChangedListener {
             memoLimit.text = memoEdit.text.toString().length.toString() + "/100"
@@ -97,7 +129,10 @@ class SuggestActivity : AppCompatActivity() {
                         "suggestAddr" to mapEdit.text.toString(),
                         "suggestReason" to memoEdit.text.toString(),
                         "password" to pwEdit.text.toString(),
-                        "agreeNum" to 0
+                        "agreeNum" to 0,
+                        "latitude" to latitude,
+                        "longitude" to longitude,
+
                     )
                     db.collection("suggests")
                         .add(suggest)
@@ -167,6 +202,26 @@ class SuggestActivity : AppCompatActivity() {
 
 
 
+    // 위치선택 다이얼로그
+    inner class MapDialog(context : Context){
+        // 다이얼로그 생성
+        val dialog = Dialog(context)
+
+        // 다이얼로그 띄우기
+        fun showDialog() {
+            dialog.show()
+        }
+        init {
+            dialog.setContentView(R.layout.suggest_map_dialog)
+
+            //확인 버튼
+            dialog.positiveBtn.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+
+    }
+
     // 자원선택 스크롤 다이얼로그 띄우고 iconEdit 변경
     inner class IconDialog(context : Context) {
         // 다이얼로그 생성
@@ -201,6 +256,43 @@ class SuggestActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
             }
+        }
+
+    }
+
+    // 네이버 지도 준비
+    override fun onMapReady(naverMap: NaverMap) {
+        this.naverMap = naverMap
+        // 현재 위치에서 시작
+        naverMap.locationSource = FusedLocationSource(this, VariableOnMap.LOCATION_PERMISSTION_REQUEST_CODE)
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
+        // 해당 좌표 클릭 시 이벤트
+        naverMap.setOnMapClickListener { point, coord ->
+            //네이버 지도에서 선택시 마커 표시
+            marker.position = LatLng(coord.latitude, coord.longitude)   // 좌표
+            // 데이터 베이스에 저장할 좌표 설정
+            latitude = coord.latitude
+            longitude = coord.longitude
+            marker.icon = OverlayImage.fromResource(R.drawable.etc_location)
+            marker.width = VariableOnMap.MARKER_SIZE
+            marker.height = VariableOnMap.MARKER_SIZE
+            marker.map = naverMap
+            var coords = coord.longitude.toString() + "," + coord.latitude.toString()
+            
+            // 좌표 -> 주소 변환 APi 실행
+            RetrofitBuilder.getApiService().reverseGeo(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET, coords, "json", "roadaddr,addr").enqueue(object : Callback<ReverseGeoResponse> {
+                // api 호출 성공시
+                override fun onResponse(call: Call<ReverseGeoResponse>, response: Response<ReverseGeoResponse>) {
+                    // 위치 표시 텍스트에 주소 출력
+                    mapEdit.setText(response.body().toString())
+                    //Log.d("Test", response.body().toString())
+                }
+                // api 호출 실패시
+                override fun onFailure(call: Call<ReverseGeoResponse>, t: Throwable) {
+                    Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
+                }
+            })
+
         }
 
     }
