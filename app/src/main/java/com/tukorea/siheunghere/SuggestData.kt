@@ -1,3 +1,9 @@
 package com.tukorea.siheunghere
 //건의글
-class SuggestData (var num: Int, var addr: String, var agreeNum: Int)
+data class SuggestData (
+    var resourceType: String = "", //자원종류
+    var suggestAddr: String = "", //위치
+    var suggestReason: String = "", //건의 이유
+    var password: String = "", //비밀번호
+    var agreeNum: Int = 0//동의 수
+    )
