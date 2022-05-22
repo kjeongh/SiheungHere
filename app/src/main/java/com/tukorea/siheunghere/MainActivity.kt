@@ -4,7 +4,6 @@ package com.tukorea.siheunghere
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
@@ -23,7 +22,6 @@ import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.ln
 import com.tukorea.siheunghere.VariableOnMap as VM
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -267,7 +265,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     //db에 있는 공유자원의 주소를 위도, 경도로 변환해 db에 넣음(데이터 준비, 앱 출시할 때는 없어질 코드)
     private fun changeAddresstoCoord(){
-        val retrofit = RetrofitBuilder().retrofit
+        val retrofit = RetrofitBuilder.getRetrofit()
         //db에 있는 모든 document 가져오기
         sharedRef.get().addOnSuccessListener { result ->
             for (document in result) {
