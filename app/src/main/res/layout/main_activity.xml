@@ -29,6 +29,7 @@
                 android:orientation="vertical">
                 <!--자원 스크롤바-->
                 <include
+                    android:id="@+id/icon_scroll"
                     layout="@layout/main_icon_scroll"
                     android:layout_gravity="top"
                     android:layout_width="match_parent"
