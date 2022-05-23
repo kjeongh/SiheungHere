@@ -19,6 +19,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.main_icon_scroll.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.Timestamp
 import retrofit2.Call
 import com.google.firebase.firestore.*
 import com.lakue.pagingbutton.OnPageSelectListener
@@ -36,8 +37,9 @@ import kotlinx.android.synthetic.main.suggest_map_dialog.*
 import retrofit2.Callback
 import retrofit2.Response
 import kotlinx.android.synthetic.main.suggest_item.view.*
-
-
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -132,7 +134,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
                         "agreeNum" to 0,
                         "latitude" to latitude,
                         "longitude" to longitude,
-
+                        "timestamp" to Timestamp.now()
                     )
                     db.collection("suggests")
                         .add(suggest)
