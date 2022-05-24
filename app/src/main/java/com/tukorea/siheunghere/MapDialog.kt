@@ -6,7 +6,7 @@ import android.view.Window
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.main_item_point.*
 
-class MapDialog(context : Context) {
+class MapDialog(context : Context, sharedResource: SharedResource) {
 
     private val dialog = Dialog(context)   //부모 액티비티의 context 가 들어감
     fun showDialog()
