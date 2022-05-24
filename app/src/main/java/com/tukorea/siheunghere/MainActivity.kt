@@ -263,6 +263,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    
     //db에 있는 공유자원의 주소를 위도, 경도로 변환해 db에 넣음(데이터 준비, 앱 출시할 때는 없어질 코드)
     private fun changeAddresstoCoord(){
         val retrofit = RetrofitBuilder.getRetrofit()
