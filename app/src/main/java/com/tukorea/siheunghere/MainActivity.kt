@@ -2,11 +2,16 @@ package com.tukorea.siheunghere
 
 
 import android.content.Intent
+import android.icu.lang.UCharacter.IndicPositionalCategory.RIGHT
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity.RIGHT
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowInsets.Side.RIGHT
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.Barrier.RIGHT
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.ktx.firestore
@@ -21,7 +26,6 @@ import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.android.synthetic.main.main_includes_drawer.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
 import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
@@ -56,11 +60,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
 
 
         //상단 툴바 설정
-        setSupportActionBar(findViewById(R.id.toolbar) as androidx.appcompat.widget.Toolbar)
-        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true) //툴바 메뉴버튼 생성
-        getSupportActionBar()!!.setHomeAsUpIndicator(R.drawable.etc_menu) //메뉴 버튼 모양 설정
+        setSupportActionBar(toolbar)
+        getSupportActionBar()!!.setDisplayShowCustomEnabled(true)
         getSupportActionBar()!!.setDisplayShowTitleEnabled(false) //툴바에 타이틀 안보이게
-        //menu_navigation.setNavigationItemSelectedListener(this)
+        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true) //툴바 메뉴버튼 생성
+        //getSupportActionBar()!!.setHomeAsUpIndicator(R.drawable.icon_baseball) //메뉴 버튼 모양 설정 - 오류
+        menu_navigation.setNavigationItemSelectedListener(this)
 
         //타이틀바 건의글 게시판 이동 버튼
         title_suggestBtn.setOnClickListener() {
@@ -121,16 +126,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu) //xml을 이용해 메뉴 만들기
-        return true //true 리턴시 메뉴 출력
-    }
-
-    //메인화면에서 메뉴버튼 클릭시 동작
+    //툴바에서 메뉴버튼 클릭시 동작
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.getItemId()) {
             android.R.id.home -> {
-                main_drawer_layout.openDrawer(GravityCompat.START)
+                main_drawer_layout.openDrawer(GravityCompat.START) //메뉴드로어 열기
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
