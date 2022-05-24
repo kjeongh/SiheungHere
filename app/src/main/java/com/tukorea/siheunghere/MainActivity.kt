@@ -4,7 +4,11 @@ package com.tukorea.siheunghere
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.core.view.GravityCompat
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
@@ -17,6 +21,7 @@ import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.android.synthetic.main.main_includes_drawer.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
 import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
@@ -24,7 +29,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.tukorea.siheunghere.VariableOnMap as VM
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback,
+    NavigationView.OnNavigationItemSelectedListener {
 
     // < ----- 구현해야할 것 ----- >
     // < test >
@@ -47,6 +53,21 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
+
+        //상단 툴바 설정
+        setSupportActionBar(findViewById(R.id.toolbar) as androidx.appcompat.widget.Toolbar)
+        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true) //툴바 메뉴버튼 생성
+        getSupportActionBar()!!.setHomeAsUpIndicator(R.drawable.etc_menu) //메뉴 버튼 모양 설정
+        getSupportActionBar()!!.setDisplayShowTitleEnabled(false) //툴바에 타이틀 안보이게
+        //menu_navigation.setNavigationItemSelectedListener(this)
+
+        //타이틀바 건의글 게시판 이동 버튼
+        title_suggestBtn.setOnClickListener() {
+            var intent = Intent(applicationContext, SuggestActivity::class.java)
+            startActivity(intent)
+        }
+
 
 
         // map fragment 불러오기
@@ -74,13 +95,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
 
-        //타이틀바 건의글 게시판 이동 버튼
-        title_suggestBtn.setOnClickListener() {
-            var intent = Intent(applicationContext, SuggestActivity::class.java)
-            startActivity(intent)
-        }
-
-
 
         //슬라이딩 드로어 화살표 변경
         slidingdrawer.setOnDrawerOpenListener {
@@ -95,7 +109,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mapListView.adapter = mapAdaptor
 
 
-        //test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
+        //test - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
         TestBtn.setOnClickListener {
             searchAddress(TestEdt.text.toString());
         }
@@ -105,36 +119,76 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             makeMarker(camerapos.target.latitude, camerapos.target.longitude, R.drawable.map_cafe)
         }
     }
-        override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
-        ) {
-            //현위치 요청 결과 코드
-            if (locationSource.onRequestPermissionsResult(
-                    requestCode, permissions,
-                    grantResults
-                )
-            ) {
-                if (!locationSource.isActivated) { // 권한 거부됨 -> 지도 TrackingMode를 None으로 설정
-                    naverMap.locationTrackingMode = LocationTrackingMode.None
-                } else {                             // 권한 승인됨 -> 지도 TrackingMode를 Follow로 설정
-                    naverMap.locationTrackingMode = LocationTrackingMode.Follow
-                }
-                return
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu) //xml을 이용해 메뉴 만들기
+        return true //true 리턴시 메뉴 출력
+    }
+
+    //메인화면에서 메뉴버튼 클릭시 동작
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.getItemId()) {
+            android.R.id.home -> {
+                main_drawer_layout.openDrawer(GravityCompat.START)
+                return true
             }
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            else -> return super.onOptionsItemSelected(item)
         }
 
-        // Marker ClickListener 구현 -> Marker 클릭 시 상세정보 Dialog 창
-        val listener = Overlay.OnClickListener { overlay ->
-            // Marker를 인자로 받아서 그 위치로 어떤 자원인지 구분
-            val marker = overlay as Marker
+        return super.onOptionsItemSelected(item)
+    }
 
-            val dialog = MapDialog(this)
-            dialog.showDialog()
-            true
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_item_contact->Toast.makeText(this, "연락처", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex1->Toast.makeText(this, "메뉴1", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex2->Toast.makeText(this, "메뉴2", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex3->Toast.makeText(this, "메뉴3", Toast.LENGTH_SHORT).show()
         }
+        return false
+    }
+
+    override fun onBackPressed() { //뒤로가기 처리
+        if(main_drawer_layout.isDrawerOpen(GravityCompat.START)){
+            main_drawer_layout.closeDrawers()
+            // 테스트를 위해 뒤로가기 버튼시 Toast 메시지
+            Toast.makeText(this,"back btn clicked",Toast.LENGTH_SHORT).show()
+        } else{
+            super.onBackPressed()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        //현위치 요청 결과 코드
+        if (locationSource.onRequestPermissionsResult(
+                requestCode, permissions,
+                grantResults
+            )
+        ) {
+            if (!locationSource.isActivated) { // 권한 거부됨 -> 지도 TrackingMode를 None으로 설정
+                naverMap.locationTrackingMode = LocationTrackingMode.None
+            } else {                             // 권한 승인됨 -> 지도 TrackingMode를 Follow로 설정
+                naverMap.locationTrackingMode = LocationTrackingMode.Follow
+            }
+            return
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    // Marker ClickListener 구현 -> Marker 클릭 시 상세정보 Dialog 창
+    val listener = Overlay.OnClickListener { overlay ->
+        // Marker를 인자로 받아서 그 위치로 어떤 자원인지 구분
+        val marker = overlay as Marker
+
+        val dialog = MapDialog(this)
+        dialog.showDialog()
+        true
+    }
 
     //NaverMap 객체가 준비되면 호출되는 함수
     override fun onMapReady(naverMap: NaverMap) {
@@ -175,4 +229,5 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 override fun onFailure(call: Call<GeoResponse?>?, t: Throwable?) {}
             })
     }
+
 }
