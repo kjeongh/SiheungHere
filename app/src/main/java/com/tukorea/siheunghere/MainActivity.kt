@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var southLatitude: Double = 0.0
     private var eastLongitude: Double = 0.0
     private var westLongitude: Double = 0.0
+
     // 사용자가 설정하는 검색할 반경 거리(default: 1km)
     private var distance: Double = VM.DISTANCE_1
 
@@ -202,8 +203,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     val listener = Overlay.OnClickListener { overlay ->
         // Marker를 인자로 받아서 그 위치로 어떤 자원인지 구분
         val marker = overlay as Marker
+        lateinit var clickedResource: SharedResource
+        for (sharedresource in sharedList) {
+            if(sharedresource.lat == marker.position.latitude && sharedresource.lng == marker.position.longitude)
+                clickedResource = sharedresource
+        }
 
-        val dialog = MapDialog(this)
+        val dialog = MapDialog(this, clickedResource)
         dialog.showDialog()
         true
     }
@@ -242,10 +248,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         southLatitude = boundary.southLatitude
         eastLongitude = boundary.eastLongitude
         westLongitude = boundary.westLongitude
-
-        // 경계 위도와 경도 받기 -> 완료
-        // 경계에 포함되어 있는 document만 불러오기 -> 완료
-        // 그것만 marker 띄우기
     }
 
     private fun makeResultList(latResult: MutableSet<DocumentSnapshot>, lngResult: MutableSet<DocumentSnapshot>){
@@ -263,7 +265,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    
+
     //db에 있는 공유자원의 주소를 위도, 경도로 변환해 db에 넣음(데이터 준비, 앱 출시할 때는 없어질 코드)
     private fun changeAddresstoCoord(){
         val retrofit = RetrofitBuilder.getRetrofit()
