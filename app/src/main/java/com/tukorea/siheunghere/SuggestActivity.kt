@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import retrofit2.Call
 import com.google.firebase.firestore.*
-import com.lakue.pagingbutton.OnPageSelectListener
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment

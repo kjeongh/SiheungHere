@@ -1,6 +1,5 @@
 package com.tukorea.siheunghere
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     // < ----- 구현해야할 것 ----- >
     // < test >
     // 1. 자원을 저장할 데이터 객체(주소, 종류, 전화번호, 사진) -> 완료
-    // - 각 marker 아이콘 설정
+    // - 각 marker 아이콘 설정 -> 완료
 
     // 2. 현위치와 거리계산
     // - 위치 중심으로 그려진 원 안에 있는 자원들만 데이터베이스에서 읽어오기 -> 완료
@@ -43,6 +42,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     // 4. 마커 다이얼로그
     // - firebase storage에서 사진 불러오기
     // dialog에 정보 넣기
+
+    // 5. 시청에서 데이터 주면 변환해서 firestore에 넣기
 
     // 지도 관련 변수
     private lateinit var naverMap: NaverMap                     // 지도 객체
@@ -95,7 +96,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         // 주소를 좌표로 변환해서 database에 넣기
-        //changeAddresstoCoord()
+        changeAddresstoCoord()
 
         //타이틀바 건의글 게시판 이동 버튼
         title_suggestBtn.setOnClickListener() {
@@ -170,7 +171,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             distance = VM.DISTANCE_3
         }
 
-        // 아이콘 버튼(필터링 기능)
+        // 아이콘 버튼(필터링 기능) clicklistener 정의
         for(i in scrollIcons.indices) {
             scrollIcons[i].setOnClickListener {
                 var iconName = scrollIcons[i].toString().split("/")[1].replace("}", "")
@@ -250,6 +251,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         westLongitude = boundary.westLongitude
     }
 
+    // 검색해서 나온 근처 공유자원 결과를 리스트에 넣는 함수
     private fun makeResultList(latResult: MutableSet<DocumentSnapshot>, lngResult: MutableSet<DocumentSnapshot>){
         var wholeResult = latResult.intersect(lngResult)
         for (doc in wholeResult) {
