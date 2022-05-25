@@ -224,7 +224,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
         uiSettings.isLocationButtonEnabled = true
         naverMap.minZoom = VM.MIN_ZOOM
-        makeMarker(LatLng(37.56683771710133, 126.97864942520158), R.drawable.map_badminton)
     }
 
     // 마커 생성 함수
