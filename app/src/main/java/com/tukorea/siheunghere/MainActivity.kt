@@ -277,6 +277,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    // dialog 띄우는 함수
     private fun showDialog(clickResource: SharedResource){
         dialog.info_icon.setImageResource(resources.getIdentifier("icon_" + clickResource.kind, "drawable", packageName))
         dialog.info_title.text = clickResource.name
