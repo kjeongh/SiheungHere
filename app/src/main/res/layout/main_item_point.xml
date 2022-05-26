@@ -61,7 +61,7 @@
                 android:background="@drawable/info_location"
                 android:layout_marginRight="@dimen/info_smallicon_marginright" />
             <TextView
-                android:id="@+id/txtaddr"
+                android:id="@+id/info_addr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -79,7 +79,7 @@
                 android:background="@drawable/info_phone"
                 android:layout_marginRight="@dimen/info_smallicon_marginright" />
             <TextView
-                android:id="@+id/txttel"
+                android:id="@+id/info_tel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

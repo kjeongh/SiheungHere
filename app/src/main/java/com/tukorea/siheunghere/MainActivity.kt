@@ -221,6 +221,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             if(sharedresource.lat == marker.position.latitude && sharedresource.lng == marker.position.longitude)
                 clickedResource = sharedresource
         }
+        showDialog(clickedResource)
         true
     }
 
@@ -268,14 +269,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             var tel = doc.get("tel").toString()
             var kind = doc.get("kind").toString()
             var name = doc.get("name").toString()
+            var address = doc.get("address").toString()
             var icon = resources.getIdentifier("map_" + kind, "drawable", packageName)
-            var sharedItem = SharedResource(lat, lng, tel, kind, name)
+            var sharedItem = SharedResource(lat, lng, tel, kind, name, address)
             sharedItem.marker = makeMarker(LatLng(lat, lng), icon)
             sharedList.add(sharedItem)
         }
     }
 
-    private fun showDialog(){
+    private fun showDialog(clickResource: SharedResource){
+        dialog.info_icon.setImageResource(resources.getIdentifier("icon_" + clickResource.kind, "drawable", packageName))
+        dialog.info_title.text = clickResource.name
+        dialog.info_tel.text = clickResource.tel
+        dialog.info_addr.text = clickResource.address
         dialog.show()
         dialog.info_CloseBtn.setOnClickListener {
             dialog.dismiss()
