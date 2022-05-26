@@ -1,5 +1,6 @@
 package com.tukorea.siheunghere
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_icon_scroll.*
+import kotlinx.android.synthetic.main.main_item_point.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
 import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
@@ -66,6 +68,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var db: FirebaseFirestore
     private lateinit var sharedRef: CollectionReference
     private var sharedList = mutableListOf<SharedResource>()
+    private var filteredList = mutableListOf<SharedResource>()
+    private val dialog = Dialog(applicationContext)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -179,6 +183,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 for(sharedresource in sharedList) {
                     if (sharedresource.kind == iconName) {
                         sharedresource.marker?.map = naverMap
+                        filteredList = mutableListOf()
+                        filteredList.add(sharedresource)
                     }
                     else {
                         sharedresource.marker?.map = null
@@ -209,9 +215,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             if(sharedresource.lat == marker.position.latitude && sharedresource.lng == marker.position.longitude)
                 clickedResource = sharedresource
         }
-
-        val dialog = MapDialog(this, clickedResource)
-        dialog.showDialog()
         true
     }
 
@@ -266,6 +269,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun showDialog(){
+        dialog.show()
+        dialog.info_CloseBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
 
     //db에 있는 공유자원의 주소를 위도, 경도로 변환해 db에 넣음(데이터 준비, 앱 출시할 때는 없어질 코드)
     private fun changeAddresstoCoord(){

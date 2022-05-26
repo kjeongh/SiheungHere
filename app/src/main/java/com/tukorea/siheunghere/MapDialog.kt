@@ -14,8 +14,8 @@ class MapDialog(context : Context, sharedResource: SharedResource) {
     fun showDialog()
     {
         dialog.setContentView(R.layout.main_item_point)
-//        resId =
-        dialog.info_icon.setImageResource()
+////        resId =
+//        dialog.info_icon.setImageResource()
         dialog.show()
         var window : Window = dialog.window!!
         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
