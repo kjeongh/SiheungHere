@@ -9,4 +9,5 @@ object VariableOnMap {
     const val DISTANCE_2 = 1000.0
     const val DISTANCE_3 = 1500.0
     const val TAG = "Firestore"
+    const val R = 6372.8 * 1000
 }

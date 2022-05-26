@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.*
 import com.tukorea.siheunghere.VariableOnMap as VM
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -173,12 +174,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         // 검색할 반지름 거리 설정 버튼
         DistBtn1.setOnClickListener {
             distance = VM.DISTANCE_1
+            ResearchBtn.callOnClick()
         }
         DistBtn2.setOnClickListener {
             distance = VM.DISTANCE_2
+            ResearchBtn.callOnClick()
         }
         DistBtn3.setOnClickListener {
             distance = VM.DISTANCE_3
+            ResearchBtn.callOnClick()
         }
 
         // 아이콘 버튼(필터링 기능) clicklistener 정의
@@ -271,7 +275,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             var name = doc.get("name").toString()
             var address = doc.get("address").toString()
             var icon = resources.getIdentifier("map_" + kind, "drawable", packageName)
-            var sharedItem = SharedResource(lat, lng, tel, kind, name, address)
+            var distance = getDistance(cameraPos.target.latitude, cameraPos.target.longitude, lat, lng).toDouble() / 1000
+            var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance)
             sharedItem.marker = makeMarker(LatLng(lat, lng), icon)
             sharedList.add(sharedItem)
         }
@@ -283,10 +288,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         dialog.info_title.text = clickResource.name
         dialog.info_tel.text = clickResource.tel
         dialog.info_addr.text = clickResource.address
+        dialog.info_dist.text = clickResource.distance.toString() + "km"
         dialog.show()
         dialog.info_CloseBtn.setOnClickListener {
             dialog.dismiss()
         }
+    }
+
+    // 거리 계산하는 함수
+    fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
+        val c = 2 * asin(sqrt(a))
+        return (VM.R * c).toInt()
     }
 
     //db에 있는 공유자원의 주소를 위도, 경도로 변환해 db에 넣음(데이터 준비, 앱 출시할 때는 없어질 코드)

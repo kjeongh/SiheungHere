@@ -86,6 +86,24 @@
                 android:textSize="@dimen/info_detail_textsize"
                 android:text="064-0000-0000" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="@dimen/info_smallicon_size"
+                android:layout_height="@dimen/info_smallicon_size"
+                android:background="@drawable/info_distance"
+                android:layout_marginRight="@dimen/info_smallicon_marginright" />
+            <TextView
+                android:id="@+id/info_dist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="@dimen/info_detail_textsize"
+                android:text="2km" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button
