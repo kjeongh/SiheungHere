@@ -1,9 +1,15 @@
 package com.tukorea.siheunghere
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.core.view.GravityCompat
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -16,14 +22,17 @@ import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_icon_scroll.*
+import kotlinx.android.synthetic.main.main_item_point.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
 import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.*
 import com.tukorea.siheunghere.VariableOnMap as VM
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback,
+    NavigationView.OnNavigationItemSelectedListener {
 
     // < ----- 구현해야할 것 ----- >
     // < test >
@@ -58,6 +67,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var southLatitude: Double = 0.0
     private var eastLongitude: Double = 0.0
     private var westLongitude: Double = 0.0
+
     // 사용자가 설정하는 검색할 반경 거리(default: 1km)
     private var distance: Double = VM.DISTANCE_1
 
@@ -65,11 +75,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var db: FirebaseFirestore
     private lateinit var sharedRef: CollectionReference
     private var sharedList = mutableListOf<SharedResource>()
+    private var filteredList = mutableListOf<SharedResource>()
+    private lateinit var dialog : Dialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
+        //상단 툴바 설정
+        setSupportActionBar(toolbar)
+        getSupportActionBar()!!.setDisplayShowCustomEnabled(true)
+        getSupportActionBar()!!.setDisplayShowTitleEnabled(false) //툴바에 타이틀 안보이게
+        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true) //툴바 메뉴버튼 생성
+        //getSupportActionBar()!!.setHomeAsUpIndicator(R.drawable.icon_baseball) //메뉴 버튼 모양 설정 - 오류
+        menu_navigation.setNavigationItemSelectedListener(this)
+
+        //타이틀바 건의글 게시판 이동 버튼
+        title_suggestBtn.setOnClickListener() {
+            var intent = Intent(applicationContext, SuggestActivity::class.java)
+            startActivity(intent)
+        }
 
         // map fragment 불러오기
         val fm = supportFragmentManager
@@ -78,10 +104,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
 
-        //레이아웃 관련 변수 설정
-        val scrollIcons = arrayOf(icon_badminton, icon_baseball, icon_cafe, icon_classroom, icon_park, icon_cooling_center, icon_experience,
-        icon_futsal, icon_gallery, icon_livingsport, icon_meeting, icon_parking,
-           icon_practice_room, icon_soccer_field, icon_theater, icon_toilet, icon_wifi)
+        // 레이아웃 관련 변수 설정
+        val scrollIcons = arrayOf(icon_badminton, icon_baseball, icon_cafe, icon_classroom, icon_park, icon_cooling_center,
+            icon_experience, icon_futsal, icon_gallery, icon_livingsport, icon_meeting, icon_parking,
+            icon_practice_room, icon_soccer_field, icon_theater, icon_toilet, icon_wifi)
+
+        // 마커 다이얼로그 설정
+        dialog = Dialog(this)
+        dialog.setContentView(R.layout.main_item_point)
+        dialog.window?.setLayout(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
 
         //navermap 준비되면 호출되는 함수
         mapFragment.getMapAsync(this)
@@ -103,7 +137,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
         }
 
-
         //슬라이딩 드로어 화살표 변경
         slidingdrawer.setOnDrawerOpenListener {
             handle.setImageResource(R.drawable.etc_arrow_down)
@@ -116,6 +149,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapAdaptor = SlidingDrawerAdapter(this)
         mapListView.adapter = mapAdaptor
 
+
+        //test - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
 
 /*        test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
         TestBtn.setOnClickListener {
@@ -133,27 +168,29 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             var lngResult = mutableSetOf<DocumentSnapshot>()
 
             // 검색하기 전 리스트에 있던 자원 지우기 & 초기화
-            if(sharedList != null){
-                for (sharedresource in sharedList){
+            if (sharedList != null) {
+                for (sharedresource in sharedList) {
                     sharedresource.marker?.map = null
                 }
                 sharedList = mutableListOf()
             }
 
             // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
-            sharedRef.whereGreaterThan("latitude", southLatitude).whereLessThan("latitude", northLatitude).get().addOnSuccessListener { documents ->
+            sharedRef.whereGreaterThan("latitude", southLatitude)
+                .whereLessThan("latitude", northLatitude).get().addOnSuccessListener { documents ->
                 for (document in documents) {
                     latResult.add(document)
                 }
-                if(lngResult != null){
+                if (lngResult != null) {
                     makeResultList(latResult, lngResult)
                 }
             }
-            sharedRef.whereGreaterThan("longitude", westLongitude).whereLessThan("longitude", eastLongitude).get().addOnSuccessListener { documents ->
+            sharedRef.whereGreaterThan("longitude", westLongitude)
+                .whereLessThan("longitude", eastLongitude).get().addOnSuccessListener { documents ->
                 for (document in documents) {
                     lngResult.add(document)
                 }
-                if(latResult != null){
+                if (latResult != null) {
                     makeResultList(latResult, lngResult)
                 }
             }
@@ -162,30 +199,71 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         // 검색할 반지름 거리 설정 버튼
         DistBtn1.setOnClickListener {
             distance = VM.DISTANCE_1
+            ResearchBtn.callOnClick()
         }
         DistBtn2.setOnClickListener {
             distance = VM.DISTANCE_2
+            ResearchBtn.callOnClick()
         }
         DistBtn3.setOnClickListener {
             distance = VM.DISTANCE_3
+            ResearchBtn.callOnClick()
         }
 
         // 아이콘 버튼(필터링 기능) clicklistener 정의
-        for(i in scrollIcons.indices) {
+        for (i in scrollIcons.indices) {
             scrollIcons[i].setOnClickListener {
+                filteredList = mutableListOf()
                 var iconName = scrollIcons[i].toString().split("/")[1].replace("}", "")
                 iconName = iconName.replace("icon_", "")
-                for(sharedresource in sharedList) {
+                for (sharedresource in sharedList) {
                     if (sharedresource.kind == iconName) {
                         sharedresource.marker?.map = naverMap
-                    }
-                    else {
+                        filteredList.add(sharedresource)
+                    } else {
                         sharedresource.marker?.map = null
                     }
                 }
+                // 아이콘 버튼 클릭 리스너 넣을 것 !
+
             }
         }
     }
+
+    //툴바에서 메뉴버튼 클릭시 동작
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.getItemId()) {
+            android.R.id.home -> {
+                main_drawer_layout.openDrawer(GravityCompat.START) //메뉴드로어 열기
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    //네비게이션 아이템 클릭시 동작
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_item_contact->Toast.makeText(this, "연락처", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex1->Toast.makeText(this, "메뉴1", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex2->Toast.makeText(this, "메뉴2", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex3->Toast.makeText(this, "메뉴3", Toast.LENGTH_SHORT).show()
+        }
+        return false
+    }
+
+    override fun onBackPressed() { //뒤로가기 처리
+        if(main_drawer_layout.isDrawerOpen(GravityCompat.START)){
+            main_drawer_layout.closeDrawers()
+            // 테스트를 위해 뒤로가기 버튼시 Toast 메시지
+            Toast.makeText(this,"back btn clicked",Toast.LENGTH_SHORT).show()
+        } else{
+            super.onBackPressed()
+        }
+    }
+
     override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         //현위치 요청 결과 코드
         if (locationSource.onRequestPermissionsResult( requestCode, permissions,grantResults )) {
@@ -208,9 +286,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             if(sharedresource.lat == marker.position.latitude && sharedresource.lng == marker.position.longitude)
                 clickedResource = sharedresource
         }
-
-        val dialog = MapDialog(this, clickedResource)
-        dialog.showDialog()
+        showDialog(clickedResource)
         true
     }
 
@@ -223,7 +299,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
         uiSettings.isLocationButtonEnabled = true
         naverMap.minZoom = VM.MIN_ZOOM
-        makeMarker(LatLng(37.56683771710133, 126.97864942520158), R.drawable.map_badminton)
     }
 
     // 마커 생성 함수
@@ -248,10 +323,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         southLatitude = boundary.southLatitude
         eastLongitude = boundary.eastLongitude
         westLongitude = boundary.westLongitude
-
-        // 경계 위도와 경도 받기 -> 완료
-        // 경계에 포함되어 있는 document만 불러오기 -> 완료
-        // 그것만 marker 띄우기
     }
 
     // 검색해서 나온 근처 공유자원 결과를 리스트에 넣는 함수
@@ -263,11 +334,35 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             var tel = doc.get("tel").toString()
             var kind = doc.get("kind").toString()
             var name = doc.get("name").toString()
+            var address = doc.get("address").toString()
             var icon = resources.getIdentifier("map_" + kind, "drawable", packageName)
-            var sharedItem = SharedResource(lat, lng, tel, kind, name)
+            var distance = getDistance(cameraPos.target.latitude, cameraPos.target.longitude, lat, lng).toDouble() / 1000
+            var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance)
             sharedItem.marker = makeMarker(LatLng(lat, lng), icon)
             sharedList.add(sharedItem)
         }
+    }
+
+    // dialog 띄우는 함수
+    private fun showDialog(clickResource: SharedResource){
+        dialog.info_icon.setImageResource(resources.getIdentifier("icon_" + clickResource.kind, "drawable", packageName))
+        dialog.info_title.text = clickResource.name
+        dialog.info_tel.text = clickResource.tel
+        dialog.info_addr.text = clickResource.address
+        dialog.info_dist.text = clickResource.distance.toString() + "km"
+        dialog.show()
+        dialog.info_CloseBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+    // 거리 계산하는 함수
+    private fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
+        val c = 2 * asin(sqrt(a))
+        return (VM.R * c).toInt()
     }
 
     //db에 있는 공유자원의 주소를 위도, 경도로 변환해 db에 넣음(데이터 준비, 앱 출시할 때는 없어질 코드)
@@ -329,5 +424,4 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 override fun onFailure(call: Call<GeoResponse?>?, t: Throwable?) {}
             })
     }*/
-
 }

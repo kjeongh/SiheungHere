@@ -7,18 +7,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.main_icon_scroll.*
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import retrofit2.Call
 import com.google.firebase.firestore.*
@@ -30,18 +31,18 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
 import kotlinx.android.synthetic.main.suggest_map_dialog.*
 import retrofit2.Callback
 import retrofit2.Response
 import kotlinx.android.synthetic.main.suggest_item.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
+class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
+    NavigationView.OnNavigationItemSelectedListener {
     
     // 다이얼로그에서 사용할 지도 객체와 마커
     private lateinit var naverMap: NaverMap
@@ -61,16 +62,19 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
         suggest_recycler.adapter = RecyclerViewAdapter()
         suggest_recycler.layoutManager = LinearLayoutManager(this)
 
-        //다시 건의글 버튼 누르면 홈화면으로 돌아감
-        title_suggestBtn.setOnClickListener() {
-            finish()
-        }
-
         //타이틀바 타이틀 버튼 - 홈 화면 이동
         title_titleBtn.setOnClickListener() {
             var intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
         }
+
+        //상단 툴바 설정
+        setSupportActionBar(toolbar)
+        getSupportActionBar()!!.setDisplayShowCustomEnabled(true)
+        getSupportActionBar()!!.setDisplayShowTitleEnabled(false) //툴바에 타이틀 안보이게
+        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true) //툴바 메뉴버튼 생성
+        //getSupportActionBar()!!.setHomeAsUpIndicator(R.drawable.icon_baseball) //메뉴 버튼 모양 설정
+        //menu_navigation.setNavigationItemSelectedListener(this)
 
         //새 건의글 작성
         newSuggestBtn.setOnClickListener() {
@@ -84,7 +88,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
         iconEdit.setOnClickListener {
             dialog.showDialog()
         }
-
 
         // 위치 선택 다이얼로그
         val Mapdialog = MapDialog(this)
@@ -158,6 +161,39 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
 
         }
 
+    }
+
+    //툴바에서 메뉴버튼 클릭시 동작
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.getItemId()) {
+            android.R.id.home -> {
+                main_drawer_layout.openDrawer(GravityCompat.START) //메뉴드로어 열기
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_item_contact->Toast.makeText(this, "연락처", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex1->Toast.makeText(this, "메뉴1", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex2->Toast.makeText(this, "메뉴2", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex3->Toast.makeText(this, "메뉴3", Toast.LENGTH_SHORT).show()
+        }
+        return false
+    }
+
+    override fun onBackPressed() { //뒤로가기 처리
+        if(main_drawer_layout.isDrawerOpen(GravityCompat.START)){
+            main_drawer_layout.closeDrawers()
+            // 테스트를 위해 뒤로가기 버튼시 Toast 메시지
+            Toast.makeText(this,"back btn clicked",Toast.LENGTH_SHORT).show()
+        } else{
+            super.onBackPressed()
+        }
     }
 
     //건의글 리사이클러뷰 어댑터
