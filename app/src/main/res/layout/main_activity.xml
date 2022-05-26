@@ -34,9 +34,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
                 <!--자원 스크롤바-->
                 <include
+                    android:id="@+id/icon_scroll"
                     layout="@layout/main_icon_scroll"
                     android:layout_gravity="top"
                     android:layout_width="match_parent"
@@ -56,6 +56,41 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="10dp">
+
+                <Button
+                    android:id="@+id/DistBtn1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/radius_distance1"
+                    android:textSize="@dimen/btn_textsize"
+                    android:background="@drawable/circle_button"></Button>
+                <Button
+                    android:id="@+id/DistBtn2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/radius_distance2"
+                    android:textSize="@dimen/btn_textsize"
+                    android:background="@drawable/circle_button"
+                    android:layout_marginTop="@dimen/btn_margintop">
+                </Button>
+                <Button
+                    android:id="@+id/DistBtn3"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/radius_distance3"
+                    android:textSize="@dimen/btn_textsize"
+                    android:background="@drawable/circle_button"
+                    android:layout_marginTop="@dimen/btn_margintop">
+                </Button>
+            </LinearLayout>
+
+<!--            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <Button
                     android:id="@+id/TestBtn"
@@ -69,6 +104,7 @@
                     android:hint="주소를 입력하세요">
                 </EditText>
             </LinearLayout>
+            -->
 
             <include layout="@layout/main_slidingdrawer"/>
         </FrameLayout>
@@ -83,4 +119,3 @@
         app:headerLayout="@layout/main_title_menu_header"
         app:menu="@menu/menu"/>
 </androidx.drawerlayout.widget.DrawerLayout>
-

@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitBuilder {
-    private fun getRetrofit(): Retrofit{
+    fun getRetrofit(): Retrofit{
         return Retrofit.Builder()
             .baseUrl("https://naveropenapi.apigw.ntruss.com")
             .client(OkHttpClient())

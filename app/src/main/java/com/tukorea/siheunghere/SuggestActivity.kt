@@ -19,12 +19,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.main_icon_scroll.*
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.Timestamp
 import retrofit2.Call
 import com.google.firebase.firestore.*
-import com.lakue.pagingbutton.OnPageSelectListener
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -40,8 +38,7 @@ import kotlinx.android.synthetic.main.suggest_map_dialog.*
 import retrofit2.Callback
 import retrofit2.Response
 import kotlinx.android.synthetic.main.suggest_item.view.*
-
-
+import kotlin.collections.ArrayList
 
 
 class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
@@ -139,7 +136,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                         "agreeNum" to 0,
                         "latitude" to latitude,
                         "longitude" to longitude,
-
+                        "timestamp" to Timestamp.now()
                     )
                     db.collection("suggests")
                         .add(suggest)
