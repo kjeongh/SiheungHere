@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var sharedRef: CollectionReference
     private var sharedList = mutableListOf<SharedResource>()
     private var filteredList = mutableListOf<SharedResource>()
-    private val dialog = Dialog(applicationContext)
+    private lateinit var dialog : Dialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,10 +84,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
 
-        //레이아웃 관련 변수 설정
+        // 레이아웃 관련 변수 설정
         val scrollIcons = arrayOf(icon_badminton, icon_baseball, icon_cafe, icon_classroom, icon_park, icon_cooling_center, icon_experience,
         icon_futsal, icon_gallery, icon_livingsport, icon_meeting, icon_parking,
            icon_practice_room, icon_soccer_field, icon_theater, icon_toilet, icon_wifi)
+
+        // 마커 다이얼로그 설정
+        dialog = Dialog(this)
+        dialog.setContentView(R.layout.main_item_point)
+        dialog.window?.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         //navermap 준비되면 호출되는 함수
         mapFragment.getMapAsync(this)
@@ -178,12 +184,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         // 아이콘 버튼(필터링 기능) clicklistener 정의
         for(i in scrollIcons.indices) {
             scrollIcons[i].setOnClickListener {
+                filteredList = mutableListOf()
                 var iconName = scrollIcons[i].toString().split("/")[1].replace("}", "")
                 iconName = iconName.replace("icon_", "")
                 for(sharedresource in sharedList) {
                     if (sharedresource.kind == iconName) {
                         sharedresource.marker?.map = naverMap
-                        filteredList = mutableListOf()
                         filteredList.add(sharedresource)
                     }
                     else {
