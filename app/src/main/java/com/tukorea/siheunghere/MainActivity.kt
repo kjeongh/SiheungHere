@@ -73,8 +73,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             startActivity(intent)
         }
 
-
-
         // map fragment 불러오기
         val fm = supportFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?

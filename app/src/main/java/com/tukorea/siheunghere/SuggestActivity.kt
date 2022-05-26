@@ -92,7 +92,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             dialog.showDialog()
         }
 
-
         // 위치 선택 다이얼로그
         val Mapdialog = MapDialog(this)
         mapEdit.setOnClickListener {
