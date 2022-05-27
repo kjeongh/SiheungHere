@@ -7,22 +7,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.main_icon_scroll.*
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import retrofit2.Call
 import com.google.firebase.firestore.*
-import com.lakue.pagingbutton.OnPageSelectListener
+import com.google.firebase.firestore.ktx.toObject
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -31,18 +33,18 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
 import kotlinx.android.synthetic.main.suggest_map_dialog.*
 import retrofit2.Callback
 import retrofit2.Response
 import kotlinx.android.synthetic.main.suggest_item.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
+class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
+    NavigationView.OnNavigationItemSelectedListener {
     
     // 다이얼로그에서 사용할 지도 객체와 마커
     private lateinit var naverMap: NaverMap
@@ -51,21 +53,27 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
     private var latitude : Double = 0.0
 
     // Firebase Firestore 연결
-    val db = Firebase.firestore
-    var firestore : FirebaseFirestore? = null
+    private val db = Firebase.firestore
+    private var firestore : FirebaseFirestore? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.suggest_activity)
 
-        firestore = FirebaseFirestore.getInstance()
-        suggest_recycler.adapter = RecyclerViewAdapter()
-        suggest_recycler.layoutManager = LinearLayoutManager(this)
+        // 레이아웃 관련 변수 설정
+        var scrollIcons = arrayOf(icon_badminton, icon_baseball, icon_cafe, icon_classroom, icon_park, icon_cooling_center,
+            icon_experience, icon_futsal, icon_gallery, icon_livingsport, icon_meeting, icon_parking,
+            icon_practice_room, icon_soccer_field, icon_theater, icon_toilet, icon_wifi)
 
-        //다시 건의글 버튼 누르면 홈화면으로 돌아감
-        title_suggestBtn.setOnClickListener() {
-            finish()
-        }
+        var sharedTypeName = arrayOf("배드민턴장", "야구장", "카페", "강의실", "공원", "무더위쉼터",
+            "체험/견학", "풋살장", "갤러리/공방", "생활체육시설", "회의실", "주차장",
+            "연습실/학원", "잔디구장", "공연장", "화장실", "와이파이")
+
+        firestore = FirebaseFirestore.getInstance()
+
+        var recyclerAdapter = RecyclerViewAdapter("wifi") //메인 - wifi부터 보여줌
+        suggest_recycler.adapter = recyclerAdapter
+        suggest_recycler.layoutManager = LinearLayoutManager(this)
 
         //타이틀바 타이틀 버튼 - 홈 화면 이동
         title_titleBtn.setOnClickListener() {
@@ -73,19 +81,33 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
         }
 
+        //상단 툴바 설정
+        setSupportActionBar(toolbar)
+        getSupportActionBar()!!.setDisplayShowCustomEnabled(true)
+        getSupportActionBar()!!.setDisplayShowTitleEnabled(false) //툴바에 타이틀 안보이게
+        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true) //툴바 메뉴버튼 생성
+        //getSupportActionBar()!!.setHomeAsUpIndicator(R.drawable.icon_baseball) //메뉴 버튼 모양 설정
+        //menu_navigation.setNavigationItemSelectedListener(this)
+
         //새 건의글 작성
         newSuggestBtn.setOnClickListener() {
             suggestList.visibility = View.INVISIBLE
             suggestWrite.visibility = View.VISIBLE
-
         }
-        
+
+        //건의글 자원별 필터링
+        for (i in scrollIcons.indices) {
+            scrollIcons[i].setOnClickListener {
+                suggest_recycler.adapter = RecyclerViewAdapter(sharedTypeName[i]) //어댑터 재설정
+                recyclerAdapter.notifyDataSetChanged()
+            }
+        }
+
         // 자원 아이콘 선택 다이얼로그
         val dialog = IconDialog(this)   // 건의글 작성 화면으로 변경될 때 실행하도록 추후 변경
         iconEdit.setOnClickListener {
             dialog.showDialog()
         }
-
 
         // 위치 선택 다이얼로그
         val Mapdialog = MapDialog(this)
@@ -161,18 +183,53 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    //건의글 리사이클러뷰 어댑터
-    inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    //툴바에서 메뉴버튼 클릭시 동작
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.getItemId()) {
+            android.R.id.home -> {
+                main_drawer_layout.openDrawer(GravityCompat.START) //메뉴드로어 열기
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_item_contact->Toast.makeText(this, "연락처 띄우기", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex1->Toast.makeText(this, "임시 메뉴1", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex2->Toast.makeText(this, "임시 메뉴2", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex3->Toast.makeText(this, "임시 메뉴3", Toast.LENGTH_SHORT).show()
+        }
+        return false
+    }
+
+    override fun onBackPressed() { //뒤로가기 처리
+        if(main_drawer_layout.isDrawerOpen(GravityCompat.START)){
+            main_drawer_layout.closeDrawers()
+            // 테스트를 위해 뒤로가기 버튼시 Toast 메시지
+            Toast.makeText(this,"back btn clicked",Toast.LENGTH_SHORT).show()
+        } else{
+            super.onBackPressed()
+        }
+    }
+
+    //건의글 리사이클러뷰 어댑터 - 건의글 나열
+    inner class RecyclerViewAdapter(type : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        //건의글 배열
         var suggestList : ArrayList<SuggestData> = arrayListOf()
 
-        init {
+        init { //메인 화면 - 전체보기
             firestore?.collection("suggests")?.addSnapshotListener { querySnapshot, firebaseFireStoreException ->
                 suggestList.clear() //suggest리스트 비워줌
 
                 for(snapshot in querySnapshot!!.documents) { //suggestList에 데이터 추가
                     var item = snapshot.toObject(SuggestData::class.java)
-                    suggestList.add(item!!)
+                    if(item!!.resourceType == type) { // 선택한 자원과 일치하는 경우에만 배열에 add
+                        suggestList.add(item!!)
+                    }
                 }
                 notifyDataSetChanged() //업데이트
             }
@@ -200,8 +257,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback {
             return suggestList.size
         }
     }
-
-
 
 
     // 위치선택 다이얼로그
