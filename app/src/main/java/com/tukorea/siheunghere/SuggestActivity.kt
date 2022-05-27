@@ -225,10 +225,12 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             firestore?.collection("suggests")?.addSnapshotListener { querySnapshot, firebaseFireStoreException ->
                 suggestList.clear() //suggest리스트 비워줌
 
-                for(snapshot in querySnapshot!!.documents) { //suggestList에 데이터 추가
-                    var item = snapshot.toObject(SuggestData::class.java)
-                    if(item!!.resourceType == type) { // 선택한 자원과 일치하는 경우에만 배열에 add
-                        suggestList.add(item!!)
+                if (querySnapshot != null) {
+                    for(snapshot in querySnapshot.documents) { //suggestList에 데이터 추가
+                        var item = snapshot.toObject(SuggestData::class.java)
+                        if(item!!.resourceType == type) { // 선택한 자원과 일치하는 경우에만 배열에 add
+                            suggestList.add(item!!)
+                        }
                     }
                 }
                 notifyDataSetChanged() //업데이트
