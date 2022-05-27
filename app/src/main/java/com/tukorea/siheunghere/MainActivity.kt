@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
 
 
         // 주소를 좌표로 변환해서 database에 넣기
-        //changeAddresstoCoord()
+        // changeAddresstoCoord()
 
         //타이틀바 건의글 게시판 이동 버튼
         title_suggestBtn.setOnClickListener() {
@@ -137,17 +137,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             startActivity(intent)
         }
 
-        //슬라이딩 드로어 화살표 변경
-        slidingdrawer.setOnDrawerOpenListener {
-            handle.setImageResource(R.drawable.etc_arrow_down)
-        }
-        slidingdrawer.setOnDrawerCloseListener {
-            handle.setImageResource(R.drawable.etc_arrow_up)
-        }
         // 테스트용
         // 슬라이딩 드로어 어댑터 설정
         val mapAdaptor = SlidingDrawerAdapter(this)
         mapListView.adapter = mapAdaptor
+
+        //슬라이딩 드로어
+        slidingdrawer.setOnDrawerOpenListener {
+            // 화살표 변경
+            handle.setImageResource(R.drawable.etc_arrow_down)
+            // 리스트 어댑터 갱신
+            mapAdaptor.setList(sharedList)
+
+        }
+        slidingdrawer.setOnDrawerCloseListener {
+            handle.setImageResource(R.drawable.etc_arrow_up)
+        }
+
 
 
         //test - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
@@ -337,8 +343,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             var address = doc.get("address").toString()
             var icon = resources.getIdentifier("map_" + kind, "drawable", packageName)
             var distance = getDistance(cameraPos.target.latitude, cameraPos.target.longitude, lat, lng).toDouble() / 1000
-            var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance)
+            var img = doc.get("index").toString()+".png"
+
+            var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance, img)
             sharedItem.marker = makeMarker(LatLng(lat, lng), icon)
+
             sharedList.add(sharedItem)
         }
     }
