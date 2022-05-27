@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
 
 
         // 주소를 좌표로 변환해서 database에 넣기
-        changeAddresstoCoord()
+        //changeAddresstoCoord()
 
         //타이틀바 건의글 게시판 이동 버튼
         title_suggestBtn.setOnClickListener() {
