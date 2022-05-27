@@ -1,13 +1,6 @@
 package com.tukorea.siheunghere
 
-import android.net.Uri
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.storage.StorageReference
-import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.Marker
-import com.naver.maps.map.overlay.Overlay
-import com.naver.maps.map.overlay.OverlayImage
 
 class SharedResource {
     var marker: Marker? = null

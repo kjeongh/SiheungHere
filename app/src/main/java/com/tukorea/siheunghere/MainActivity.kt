@@ -343,8 +343,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             var address = doc.get("address").toString()
             var icon = resources.getIdentifier("map_" + kind, "drawable", packageName)
             var distance = getDistance(cameraPos.target.latitude, cameraPos.target.longitude, lat, lng).toDouble() / 1000
-            var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance)
+            var img = doc.get("index").toString()+".png"
+
+            var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance, img)
             sharedItem.marker = makeMarker(LatLng(lat, lng), icon)
+
             sharedList.add(sharedItem)
         }
     }
