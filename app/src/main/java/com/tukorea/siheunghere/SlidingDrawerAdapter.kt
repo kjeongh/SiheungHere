@@ -25,14 +25,16 @@ class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
         TelText = mutableListOf()
         DistanceText = mutableListOf()
 
-        for (resource in p){
+        val sortedResource = p.sortedWith(compareBy({it.distance}))
+
+        for (resource in sortedResource){
             NameText.add(resource.name)
             AddressText.add(resource.address)
             TelText.add(resource.tel)
             DistanceText.add(resource.distance.toString())
         }
         notifyDataSetChanged()
-        Log.d("TEST", NameText.toString())
+
 
     }
 
@@ -43,8 +45,8 @@ class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
         listView.mapImg.setImageResource(R.drawable.testimg)
         listView.mapName.text = NameText[p0]
         listView.mapAddress.text = AddressText[p0]
-        listView.mapTel.text = TelText[p0]
-        listView.mapDistance.text = DistanceText[p0]
+        listView.mapTel.text = "문의전화 : " + TelText[p0]
+        listView.mapDistance.text = DistanceText[p0] + "km"
 
         return listView
     }
