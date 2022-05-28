@@ -8,19 +8,23 @@ import android.widget.BaseAdapter
 import com.bumptech.glide.Glide
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.naver.maps.map.overlay.Marker
 import kotlinx.android.synthetic.main.main_maplistview.view.*
 
 
 class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
 
     private var storageRef = Firebase.storage.reference
+    var MarkList = mutableListOf<Marker>()
     var Img = mutableListOf<String>()
     var NameText = mutableListOf<String>()
     var AddressText = mutableListOf<String>()
     var TelText = mutableListOf<String>()
     var DistanceText = mutableListOf<String>()
+    var sortedResource = mutableListOf<SharedResource>()
 
     fun setList(p : List<SharedResource>){
+        MarkList = mutableListOf()
         Img = mutableListOf()
         NameText = mutableListOf()
         AddressText = mutableListOf()
@@ -28,10 +32,11 @@ class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
         DistanceText = mutableListOf()
 
         // 거리순으로 정렬
-        val sortedResource = p.sortedWith(compareBy({it.distance}))
+        sortedResource = p.sortedWith(compareBy({it.distance})) as MutableList<SharedResource>
 
         // 각자 리스트에 나누어서 담기
         for (resource in sortedResource){
+            MarkList.add(resource.marker!!)
             Img.add(resource.img)
             NameText.add(resource.name)
             AddressText.add(resource.address)

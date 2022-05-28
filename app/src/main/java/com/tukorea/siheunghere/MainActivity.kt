@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_icon_scroll.*
 import kotlinx.android.synthetic.main.main_item_point.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
+import kotlinx.android.synthetic.main.main_slidingdrawer.view.*
 import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -150,7 +151,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         slidingdrawer.setOnDrawerCloseListener {
             handle.setImageResource(R.drawable.etc_arrow_up)
         }
-
+        mapListView.setOnItemClickListener { adapterView, view, p, id ->
+            showDialog(mapAdaptor.sortedResource[p])
+        }
 
 
         //test - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
@@ -316,7 +319,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         marker.width = VM.MARKER_SIZE
         marker.height = VM.MARKER_SIZE
         marker.map = naverMap
-
         marker.onClickListener = listener
         return marker
     }
