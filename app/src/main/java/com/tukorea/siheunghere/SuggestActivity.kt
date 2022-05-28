@@ -205,13 +205,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onBackPressed() { //뒤로가기 처리
-        if(main_drawer_layout.isDrawerOpen(GravityCompat.START)){
-            main_drawer_layout.closeDrawers()
-            // 테스트를 위해 뒤로가기 버튼시 Toast 메시지
-            Toast.makeText(this,"back btn clicked",Toast.LENGTH_SHORT).show()
-        } else{
-            finish() //메인화면으로 이동
-        }
+        finish() //main화면으로 돌아감
     }
 
     //건의글 리사이클러뷰 어댑터 - 건의글 나열
