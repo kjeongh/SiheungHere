@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         // 위치 재검색 버튼
         ResearchBtn.setOnClickListener {
             // 지도 중심 좌표 get & 반경 그리기
-            if(naverMap.cameraPosition.target != cameraPos){
+            if(naverMap.cameraPosition.target != cameraPos) {
                 cameraPos = naverMap.cameraPosition.target
                 makeCircle(cameraPos, distance)
 
@@ -163,7 +163,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
 
                 // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
                 sharedRef.whereGreaterThan("latitude", southLatitude)
-                    .whereLessThan("latitude", northLatitude).get().addOnSuccessListener { documents ->
+                    .whereLessThan("latitude", northLatitude).get()
+                    .addOnSuccessListener { documents ->
                         for (document in documents) {
                             latResult.add(document)
                         }
@@ -172,7 +173,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                         }
                     }
                 sharedRef.whereGreaterThan("longitude", westLongitude)
-                    .whereLessThan("longitude", eastLongitude).get().addOnSuccessListener { documents ->
+                    .whereLessThan("longitude", eastLongitude).get()
+                    .addOnSuccessListener { documents ->
                         for (document in documents) {
                             lngResult.add(document)
                         }
@@ -180,38 +182,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                             makeResultList(latResult, lngResult)
                         }
                     }
-            // 위도 또는 경도 범위에 해당하는 데이터만 담기
-            var latResult = mutableSetOf<DocumentSnapshot>()
-            var lngResult = mutableSetOf<DocumentSnapshot>()
-            // 검색하기 전 리스트에 있던 자원 지우기 & 초기화
-            if (sharedList != null) {
-                for (sharedresource in sharedList) {
-                    sharedresource.marker?.map = null
-                }
-                sharedList = mutableListOf()
             }
-            // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
-            sharedRef.whereGreaterThan("latitude", southLatitude)
-                .whereLessThan("latitude", northLatitude).get().addOnSuccessListener { documents ->
-                for (document in documents) {
-                    latResult.add(document)
-                }
-                if (lngResult != null) {
-                    makeResultList(latResult, lngResult)
-                }
-            }
-            sharedRef.whereGreaterThan("longitude", westLongitude)
-                .whereLessThan("longitude", eastLongitude).get().addOnSuccessListener { documents ->
-                for (document in documents) {
-                    lngResult.add(document)
-                }
-                if (latResult != null) {
-                    makeResultList(latResult, lngResult)
-                    // 슬라이딩 드로어 리스트 어댑터 갱신
-                    mapAdaptor.setList(sharedList)
-                }
-            }
-
         }
 
 
@@ -356,8 +327,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             var address = doc.get("address").toString()
             var icon = resources.getIdentifier("map_" + kind, "drawable", packageName)
             var distance = getDistance(cameraPos.latitude, cameraPos.longitude, lat, lng).toDouble() / 1000
-            var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance, doc.id)
-            var distance = getDistance(cameraPos.target.latitude, cameraPos.target.longitude, lat, lng).toDouble() / 1000
             var img = doc.get("index").toString()+".png"
             var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance, img)
             sharedItem.marker = makeMarker(LatLng(lat, lng), icon)
