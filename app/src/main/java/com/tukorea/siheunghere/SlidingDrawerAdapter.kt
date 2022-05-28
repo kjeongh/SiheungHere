@@ -31,17 +31,19 @@ class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
         TelText = mutableListOf()
         DistanceText = mutableListOf()
 
-        // 거리순으로 정렬
-        sortedResource = p.sortedWith(compareBy({it.distance})) as MutableList<SharedResource>
+        if(p.size != 0){
+            // 거리순으로 정렬
+            sortedResource = p.sortedWith(compareBy({it.distance})) as MutableList<SharedResource>
 
-        // 각자 리스트에 나누어서 담기
-        for (resource in sortedResource){
-            MarkList.add(resource.marker!!)
-            Img.add(resource.img)
-            NameText.add(resource.name)
-            AddressText.add(resource.address)
-            TelText.add(resource.tel)
-            DistanceText.add(resource.distance.toString())
+            // 각자 리스트에 나누어서 담기
+            for (resource in sortedResource){
+                MarkList.add(resource.marker!!)
+                Img.add(resource.img)
+                NameText.add(resource.name)
+                AddressText.add(resource.address)
+                TelText.add(resource.tel)
+                DistanceText.add(resource.distance.toString())
+            }
         }
         //갱신
         notifyDataSetChanged()

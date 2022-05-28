@@ -180,6 +180,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                         }
                         if (latResult != null) {
                             makeResultList(latResult, lngResult)
+                            // 슬라이딩 드로어 리스트 어댑터 갱신
+                            mapAdaptor.setList(sharedList)
                         }
                     }
             }
