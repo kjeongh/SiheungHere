@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         getSupportActionBar()!!.setDisplayShowCustomEnabled(true)
         getSupportActionBar()!!.setDisplayShowTitleEnabled(false) //툴바에 타이틀 안보이게
         getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true) //툴바 메뉴버튼 생성
-        //getSupportActionBar()!!.setHomeAsUpIndicator(R.drawable.icon_baseball) //메뉴 버튼 모양 설정 - 오류
+        getSupportActionBar()!!.setHomeAsUpIndicator(R.mipmap.ic_menu) //메뉴 버튼 모양 설정 - 오류
         menu_navigation.setNavigationItemSelectedListener(this)
 
         //타이틀바 건의글 게시판 이동 버튼
