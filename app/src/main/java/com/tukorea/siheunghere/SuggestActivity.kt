@@ -86,8 +86,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         getSupportActionBar()!!.setDisplayShowCustomEnabled(true)
         getSupportActionBar()!!.setDisplayShowTitleEnabled(false) //툴바에 타이틀 안보이게
         getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true) //툴바 메뉴버튼 생성
-        //getSupportActionBar()!!.setHomeAsUpIndicator(R.drawable.icon_baseball) //메뉴 버튼 모양 설정
-        //menu_navigation.setNavigationItemSelectedListener(this)
+        getSupportActionBar()!!.setHomeAsUpIndicator(R.mipmap.ic_home) //메뉴 버튼 모양 설정
 
         //새 건의글 작성
         newSuggestBtn.setOnClickListener() {
@@ -187,7 +186,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.getItemId()) {
             android.R.id.home -> {
-                main_drawer_layout.openDrawer(GravityCompat.START) //메뉴드로어 열기
+                finish() //메인화면 이동
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -211,7 +210,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             // 테스트를 위해 뒤로가기 버튼시 Toast 메시지
             Toast.makeText(this,"back btn clicked",Toast.LENGTH_SHORT).show()
         } else{
-            super.onBackPressed()
+            finish() //메인화면으로 이동
         }
     }
 
