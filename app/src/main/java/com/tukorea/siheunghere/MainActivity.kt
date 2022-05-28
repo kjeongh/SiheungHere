@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_icon_scroll.*
 import kotlinx.android.synthetic.main.main_item_point.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
+import kotlinx.android.synthetic.main.main_slidingdrawer.view.*
 import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         getSupportActionBar()!!.setDisplayShowCustomEnabled(true)
         getSupportActionBar()!!.setDisplayShowTitleEnabled(false) //툴바에 타이틀 안보이게
         getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true) //툴바 메뉴버튼 생성
-        //getSupportActionBar()!!.setHomeAsUpIndicator(R.drawable.icon_baseball) //메뉴 버튼 모양 설정 - 오류
+        getSupportActionBar()!!.setHomeAsUpIndicator(R.mipmap.ic_menu) //메뉴 버튼 모양 설정 - 오류
         menu_navigation.setNavigationItemSelectedListener(this)
 
         //타이틀바 건의글 게시판 이동 버튼
@@ -124,17 +125,22 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             startActivity(intent)
         }
 
-        //슬라이딩 드로어 화살표 변경
+        // 테스트용
+        // 슬라이딩 드로어 어댑터 설정
+        val mapAdaptor = SlidingDrawerAdapter(this)
+        mapListView.adapter = mapAdaptor
+
+        //슬라이딩 드로어
         slidingdrawer.setOnDrawerOpenListener {
+            // 화살표 변경
             handle.setImageResource(R.drawable.etc_arrow_down)
         }
         slidingdrawer.setOnDrawerCloseListener {
             handle.setImageResource(R.drawable.etc_arrow_up)
         }
-        // 테스트용
-        // 슬라이딩 드로어 어댑터 설정
-        val mapAdaptor = SlidingDrawerAdapter(this)
-        mapListView.adapter = mapAdaptor
+        mapListView.setOnItemClickListener { adapterView, view, p, id ->
+            showDialog(mapAdaptor.sortedResource[p])
+        }
 
         // 위치 재검색 버튼
         ResearchBtn.setOnClickListener {
@@ -174,9 +180,41 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                             makeResultList(latResult, lngResult)
                         }
                     }
+            // 위도 또는 경도 범위에 해당하는 데이터만 담기
+            var latResult = mutableSetOf<DocumentSnapshot>()
+            var lngResult = mutableSetOf<DocumentSnapshot>()
+            // 검색하기 전 리스트에 있던 자원 지우기 & 초기화
+            if (sharedList != null) {
+                for (sharedresource in sharedList) {
+                    sharedresource.marker?.map = null
+                }
+                sharedList = mutableListOf()
+            }
+            // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
+            sharedRef.whereGreaterThan("latitude", southLatitude)
+                .whereLessThan("latitude", northLatitude).get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    latResult.add(document)
+                }
+                if (lngResult != null) {
+                    makeResultList(latResult, lngResult)
+                }
+            }
+            sharedRef.whereGreaterThan("longitude", westLongitude)
+                .whereLessThan("longitude", eastLongitude).get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    lngResult.add(document)
+                }
+                if (latResult != null) {
+                    makeResultList(latResult, lngResult)
+                    // 슬라이딩 드로어 리스트 어댑터 갱신
+                    mapAdaptor.setList(sharedList)
+                }
             }
 
         }
+
+
 
         // 검색할 반지름 거리 설정 버튼
         DistBtn1.setOnClickListener {
@@ -206,6 +244,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                         sharedresource.marker?.map = null
                     }
                 }
+                // 슬라이딩 드로어 리스트 어댑터 갱신
+                mapAdaptor.setList(filteredList)
             }
         }
     }
@@ -289,7 +329,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         marker.width = VM.MARKER_SIZE
         marker.height = VM.MARKER_SIZE
         marker.map = naverMap
-
         marker.onClickListener = listener
         return marker
     }
@@ -318,8 +357,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             var icon = resources.getIdentifier("map_" + kind, "drawable", packageName)
             var distance = getDistance(cameraPos.latitude, cameraPos.longitude, lat, lng).toDouble() / 1000
             var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance, doc.id)
+            var distance = getDistance(cameraPos.target.latitude, cameraPos.target.longitude, lat, lng).toDouble() / 1000
+            var img = doc.get("index").toString()+".png"
+            var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance, img)
             sharedItem.marker = makeMarker(LatLng(lat, lng), icon)
+
             sharedList.add(sharedItem)
+
         }
     }
 
@@ -330,17 +374,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         dialog.info_tel.text = clickResource.tel
         dialog.info_addr.text = clickResource.address
         dialog.info_dist.text = clickResource.distance.toString() + "km"
-        loadImage(clickResource.id)
+        loadImage(clickResource.img)
         dialog.show()
         dialog.info_CloseBtn.setOnClickListener {
             dialog.dismiss()
         }
     }
 
-    private fun loadImage(id: String) {
+    private fun loadImage(img: String) {
         val storage = Firebase.storage
         val storageRef = storage.reference
-        val pathReference = storageRef.child("${id}.png")
+        val pathReference = storageRef.child(img)
         pathReference.downloadUrl.addOnSuccessListener { uri ->
             Glide.with(this)
                 .load(uri)
