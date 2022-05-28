@@ -24,9 +24,9 @@
         android:id="@+id/suggestList_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         android:layout_gravity="center_vertical"
-        android:text="101"
+        android:text="100"
         android:textSize="@dimen/info_detail_textsize" />
 
     <ImageView
@@ -38,10 +38,11 @@
 
     <TextView
         android:id="@+id/suggestList_addr"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_width="230dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="8dp"
-        android:text="주소 미리보기 - 시흥시 정왕동 \r\nxxx-xxx \r\n 줄바꿈은 자동"
+        android:text=""
+        android:layout_gravity="center_vertical"
         android:textSize="@dimen/info_detail_textsize" />
 
     <ImageView
