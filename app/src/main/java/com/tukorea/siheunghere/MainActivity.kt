@@ -9,10 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.view.GravityCompat
+import androidx.core.widget.EdgeEffectCompat.getDistance
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.CircleOverlay
@@ -313,7 +317,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             var address = doc.get("address").toString()
             var icon = resources.getIdentifier("map_" + kind, "drawable", packageName)
             var distance = getDistance(cameraPos.latitude, cameraPos.longitude, lat, lng).toDouble() / 1000
-            var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance)
+            var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance, doc.id)
             sharedItem.marker = makeMarker(LatLng(lat, lng), icon)
             sharedList.add(sharedItem)
         }
@@ -326,10 +330,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         dialog.info_tel.text = clickResource.tel
         dialog.info_addr.text = clickResource.address
         dialog.info_dist.text = clickResource.distance.toString() + "km"
+        loadImage(clickResource.id)
         dialog.show()
         dialog.info_CloseBtn.setOnClickListener {
             dialog.dismiss()
         }
+    }
+
+    private fun loadImage(id: String) {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val pathReference = storageRef.child("${id}.png")
+        pathReference.downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(this)
+                .load(uri)
+                .into(dialog.info_image)
+        }.addOnFailureListener {
+            dialog.info_image.setImageResource(R.drawable.no_image)
+        }
+
     }
 
     // 거리 계산하는 함수

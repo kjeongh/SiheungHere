@@ -15,9 +15,10 @@ class SharedResource {
     var name: String = ""
     var address: String = ""
     var distance: Double = 0.0
+    var id: String = ""
 
     constructor()
-    constructor(lat_: Double, lng_: Double, tel_: String, kind_: String,  name_: String, address_: String, distance_: Double) {
+    constructor(lat_: Double, lng_: Double, tel_: String, kind_: String,  name_: String, address_: String, distance_: Double, id_: String) {
         this.lat = lat_
         this.lng = lng_
         this.tel = tel_
@@ -25,6 +26,7 @@ class SharedResource {
         this.name = name_
         this.address = address_
         this.distance = distance_
+        this.id = id_
     }
 
 }
