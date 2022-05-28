@@ -63,4 +63,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.github.lakue119:LakuePagingButton:1.0.0' //페이징
     implementation 'androidx.cardview:cardview:1.0.0' //카드뷰
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
+    implementation platform('com.google.firebase:firebase-bom:30.0.0')
+    implementation 'com.google.firebase:firebase-storage-ktx'
 }
