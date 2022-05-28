@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_icon_scroll.*
 import kotlinx.android.synthetic.main.main_item_point.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
+import kotlinx.android.synthetic.main.main_slidingdrawer.view.*
 import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -146,14 +147,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         slidingdrawer.setOnDrawerOpenListener {
             // 화살표 변경
             handle.setImageResource(R.drawable.etc_arrow_down)
-            // 리스트 어댑터 갱신
-            mapAdaptor.setList(sharedList)
-
         }
         slidingdrawer.setOnDrawerCloseListener {
             handle.setImageResource(R.drawable.etc_arrow_up)
         }
-
+        mapListView.setOnItemClickListener { adapterView, view, p, id ->
+            showDialog(mapAdaptor.sortedResource[p])
+        }
 
 
         //test - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
@@ -172,7 +172,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             // 위도 또는 경도 범위에 해당하는 데이터만 담기
             var latResult = mutableSetOf<DocumentSnapshot>()
             var lngResult = mutableSetOf<DocumentSnapshot>()
-
             // 검색하기 전 리스트에 있던 자원 지우기 & 초기화
             if (sharedList != null) {
                 for (sharedresource in sharedList) {
@@ -180,7 +179,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
                 sharedList = mutableListOf()
             }
-
             // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
             sharedRef.whereGreaterThan("latitude", southLatitude)
                 .whereLessThan("latitude", northLatitude).get().addOnSuccessListener { documents ->
@@ -198,9 +196,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
                 if (latResult != null) {
                     makeResultList(latResult, lngResult)
+                    // 슬라이딩 드로어 리스트 어댑터 갱신
+                    mapAdaptor.setList(sharedList)
                 }
             }
         }
+
+
 
         // 검색할 반지름 거리 설정 버튼
         DistBtn1.setOnClickListener {
@@ -230,6 +232,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                         sharedresource.marker?.map = null
                     }
                 }
+                // 슬라이딩 드로어 리스트 어댑터 갱신
+                mapAdaptor.setList(filteredList)
                 // 아이콘 버튼 클릭 리스너 넣을 것 !
 
             }
@@ -315,7 +319,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         marker.width = VM.MARKER_SIZE
         marker.height = VM.MARKER_SIZE
         marker.map = naverMap
-
         marker.onClickListener = listener
         return marker
     }
@@ -349,6 +352,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             sharedItem.marker = makeMarker(LatLng(lat, lng), icon)
 
             sharedList.add(sharedItem)
+
         }
     }
 
