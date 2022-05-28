@@ -205,7 +205,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onBackPressed() { //뒤로가기 처리
-        finish()
+        finish() //main화면으로 돌아감
     }
 
     //건의글 리사이클러뷰 어댑터 - 건의글 나열
