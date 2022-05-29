@@ -10,10 +10,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +23,6 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import retrofit2.Call
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.ktx.toObject
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -33,9 +31,9 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
-import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
+import kotlinx.android.synthetic.main.suggest_detail_dialog.*
 import kotlinx.android.synthetic.main.suggest_map_dialog.*
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,6 +53,9 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
     // Firebase Firestore 연결
     private val db = Firebase.firestore
     private var firestore : FirebaseFirestore? = null
+
+    //상세정보 다이얼로그
+    private lateinit var suggestDialog : Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -177,9 +178,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                 // 다이얼로그 출력
                 dlg.show()
             }
-
         }
-
     }
 
     //툴바에서 메뉴버튼 클릭시 동작
@@ -212,7 +211,9 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
     inner class RecyclerViewAdapter(type : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         //건의글 배열
-        var suggestList : ArrayList<SuggestData> = arrayListOf()
+        private var suggestList : ArrayList<SuggestData> = arrayListOf()
+        private lateinit var itemClickListener : AdapterView.OnItemClickListener
+        private var context : Context = this@SuggestActivity
 
         init { //메인 화면 - 전체보기
             firestore?.collection("suggests")?.addSnapshotListener { querySnapshot, firebaseFireStoreException ->
@@ -244,8 +245,14 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
              var viewHolder = (holder as ViewHolder).itemView
 
+            suggestList = ArrayList(suggestList.sortedBy{it.timestamp}) //시간순으로 나열
             viewHolder.suggestList_addr.text = suggestList[position].suggestAddr
             viewHolder.suggestList_agreeNum.text = suggestList[position].agreeNum.toString()
+            viewHolder.suggestList_num.text = (position+1).toString()
+            viewHolder.setOnClickListener(){ //클릭시 다이얼로그 띄우기
+                var dlg = suggestDetailDialog(context, suggestList[position])
+                dlg.showDialog()
+            }
         }
 
         override fun getItemCount(): Int {
@@ -271,7 +278,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                 dialog.dismiss()
             }
         }
-
     }
 
     // 자원선택 스크롤 다이얼로그 띄우고 iconEdit 변경
@@ -309,7 +315,28 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
             }
         }
+    }
 
+    inner class suggestDetailDialog(context : Context, suggestItem : SuggestData) {
+        private var dialog = Dialog(context)
+
+        fun showDialog() {
+            dialog.show()
+        }
+        init {
+            dialog.setContentView(R.layout.suggest_detail_dialog)
+            dialog.suggestDetail_txtAddr.text = suggestItem.suggestAddr
+            dialog.suggestDetail_reason.text = suggestItem.suggestReason
+
+            dialog.detail_agreeBtn.setOnClickListener{
+                suggestItem.agreeNum++ //동의 수 올리기
+                Toast.makeText(context, "이 게시글에 동의하였습니다", Toast.LENGTH_SHORT).show()
+                //동의하고 뷰 업데이트할 것!
+            }
+            dialog.detail_closeBtn.setOnClickListener{
+                dialog.dismiss() //닫기
+            }
+        }
     }
 
     // 네이버 지도 준비
@@ -344,9 +371,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                     Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
                 }
             })
-
         }
-
     }
-
 }

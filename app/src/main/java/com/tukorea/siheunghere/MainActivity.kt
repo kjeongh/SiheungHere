@@ -39,12 +39,32 @@ import com.tukorea.siheunghere.VariableOnMap as VM
 class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     NavigationView.OnNavigationItemSelectedListener {
 
+    // < ----- 구현해야할 것 ----- >
+    // < test >
+    // 1. 자원을 저장할 데이터 객체(주소, 종류, 전화번호, 사진) -> 완료
+    // - 각 marker 아이콘 설정 -> 완료
+
+    // 2. 현위치와 거리계산
+    // - 위치 중심으로 그려진 원 안에 있는 자원들만 데이터베이스에서 읽어오기 -> 완료
+    // - 이 위치에서 재검색 누르면 선택한 자원 필터는 초기화 -> 완료
+
+    // 3. 그 외의 것
+    // - 자원 필터링 -> 위에서 거리계산된 것들 중에서 선택한 자원만 보여주면 될듯 -> test 전
+    // - 마커 생성 함수가 return 하는 marker는 각 객체에 변수로 저장 -> 완료
+    // - 필터링으로 걸러지는 자원 제외, marker를 다 null로 설정(안보이게) -> 완료
+
+    // 4. 마커 다이얼로그
+    // - firebase storage에서 사진 불러오기
+    // dialog에 정보 넣기
+
+    // 5. 시청에서 데이터 주면 변환해서 firestore에 넣기
+
     // 지도 관련 변수
     private lateinit var naverMap: NaverMap                     // 지도 객체
     private lateinit var uiSettings : UiSettings                // 지도 UI 세팅 객체
     private lateinit var locationSource: FusedLocationSource    // 현위치 중심
     private lateinit var circle: CircleOverlay                  // 현위치 or 지도중심점(이 위치에서 재검색 할 경우) 중심으로 그려질 원(거리 계산)
-    private lateinit var cameraPos: LatLng              // 지도 중심점 위치(LatLng)
+    private lateinit var cameraPos: CameraPosition              // 지도 중심점 위치(LatLng)
 
     // 공유자원 검색 관련 변수
     // 특정 위치를 중심으로 한 경계 좌표들
@@ -108,9 +128,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
 
-        // 검색 관련 변수 초기화
-        cameraPos = LatLng(0.0, 0.0)
-
         // 데이터베이스 관련 변수 설정
         db = Firebase.firestore
         sharedRef = db.collection("shared")
@@ -142,53 +159,57 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             showDialog(mapAdaptor.sortedResource[p])
         }
 
+
+
+        //test - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
+
+/*        test중 - 버튼 누르면 editText에 있는 주소를 위도, 경도로 변환해 그 위치에 마커 표시
+        TestBtn.setOnClickListener {
+            searchAddress(TestEdt.text.toString());
+        }*/
+
         // 위치 재검색 버튼
         ResearchBtn.setOnClickListener {
             // 지도 중심 좌표 get & 반경 그리기
-            if(naverMap.cameraPosition.target != cameraPos) {
-                cameraPos = naverMap.cameraPosition.target
-                makeCircle(cameraPos, distance)
+            cameraPos = naverMap.cameraPosition
+            makeCircle(cameraPos.target, distance)
 
-                // 위도 또는 경도 범위에 해당하는 데이터만 담기
-                var latResult = mutableSetOf<DocumentSnapshot>()
-                var lngResult = mutableSetOf<DocumentSnapshot>()
+            // 위도 또는 경도 범위에 해당하는 데이터만 담기
+            var latResult = mutableSetOf<DocumentSnapshot>()
+            var lngResult = mutableSetOf<DocumentSnapshot>()
 
-                // 검색하기 전 리스트에 있던 자원 지우기 & 초기화
-                if (sharedList != null) {
-                    for (sharedresource in sharedList) {
-                        sharedresource.marker?.map = null
+            // 검색하기 전 리스트에 있던 자원 지우기 & 초기화
+            if (sharedList != null) {
+                for (sharedresource in sharedList) {
+                    sharedresource.marker?.map = null
+                }
+                sharedList = mutableListOf()
+            }
+            // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
+            sharedRef.whereGreaterThan("latitude", southLatitude)
+                .whereLessThan("latitude", northLatitude).get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        latResult.add(document)
                     }
-                    sharedList = mutableListOf()
+                    if (lngResult != null) {
+                        makeResultList(latResult, lngResult)
+                    }
+                }
+            sharedRef.whereGreaterThan("longitude", westLongitude)
+                .whereLessThan("longitude", eastLongitude).get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        lngResult.add(document)
+                    }
+                    if (latResult != null) {
+                        makeResultList(latResult, lngResult)
+                        // 슬라이딩 드로어 리스트 어댑터 갱신
+                        mapAdaptor.setList(sharedList)
+                    }
                 }
 
-                // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
-                sharedRef.whereGreaterThan("latitude", southLatitude)
-                    .whereLessThan("latitude", northLatitude).get()
-                    .addOnSuccessListener { documents ->
-                        for (document in documents) {
-                            latResult.add(document)
-                        }
-                        if (lngResult != null) {
-                            makeResultList(latResult, lngResult)
-                        }
-                    }
-                sharedRef.whereGreaterThan("longitude", westLongitude)
-                    .whereLessThan("longitude", eastLongitude).get()
-                    .addOnSuccessListener { documents ->
-                        for (document in documents) {
-                            lngResult.add(document)
-                        }
-                        if (latResult != null) {
-                            makeResultList(latResult, lngResult)
-                            
-                            // 슬라이딩 드로어 리스트 어댑터 갱신
-                            mapAdaptor.setList(sharedList)
-                        }
-                    }
-            }
         }
-
-
 
         // 검색할 반지름 거리 설정 버튼
         DistBtn1.setOnClickListener {
@@ -220,6 +241,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
                 // 슬라이딩 드로어 리스트 어댑터 갱신
                 mapAdaptor.setList(filteredList)
+                // 아이콘 버튼 클릭 리스너 넣을 것 !
+
             }
         }
     }
@@ -303,6 +326,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         marker.width = VM.MARKER_SIZE
         marker.height = VM.MARKER_SIZE
         marker.map = naverMap
+
         marker.onClickListener = listener
         return marker
     }
@@ -329,13 +353,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             var name = doc.get("name").toString()
             var address = doc.get("address").toString()
             var icon = resources.getIdentifier("map_" + kind, "drawable", packageName)
-            var distance = getDistance(cameraPos.latitude, cameraPos.longitude, lat, lng).toDouble() / 1000
+            var distance = getDistance(cameraPos.target.latitude, cameraPos.target.longitude, lat, lng).toDouble() / 1000
             var img = doc.get("index").toString()+".png"
+
             var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance, img)
             sharedItem.marker = makeMarker(LatLng(lat, lng), icon)
 
             sharedList.add(sharedItem)
-
         }
     }
 

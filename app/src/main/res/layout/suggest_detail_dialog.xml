@@ -66,36 +66,24 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/suggestDetail_reason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="미리보기. 건의글 상세보기를 클릭할 경우 이곳에 건의 사유에 대한 설명이 적혀 있다."/>
-
-
-
-
+        android:layout_margin="20dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <Button
             android:id="@+id/detail_agreeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_centerHorizontal="true"
             android:text="동의"
             app:backgroundTint="#DD8503"></Button>
 
-        <Button
-            android:id="@+id/detail_editBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_toLeftOf="@+id/detail_agreeBtn"
-            android:text="수정"
-            app:backgroundTint="#DD8503"></Button>
 
         <Button
             android:id="@+id/detail_closeBtn"
