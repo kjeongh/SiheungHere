@@ -9,10 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.view.GravityCompat
+import androidx.core.widget.EdgeEffectCompat.getDistance
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.CircleOverlay
@@ -24,6 +28,7 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_icon_scroll.*
 import kotlinx.android.synthetic.main.main_item_point.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
+import kotlinx.android.synthetic.main.main_slidingdrawer.view.*
 import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -146,12 +151,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         slidingdrawer.setOnDrawerOpenListener {
             // 화살표 변경
             handle.setImageResource(R.drawable.etc_arrow_down)
-            // 리스트 어댑터 갱신
-            mapAdaptor.setList(sharedList)
-
         }
         slidingdrawer.setOnDrawerCloseListener {
             handle.setImageResource(R.drawable.etc_arrow_up)
+        }
+        mapListView.setOnItemClickListener { adapterView, view, p, id ->
+            showDialog(mapAdaptor.sortedResource[p])
         }
 
 
@@ -180,26 +185,30 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
                 sharedList = mutableListOf()
             }
-
             // 범위 안에 있는 데이터 찾는 query(동서남북 경계 이용)
             sharedRef.whereGreaterThan("latitude", southLatitude)
-                .whereLessThan("latitude", northLatitude).get().addOnSuccessListener { documents ->
-                for (document in documents) {
-                    latResult.add(document)
+                .whereLessThan("latitude", northLatitude).get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        latResult.add(document)
+                    }
+                    if (lngResult != null) {
+                        makeResultList(latResult, lngResult)
+                    }
                 }
-                if (lngResult != null) {
-                    makeResultList(latResult, lngResult)
-                }
-            }
             sharedRef.whereGreaterThan("longitude", westLongitude)
-                .whereLessThan("longitude", eastLongitude).get().addOnSuccessListener { documents ->
-                for (document in documents) {
-                    lngResult.add(document)
+                .whereLessThan("longitude", eastLongitude).get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        lngResult.add(document)
+                    }
+                    if (latResult != null) {
+                        makeResultList(latResult, lngResult)
+                        // 슬라이딩 드로어 리스트 어댑터 갱신
+                        mapAdaptor.setList(sharedList)
+                    }
                 }
-                if (latResult != null) {
-                    makeResultList(latResult, lngResult)
-                }
-            }
+
         }
 
         // 검색할 반지름 거리 설정 버튼
@@ -230,6 +239,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                         sharedresource.marker?.map = null
                     }
                 }
+                // 슬라이딩 드로어 리스트 어댑터 갱신
+                mapAdaptor.setList(filteredList)
                 // 아이콘 버튼 클릭 리스너 넣을 것 !
 
             }
@@ -359,10 +370,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         dialog.info_tel.text = clickResource.tel
         dialog.info_addr.text = clickResource.address
         dialog.info_dist.text = clickResource.distance.toString() + "km"
+        loadImage(clickResource.img)
         dialog.show()
         dialog.info_CloseBtn.setOnClickListener {
             dialog.dismiss()
         }
+    }
+
+    private fun loadImage(img: String) {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val pathReference = storageRef.child(img)
+        pathReference.downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(this)
+                .load(uri)
+                .into(dialog.info_image)
+        }.addOnFailureListener {
+            dialog.info_image.setImageResource(R.drawable.no_image)
+        }
+
     }
 
     // 거리 계산하는 함수
