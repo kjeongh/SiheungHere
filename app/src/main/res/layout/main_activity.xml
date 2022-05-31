@@ -44,7 +44,6 @@
                 <Button
                     android:id="@+id/ResearchBtn"
                     android:layout_gravity="center_horizontal"
-                    android:backgroundTint="@color/main_btn"
                     android:textColor="@color/main_text"
                     android:padding="5dp"
                     android:layout_width="wrap_content"
@@ -52,7 +51,7 @@
                     android:text="이 위치에서 재검색"
                     android:textSize="10sp"
                     android:layout_marginVertical="@dimen/btn_margintop"
-                    android:background="@drawable/round_button">
+                    android:background="@drawable/button_background">
                 </Button>
             </LinearLayout>
 
@@ -66,33 +65,30 @@
 
                 <Button
                     android:id="@+id/DistBtn1"
-                    android:backgroundTint="@color/main_btn"
                     android:textColor="@color/main_text"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:text="@string/radius_distance1"
                     android:textSize="@dimen/btn_textsize"
-                    android:background="@drawable/circle_button"></Button>
+                    android:background="@drawable/button_background"></Button>
                 <Button
                     android:id="@+id/DistBtn2"
-                    android:backgroundTint="@color/main_btn"
                     android:textColor="@color/main_text"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:text="@string/radius_distance2"
                     android:textSize="@dimen/btn_textsize"
-                    android:background="@drawable/circle_button"
+                    android:background="@drawable/button_background"
                     android:layout_marginTop="@dimen/btn_margintop">
                 </Button>
                 <Button
                     android:id="@+id/DistBtn3"
-                    android:backgroundTint="@color/main_btn"
                     android:textColor="@color/main_text"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:text="@string/radius_distance3"
                     android:textSize="@dimen/btn_textsize"
-                    android:background="@drawable/circle_button"
+                    android:background="@drawable/button_background"
                     android:layout_marginTop="@dimen/btn_margintop">
                 </Button>
             </LinearLayout>

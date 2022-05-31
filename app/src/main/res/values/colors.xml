@@ -11,5 +11,6 @@
     <color name="orange">#DD8503</color>
     <color name="blue">#0C4DA2</color>
     <color name="main_btn">#FFD54F</color>
+    <color name="main_btn_dark">#C2A139</color>
     <color name="clear">#00000000</color>
 </resources>

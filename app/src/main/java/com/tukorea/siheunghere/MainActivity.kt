@@ -239,8 +239,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
                 // 슬라이딩 드로어 리스트 어댑터 갱신
                 mapAdaptor.setList(filteredList)
-                // 아이콘 버튼 클릭 리스너 넣을 것 !
-
             }
         }
     }
