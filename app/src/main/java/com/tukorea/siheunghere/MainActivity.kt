@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_icon_scroll.*
 import kotlinx.android.synthetic.main.main_item_point.*
 import kotlinx.android.synthetic.main.main_slidingdrawer.*
-import kotlinx.android.synthetic.main.main_slidingdrawer.view.*
 import kotlinx.android.synthetic.main.main_title.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var uiSettings : UiSettings                // 지도 UI 세팅 객체
     private lateinit var locationSource: FusedLocationSource    // 현위치 중심
     private lateinit var circle: CircleOverlay                  // 현위치 or 지도중심점(이 위치에서 재검색 할 경우) 중심으로 그려질 원(거리 계산)
-    private lateinit var cameraPos: CameraPosition              // 지도 중심점 위치(LatLng)
+    private lateinit var cameraPos: LatLng              // 지도 중심점 위치(LatLng)
 
     // 공유자원 검색 관련 변수
     // 특정 위치를 중심으로 한 경계 좌표들
@@ -169,9 +168,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         // 위치 재검색 버튼
         ResearchBtn.setOnClickListener {
             // 지도 중심 좌표 get & 반경 그리기
-            cameraPos = naverMap.cameraPosition
-            makeCircle(cameraPos.target, distance)
-
+            if(naverMap.cameraPosition.target != cameraPos) {
+                cameraPos = naverMap.cameraPosition.target
+                makeCircle(cameraPos, distance)
+            }
             // 위도 또는 경도 범위에 해당하는 데이터만 담기
             var latResult = mutableSetOf<DocumentSnapshot>()
             var lngResult = mutableSetOf<DocumentSnapshot>()
