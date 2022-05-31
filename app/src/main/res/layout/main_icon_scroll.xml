@@ -14,6 +14,98 @@
             android:orientation="horizontal"
             android:background="@color/clear">
 
+            <!--와이파이-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+                <ImageButton
+                    android:id="@+id/icon_wifi"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_wifi"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="와이파이"/>
+            </LinearLayout>
+
+            <!--무더위쉼터-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_cooling_center"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_cooling_center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="무더위쉼터"/>
+            </LinearLayout>
+
+            <!--공원-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_park"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_park"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="공원"/>
+
+            </LinearLayout>
+
+            <!--화장실-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_toilet"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_toilet"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="화장실"/>
+
+            </LinearLayout>
+
+            <!--주차장-->
+            <LinearLayout
+                style="@style/scrollBar_backgroundStyle"
+                android:background="@drawable/icon_background"
+                android:layout_marginHorizontal="@dimen/scrollBar_margin">
+
+                <ImageButton
+                    android:id="@+id/icon_parking"
+                    style="@style/scrollBar_iconStyle"
+                    android:src="@drawable/icon_parking"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/scrollBar_textSize"
+                    android:text="주차장"/>
+
+            </LinearLayout>
+
             <!--배드민턴장-->
             <LinearLayout
                 style="@style/scrollBar_backgroundStyle"
@@ -111,24 +203,7 @@
 
             </LinearLayout>
 
-            <!--무더위쉼터-->
-            <LinearLayout
-                style="@style/scrollBar_backgroundStyle"
-                android:background="@drawable/icon_background"
-                android:layout_marginHorizontal="@dimen/scrollBar_margin">
 
-                <ImageButton
-                    android:id="@+id/icon_cooling_center"
-                    style="@style/scrollBar_iconStyle"
-                    android:src="@drawable/icon_cooling_center"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/scrollBar_textSize"
-                    android:text="무더위쉼터"/>
-
-            </LinearLayout>
 
             <!--풋살장-->
             <LinearLayout
@@ -149,24 +224,7 @@
 
             </LinearLayout>
 
-            <!--주차장-->
-            <LinearLayout
-                style="@style/scrollBar_backgroundStyle"
-                android:background="@drawable/icon_background"
-                android:layout_marginHorizontal="@dimen/scrollBar_margin">
 
-                <ImageButton
-                    android:id="@+id/icon_parking"
-                    style="@style/scrollBar_iconStyle"
-                    android:src="@drawable/icon_parking"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/scrollBar_textSize"
-                    android:text="주차장"/>
-
-            </LinearLayout>
 
             <!--갤러리/공방-->
             <LinearLayout
@@ -225,24 +283,7 @@
 
             </LinearLayout>
 
-            <!--공원-->
-            <LinearLayout
-                style="@style/scrollBar_backgroundStyle"
-                android:background="@drawable/icon_background"
-                android:layout_marginHorizontal="@dimen/scrollBar_margin">
 
-                <ImageButton
-                    android:id="@+id/icon_park"
-                    style="@style/scrollBar_iconStyle"
-                    android:src="@drawable/icon_park"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/scrollBar_textSize"
-                    android:text="공원"/>
-
-            </LinearLayout>
 
             <!--연습실/학원-->
             <LinearLayout
@@ -301,43 +342,9 @@
 
             </LinearLayout>
 
-            <!--화장실-->
-            <LinearLayout
-                style="@style/scrollBar_backgroundStyle"
-                android:background="@drawable/icon_background"
-                android:layout_marginHorizontal="@dimen/scrollBar_margin">
 
-                <ImageButton
-                    android:id="@+id/icon_toilet"
-                    style="@style/scrollBar_iconStyle"
-                    android:src="@drawable/icon_toilet"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/scrollBar_textSize"
-                    android:text="화장실"/>
 
-            </LinearLayout>
-
-            <!--와이파이-->
-            <LinearLayout
-                style="@style/scrollBar_backgroundStyle"
-                android:background="@drawable/icon_background"
-                android:layout_marginHorizontal="@dimen/scrollBar_margin"
->
-                <ImageButton
-                    android:id="@+id/icon_wifi"
-                    style="@style/scrollBar_iconStyle"
-                    android:src="@drawable/icon_wifi"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/scrollBar_textSize"
-                    android:text="와이파이"/>
-
-            </LinearLayout>
 
         </LinearLayout>
     </HorizontalScrollView>
