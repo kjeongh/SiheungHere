@@ -125,6 +125,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         //현위치 받아오기
         locationSource = FusedLocationSource(this, VM.LOCATION_PERMISSTION_REQUEST_CODE)
 
+        // 검색 관련 변수 초기화
+        cameraPos = LatLng(0.0, 0.0)
+
         // 데이터베이스 관련 변수 설정
         db = Firebase.firestore
         sharedRef = db.collection("shared")
@@ -168,10 +171,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         // 위치 재검색 버튼
         ResearchBtn.setOnClickListener {
             // 지도 중심 좌표 get & 반경 그리기
-            if(naverMap.cameraPosition.target != cameraPos) {
+            if (naverMap.cameraPosition.target != cameraPos) {
                 cameraPos = naverMap.cameraPosition.target
                 makeCircle(cameraPos, distance)
-            }
             // 위도 또는 경도 범위에 해당하는 데이터만 담기
             var latResult = mutableSetOf<DocumentSnapshot>()
             var lngResult = mutableSetOf<DocumentSnapshot>()
@@ -206,7 +208,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                         mapAdaptor.setList(sharedList)
                     }
                 }
-
+            }
         }
 
         // 검색할 반지름 거리 설정 버튼
