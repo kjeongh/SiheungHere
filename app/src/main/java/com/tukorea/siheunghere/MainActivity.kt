@@ -349,7 +349,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             var name = doc.get("name").toString()
             var address = doc.get("address").toString()
             var icon = resources.getIdentifier("map_" + kind, "drawable", packageName)
-            var distance = getDistance(cameraPos.target.latitude, cameraPos.target.longitude, lat, lng).toDouble() / 1000
+            var distance = getDistance(cameraPos.latitude, cameraPos.longitude, lat, lng).toDouble() / 1000
             var img = doc.get("index").toString()+".png"
 
             var sharedItem = SharedResource(lat, lng, tel, kind, name, address, distance, img)
