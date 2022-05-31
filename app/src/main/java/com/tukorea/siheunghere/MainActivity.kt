@@ -9,9 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.view.GravityCompat
-import androidx.core.widget.EdgeEffectCompat.getDistance
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
