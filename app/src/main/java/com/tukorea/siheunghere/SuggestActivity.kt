@@ -128,16 +128,15 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             memoLimit.text = memoEdit.text.toString().length.toString() + "/100"
         }
         // 비밀번호 제한 표시 <20자>
-        pwEdit.addTextChangedListener {
-            pwLimit.text = pwEdit.text.toString().length.toString() + "/20"
-        }
+//        pwEdit.addTextChangedListener {
+//            pwLimit.text = pwEdit.text.toString().length.toString() + "/20"
+//        }
 
         // 현재 작성 내용 파이어베이스 제출
         submitBtn.setOnClickListener {
             // 작성되지 않은 칸이 있는지 확인
             if (iconEdit.text.toString().equals("") ||
-                memoEdit.text.toString().replace(" ", "").equals("") ||
-                pwEdit.text.toString().replace(" ", "").equals("") ){
+                memoEdit.text.toString().replace(" ", "").equals("") ){
                 Toast.makeText(this, "모두 작성해 주세요.", Toast.LENGTH_SHORT).show()
             }
             // 모두 작성 완료 시
@@ -152,7 +151,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                         "resourceType" to iconEdit.text.toString(),
                         "suggestAddr" to mapEdit.text.toString(),
                         "suggestReason" to memoEdit.text.toString(),
-                        "password" to pwEdit.text.toString(),
                         "agreeNum" to 0,
                         "latitude" to latitude,
                         "longitude" to longitude,
