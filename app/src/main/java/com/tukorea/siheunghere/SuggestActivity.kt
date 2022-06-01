@@ -127,10 +127,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         memoEdit.addTextChangedListener {
             memoLimit.text = memoEdit.text.toString().length.toString() + "/100"
         }
-        // 비밀번호 제한 표시 <20자>
-//        pwEdit.addTextChangedListener {
-//            pwLimit.text = pwEdit.text.toString().length.toString() + "/20"
-//        }
 
         // 현재 작성 내용 파이어베이스 제출
         submitBtn.setOnClickListener {
@@ -143,7 +139,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             else{
                 // 최종 확인 다이얼로그
                 var dlg = AlertDialog.Builder(this)
-                dlg.setMessage("제출 하시겠습니까?")
+                dlg.setMessage("제출된 건의글은 수정할 수 없습니다.\n제출 하시겠습니까?")
                 dlg.setNegativeButton("취소", null)
                 dlg.setPositiveButton("제출"){ dialog, which ->
                     // hashMap 생성해서 Firestore 제출
@@ -165,7 +161,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                         }
                         .addOnFailureListener { e ->
                             // 제출 실패시
-                            Toast.makeText(this, "제출 실패", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "제출 실패 : 인터넷 연결을 확인하세요.", Toast.LENGTH_SHORT).show()
                             Log.w("FIREBASE", "Error adding document", e)
                         }
                     // 액티비티 새로고침?
@@ -220,6 +216,8 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                 if (querySnapshot != null) {
                     for(snapshot in querySnapshot.documents) { //suggestList에 데이터 추가
                         var item = snapshot.toObject(SuggestData::class.java)
+                        // 문서 id 추가
+                        item!!.docId = snapshot.id
                         if(item!!.resourceType == type) { // 선택한 자원과 일치하는 경우에만 배열에 add
                             suggestList.add(item!!)
                         }
@@ -333,6 +331,18 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             }
             dialog.detail_closeBtn.setOnClickListener{
                 dialog.dismiss() //닫기
+            }
+            // 삭제버튼
+            dialog.detail_deleteBtn.setOnClickListener {
+                // 최종 확인 다이얼로그
+                var dlg = AlertDialog.Builder(context)
+                dlg.setMessage("삭제 하시겠습니까?")
+                dlg.setNegativeButton("취소", null)
+                dlg.setPositiveButton("제출") { dlg, which ->
+                    db.collection("suggests").document(suggestItem.docId).delete()
+                    dialog.dismiss()
+                }
+                dlg.show()
             }
         }
     }

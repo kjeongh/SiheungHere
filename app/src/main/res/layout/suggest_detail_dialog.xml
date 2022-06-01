@@ -80,7 +80,10 @@
             android:id="@+id/detail_agreeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:text="동의"
             app:backgroundTint="#DD8503"></Button>
 
@@ -89,10 +92,27 @@
             android:id="@+id/detail_closeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_toRightOf="@+id/detail_agreeBtn"
             android:text="닫기"
             app:backgroundTint="#DD8503"></Button>
+
+        <Button
+            android:id="@+id/detail_deleteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@+id/detail_closeBtn"
+            android:text="삭제"
+            app:backgroundTint="#DD8503"></Button>
+
     </RelativeLayout>
 
 
