@@ -194,6 +194,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                     }
                     if (lngResult != null) {
                         makeResultList(latResult, lngResult)
+                        // 슬라이딩 드로어 리스트 어댑터 갱신
+                        mapAdaptor.setList(sharedList, noItem, "주변에 자원이 없습니다\n범위를 조정하여 검색하거나 위치를 이동해 주세요")
                     }
                 }
             sharedRef.whereGreaterThan("longitude", westLongitude)
@@ -205,7 +207,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                     if (latResult != null) {
                         makeResultList(latResult, lngResult)
                         // 슬라이딩 드로어 리스트 어댑터 갱신
-                        mapAdaptor.setList(sharedList)
+                        mapAdaptor.setList(sharedList, noItem, "주변에 자원이 없습니다\n범위를 조정하여 검색하거나 위치를 이동해 주세요")
                     }
                 }
             }
@@ -240,7 +242,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                     }
                 }
                 // 슬라이딩 드로어 리스트 어댑터 갱신
-                mapAdaptor.setList(filteredList)
+                mapAdaptor.setList(filteredList, noItem, "선택된 자원이 주변에 없습니다\n범위를 조정하여 검색하거나 위치를 이동해 주세요")
             }
         }
     }

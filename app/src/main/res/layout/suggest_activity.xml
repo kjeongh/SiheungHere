@@ -21,12 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:background="@color/white"
             android:visibility="visible">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="건의글 목록"
+                android:textColor="@color/black"
                 android:textSize="20dp"
                 android:layout_margin="20dp"/>
 
@@ -76,6 +78,7 @@
             android:id="@+id/suggestWrite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical"
             android:visibility="invisible">
 
@@ -83,6 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="새 건의글 작성"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_margin="20dp"/>
 
@@ -91,10 +95,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+
                 android:orientation="horizontal">
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="400dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:gravity="center"
@@ -103,6 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="자원 종류"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:layout_margin="10dp"/>
                 </LinearLayout>
@@ -117,6 +122,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="자원을 설정해 주세요."
+                        android:padding="8dp"
+                        android:background="@drawable/memo_border"
                         android:textSize="20sp"
                         android:layout_margin="10dp"
                         android:textColor="@color/black"
@@ -127,11 +134,11 @@
             <!-- 위치 -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
                 android:orientation="horizontal">
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="400dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:gravity="center"
@@ -140,6 +147,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="위치"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:layout_margin="10dp"/>
                 </LinearLayout>
@@ -154,6 +162,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="위치를 설정해 주세요."
+                        android:padding="8dp"
+                        android:background="@drawable/memo_border"
                         android:textSize="20sp"
                         android:layout_margin="10dp"
                         android:textColor="@color/black"
@@ -164,11 +174,11 @@
             <!-- 건의사유 -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
                 android:orientation="horizontal">
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="400dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:gravity="center"
@@ -177,6 +187,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="건의 사유"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:layout_margin="10dp"/>
                 </LinearLayout>
@@ -193,6 +204,9 @@
                         android:layout_weight="8"
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
+                        android:gravity="top"
+                        android:padding="8dp"
+                        android:background="@drawable/memo_border"
                         android:hint="내용 작성"
                         android:textSize="20sp"
                         android:maxLength="100"/>
@@ -209,60 +223,10 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- 비밀번호 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="비밀번호"
-                        android:textSize="20sp"
-                        android:layout_margin="10dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <EditText
-                        android:id="@+id/pwEdit"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="3"
-                        android:hint="비밀번호를 입력하세요."
-                        android:textSize="20sp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:inputType="textPassword"
-                        android:maxLength="20"/>
-                    <TextView
-                        android:id="@+id/pwLimit"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:text="0/20"
-                        android:textSize="15sp"
-                        android:gravity="right"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"/>
-                </LinearLayout>
-            </LinearLayout>
-
             <!-- 작성 버튼 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal">
                 <Button
