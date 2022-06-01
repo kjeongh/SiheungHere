@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.naver.maps.map.overlay.Marker
 import kotlinx.android.synthetic.main.main_maplistview.view.*
+import kotlinx.android.synthetic.main.main_slidingdrawer.view.*
 
 
 class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
@@ -23,7 +25,7 @@ class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
     var DistanceText = mutableListOf<String>()
     var sortedResource = mutableListOf<SharedResource>()
 
-    fun setList(p : List<SharedResource>){
+    fun setList(p : List<SharedResource>, t : TextView, e : String){
         MarkList = mutableListOf()
         Img = mutableListOf()
         NameText = mutableListOf()
@@ -34,7 +36,7 @@ class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
         if(p.size != 0){
             // 거리순으로 정렬
             sortedResource = p.sortedWith(compareBy({it.distance})) as MutableList<SharedResource>
-
+            t.noItem.visibility = View.INVISIBLE
             // 각자 리스트에 나누어서 담기
             for (resource in sortedResource){
                 MarkList.add(resource.marker!!)
@@ -44,6 +46,10 @@ class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
                 TelText.add(resource.tel)
                 DistanceText.add(resource.distance.toString())
             }
+        }
+        else{
+            t.noItem.visibility = View.VISIBLE
+            t.noItem.text = e
         }
         //갱신
         notifyDataSetChanged()
