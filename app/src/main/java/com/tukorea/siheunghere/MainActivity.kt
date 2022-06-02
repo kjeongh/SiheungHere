@@ -2,6 +2,7 @@ package com.tukorea.siheunghere
 
 import android.app.Dialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.LinearLayout
@@ -245,6 +246,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                 mapAdaptor.setList(filteredList, noItem, "선택된 자원이 주변에 없습니다\n범위를 조정하여 검색하거나 위치를 이동해 주세요")
             }
         }
+
     }
 
     //툴바에서 메뉴버튼 클릭시 동작
@@ -263,7 +265,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     //네비게이션 아이템 클릭시 동작
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.menu_item_contact->Toast.makeText(this, "연락처", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_contact1-> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:031-310-2114")))
+            R.id.menu_item_contact2-> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:031-380-5350")))
             R.id.menu_item_ex1->Toast.makeText(this, "메뉴1", Toast.LENGTH_SHORT).show()
             R.id.menu_item_ex2->Toast.makeText(this, "메뉴2", Toast.LENGTH_SHORT).show()
             R.id.menu_item_ex3->Toast.makeText(this, "메뉴3", Toast.LENGTH_SHORT).show()

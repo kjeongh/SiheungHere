@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -189,7 +190,8 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.menu_item_contact->Toast.makeText(this, "연락처 띄우기", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_contact1-> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:031-310-2114")))
+            R.id.menu_item_contact2-> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:031-380-5350")))
             R.id.menu_item_ex1->Toast.makeText(this, "임시 메뉴1", Toast.LENGTH_SHORT).show()
             R.id.menu_item_ex2->Toast.makeText(this, "임시 메뉴2", Toast.LENGTH_SHORT).show()
             R.id.menu_item_ex3->Toast.makeText(this, "임시 메뉴3", Toast.LENGTH_SHORT).show()
