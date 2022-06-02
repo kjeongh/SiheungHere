@@ -2,6 +2,7 @@ package com.tukorea.siheunghere
 
 import android.app.Dialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.LinearLayout
@@ -183,8 +184,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             }
         }
 
-
-
         // 검색할 반지름 거리 설정 버튼
         DistBtn1.setOnClickListener {
             distance = VM.DISTANCE_1
@@ -217,6 +216,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                 mapAdaptor.setList(filteredList)
             }
         }
+
     }
 
     //툴바에서 메뉴버튼 클릭시 동작
@@ -235,7 +235,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     //네비게이션 아이템 클릭시 동작
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.menu_item_contact->Toast.makeText(this, "연락처", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_contact1-> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:031-310-2114")))
+            R.id.menu_item_contact2-> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:031-380-5350")))
             R.id.menu_item_ex1->Toast.makeText(this, "메뉴1", Toast.LENGTH_SHORT).show()
             R.id.menu_item_ex2->Toast.makeText(this, "메뉴2", Toast.LENGTH_SHORT).show()
             R.id.menu_item_ex3->Toast.makeText(this, "메뉴3", Toast.LENGTH_SHORT).show()
