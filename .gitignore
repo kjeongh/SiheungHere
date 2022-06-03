@@ -30,6 +30,9 @@ render.experimental.xml
 *.jks
 *.keystore
 
+# Kakao_App_key
+kakao_app_key.xml
+
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
