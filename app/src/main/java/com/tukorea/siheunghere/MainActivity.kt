@@ -16,6 +16,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kakao.sdk.common.util.Utility
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.CircleOverlay
@@ -85,6 +86,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
+        var keyHash = Utility.getKeyHash(this)
+        Log.d("TAG", keyHash)
+        Toast.makeText(this, keyHash, Toast.LENGTH_SHORT).show()
 
         //상단 툴바 설정
         setSupportActionBar(toolbar)
