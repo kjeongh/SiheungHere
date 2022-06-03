@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -24,6 +25,12 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import retrofit2.Call
 import com.google.firebase.firestore.*
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.user.UserApiClient
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -58,9 +65,63 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
     //상세정보 다이얼로그
     private lateinit var suggestDialog : Dialog
 
+    //카카오 로그인 데이터
+    lateinit var kakao_id : String
+    lateinit var kakao_nickname : String
+    lateinit var kakao_email : String
+    lateinit var kakao_gender : String
+    lateinit var kakao_age_range : String
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.suggest_activity)
+        // kakao SDK 초기화
+        KakaoSdk.init(this, getString(R.string.kakao_native_key))
+        var keyHash = Utility.getKeyHash(this)
+        Log.d("TAG", getString(R.string.kakao_native_key))
+
+
+
+        // 카카오 로그인 버튼
+        LoginBtn.setOnClickListener {
+            val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+                if (error != null) {
+                    Log.e("TAG", "카카오계정으로 로그인 실패", error)
+                    Toast.makeText(this, "카카오계정으로 로그인 실패", Toast.LENGTH_SHORT).show()
+                } else if (token != null) {
+                    Log.i("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
+                    getLoginData()
+                    kakaoLogin.visibility = View.INVISIBLE
+                    suggestList.visibility = View.VISIBLE
+                }
+            }
+            // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+                UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                    if (error != null) {
+                        Log.e("TAG", "카카오톡으로 로그인 실패", error)
+
+                        // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+                        // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+                        if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                            return@loginWithKakaoTalk
+                        }
+
+                        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
+                        UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+                    } else if (token != null) {
+                        Log.i("TAG", "카카오톡으로 로그인 성공 ${token.accessToken}")
+                        getLoginData()
+                        kakaoLogin.visibility = View.INVISIBLE
+                        suggestList.visibility = View.VISIBLE
+                    }
+                }
+            } else {
+                UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+            }
+        }
 
         // 레이아웃 관련 변수 설정
         var scrollIcons = arrayOf(icon_badminton, icon_baseball, icon_cafe, icon_classroom, icon_park, icon_cooling_center,
@@ -172,6 +233,29 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
                 // 다이얼로그 출력
                 dlg.show()
+            }
+        }
+    }
+
+    // 카카오 로그인 데이터 불러오기
+    fun getLoginData(){
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e("TAG", "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                Log.i("TAG", "사용자 정보 요청 성공")
+                // 변수 저장
+                kakao_id = "${user.id}"
+                kakao_nickname = "${user.kakaoAccount?.profile?.nickname}"
+                kakao_email = "${user.kakaoAccount?.email}"
+                kakao_gender = "${user.kakaoAccount?.gender}"
+                kakao_age_range = "${user.kakaoAccount?.ageRange}"
+                Log.i("TAG", "$kakao_id, $kakao_nickname, $kakao_email, $kakao_gender, $kakao_age_range")
+
+                // 사용자 뷰 ID 표시
+                kakaoIdText1.text = "ID : ${kakao_id}\nEmail : ${kakao_email}"
+                kakaoIdText2.text = "ID : ${kakao_id}\nEmail : ${kakao_email}"
             }
         }
     }
