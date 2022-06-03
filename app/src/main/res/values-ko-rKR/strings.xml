@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">여기있시흥</string>
+    <string name="radius_distance1">500m</string>
+    <string name="radius_distance2">1.0km</string>
+    <string name="radius_distance3">1.5km</string>
+</resources>
