@@ -229,10 +229,13 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                             Toast.makeText(this, "제출 실패 : 인터넷 연결을 확인하세요.", Toast.LENGTH_SHORT).show()
                             Log.w("FIREBASE", "Error adding document", e)
                         }
-                    // 액티비티 새로고침?
-                    var intent = getIntent()
-                    finish()
-                    startActivity(intent)
+                    // 게시판으로 돌아가기
+                    iconEdit.setText("")
+                    mapEdit.setText("")
+                    memoEdit.setText("")
+
+                    suggestWrite.visibility = View.INVISIBLE
+                    suggestList.visibility = View.VISIBLE
                 }
                 // 다이얼로그 출력
                 dlg.show()
