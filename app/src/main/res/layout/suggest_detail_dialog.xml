@@ -82,7 +82,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:text="동의"
             app:backgroundTint="#DD8503"></Button>
@@ -94,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
+
             android:layout_marginBottom="10dp"
             android:layout_toRightOf="@+id/detail_agreeBtn"
             android:text="닫기"
@@ -107,7 +106,6 @@
             android:visibility="visible"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:layout_toRightOf="@+id/detail_closeBtn"
             android:text="삭제"
