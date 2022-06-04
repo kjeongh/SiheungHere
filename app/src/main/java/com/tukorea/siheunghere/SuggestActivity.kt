@@ -42,6 +42,7 @@ import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
 import kotlinx.android.synthetic.main.suggest_detail_dialog.*
+import kotlinx.android.synthetic.main.suggest_item.*
 import kotlinx.android.synthetic.main.suggest_map_dialog.*
 import retrofit2.Callback
 import retrofit2.Response
@@ -408,6 +409,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
         fun showDialog() {
             dialog.show()
+
         }
         init {
             dialog.setContentView(R.layout.suggest_detail_dialog)
@@ -415,7 +417,18 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             dialog.suggestDetail_reason.text = suggestItem.suggestReason
 
             dialog.detail_agreeBtn.setOnClickListener{
-                //동의기능 추가하기
+                var dlg = AlertDialog.Builder(context)
+                dlg.setMessage("동의 하시겠습니까? 한 번 동의하면 취소할 수 없습니다.")
+                dlg.setNegativeButton("취소", null)
+                dlg.setPositiveButton("동의") { dlg, which ->
+                    var map= mutableMapOf<String,Any>()
+                    map["agreeNum"] = suggestItem.agreeNum + 1
+                    var suggest = db.collection("suggests").document(suggestItem.docId).update(map)
+
+
+                    dialog.dismiss()
+                }
+                dlg.show()
                 Toast.makeText(context, "이 게시글에 동의하였습니다", Toast.LENGTH_SHORT).show()
             }
             dialog.detail_closeBtn.setOnClickListener{
