@@ -439,8 +439,10 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             dialog.suggestDetail_reason.text = suggestItem.suggestReason
 
             dialog.detail_agreeBtn.setOnClickListener{
+
+
                 var dlg = AlertDialog.Builder(context)
-                dlg.setMessage("동의 하시겠습니까? 한 번 동의하면 취소할 수 없습니다.")
+                dlg.setMessage("동의하시겠습니까? 한 번 동의하면 취소할 수 없습니다.")
                 dlg.setNegativeButton("취소", null)
                 dlg.setPositiveButton("동의") { dlg, which ->
                     var map= mutableMapOf<String,Any>()
