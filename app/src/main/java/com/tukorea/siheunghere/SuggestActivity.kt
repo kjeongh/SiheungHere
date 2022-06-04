@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -39,6 +40,7 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
+import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
 import kotlinx.android.synthetic.main.suggest_detail_dialog.*
@@ -209,6 +211,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                 dlg.setPositiveButton("제출"){ dialog, which ->
                     // hashMap 생성해서 Firestore 제출
                     val suggest = hashMapOf(
+                        "kakaoUserId" to kakao_id,
                         "resourceType" to iconEdit.text.toString(),
                         "suggestAddr" to mapEdit.text.toString(),
                         "suggestReason" to memoEdit.text.toString(),
@@ -229,10 +232,13 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                             Toast.makeText(this, "제출 실패 : 인터넷 연결을 확인하세요.", Toast.LENGTH_SHORT).show()
                             Log.w("FIREBASE", "Error adding document", e)
                         }
-                    // 액티비티 새로고침?
-                    var intent = getIntent()
-                    finish()
-                    startActivity(intent)
+                    // 게시판으로 돌아가기
+                    iconEdit.setText("")
+                    mapEdit.setText("")
+                    memoEdit.setText("")
+
+                    suggestWrite.visibility = View.INVISIBLE
+                    suggestList.visibility = View.VISIBLE
                 }
                 // 다이얼로그 출력
                 dlg.show()
@@ -437,9 +443,12 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             dialog.setContentView(R.layout.suggest_detail_dialog)
             dialog.suggestDetail_txtAddr.text = suggestItem.suggestAddr
             dialog.suggestDetail_reason.text = suggestItem.suggestReason
+            if (kakao_id == suggestItem.kakaoUserId){
+                dialog.detail_deleteBtn.isEnabled = true
+                dialog.detail_deleteBtn.visibility = View.VISIBLE
+            }
 
             dialog.detail_agreeBtn.setOnClickListener{
-
 
                 var dlg = AlertDialog.Builder(context)
                 dlg.setMessage("동의하시겠습니까? 한 번 동의하면 취소할 수 없습니다.")
@@ -462,9 +471,9 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             dialog.detail_deleteBtn.setOnClickListener {
                 // 최종 확인 다이얼로그
                 var dlg = AlertDialog.Builder(context)
-                dlg.setMessage("삭제 하시겠습니까?")
+                dlg.setMessage("삭제 하시겠습니까?\n삭제된 글은 다시 복구할 수 없습니다.")
                 dlg.setNegativeButton("취소", null)
-                dlg.setPositiveButton("제출") { dlg, which ->
+                dlg.setPositiveButton("삭제") { dlg, which ->
                     db.collection("suggests").document(suggestItem.docId).delete()
                     dialog.dismiss()
                 }
@@ -486,7 +495,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             // 데이터 베이스에 저장할 좌표 설정
             latitude = coord.latitude
             longitude = coord.longitude
-            marker.icon = OverlayImage.fromResource(R.drawable.etc_location)
+            marker.icon = OverlayImage.fromResource(R.drawable.map_point)
             marker.width = VariableOnMap.MARKER_SIZE
             marker.height = VariableOnMap.MARKER_SIZE
             marker.map = naverMap
