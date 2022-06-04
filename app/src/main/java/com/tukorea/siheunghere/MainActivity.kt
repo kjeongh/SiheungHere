@@ -272,7 +272,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         when(item.itemId) {
             R.id.menu_item_contact1-> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:031-310-2114")))
             R.id.menu_item_contact2-> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:031-380-5350")))
-            R.id.menu_item_ex1->Toast.makeText(this, "메뉴1", Toast.LENGTH_SHORT).show()
+            R.id.menu_item_ex1->startActivity(Intent(this, GuideActivity::class.java))
             R.id.menu_item_ex2->Toast.makeText(this, "메뉴2", Toast.LENGTH_SHORT).show()
             R.id.menu_item_ex3->Toast.makeText(this, "메뉴3", Toast.LENGTH_SHORT).show()
         }
