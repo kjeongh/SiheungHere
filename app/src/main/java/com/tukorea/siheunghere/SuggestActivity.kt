@@ -47,6 +47,7 @@ import kotlinx.android.synthetic.main.suggest_map_dialog.*
 import retrofit2.Callback
 import retrofit2.Response
 import kotlinx.android.synthetic.main.suggest_item.view.*
+import okhttp3.internal.notify
 import okhttp3.internal.notifyAll
 import kotlin.collections.ArrayList
 
@@ -136,7 +137,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
         firestore = FirebaseFirestore.getInstance()
 
-        var recyclerAdapter = RecyclerViewAdapter("wifi") //메인 - wifi부터 보여줌
+        var recyclerAdapter = RecyclerViewAdapter("와이파이") //메인 - wifi부터 보여줌
 
         suggest_recycler.adapter = recyclerAdapter
         suggest_recycler.layoutManager = LinearLayoutManager(this)

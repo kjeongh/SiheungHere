@@ -87,10 +87,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        var keyHash = Utility.getKeyHash(this)
-        Log.d("TAG", keyHash)
-        Toast.makeText(this, keyHash, Toast.LENGTH_SHORT).show()
-
         //상단 툴바 설정
         setSupportActionBar(toolbar)
         getSupportActionBar()!!.setDisplayShowCustomEnabled(true)
