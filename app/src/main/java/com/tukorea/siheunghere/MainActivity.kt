@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     private var sharedList = mutableListOf<SharedResource>()
     private var filteredList = mutableListOf<SharedResource>()
     private lateinit var dialog : Dialog
-
+    private var setDistance = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -173,7 +173,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         // 위치 재검색 버튼
         ResearchBtn.setOnClickListener {
             // 지도 중심 좌표 get & 반경 그리기
-            if (naverMap.cameraPosition.target != cameraPos) {
+            if (naverMap.cameraPosition.target != cameraPos || setDistance) {
                 cameraPos = naverMap.cameraPosition.target
                 makeCircle(cameraPos, distance)
             // 위도 또는 경도 범위에 해당하는 데이터만 담기
@@ -212,20 +212,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                         mapAdaptor.setList(sharedList, noItem, "주변에 자원이 없습니다\n범위를 조정하여 검색하거나 위치를 이동해 주세요")
                     }
                 }
+                setDistance = false
             }
         }
 
         // 검색할 반지름 거리 설정 버튼
         DistBtn1.setOnClickListener {
             distance = VM.DISTANCE_1
+            setDistance = true
             ResearchBtn.callOnClick()
         }
         DistBtn2.setOnClickListener {
             distance = VM.DISTANCE_2
+            setDistance = true
             ResearchBtn.callOnClick()
         }
         DistBtn3.setOnClickListener {
             distance = VM.DISTANCE_3
+            setDistance = true
             ResearchBtn.callOnClick()
         }
 
