@@ -287,7 +287,29 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onBackPressed() { //뒤로가기 처리
-        finish() //main화면으로 돌아감
+        if(suggestWrite.visibility == View.VISIBLE) {
+
+
+            var dlg = AlertDialog.Builder(this)
+            dlg.setMessage("작성을 취소하시겠습니까?")
+            dlg.setNegativeButton("이어 쓰기", null)
+            dlg.setPositiveButton("작성 취소") { dlg, which ->
+
+                //나갔다 들어오면 초기화
+                iconEdit.setText("")
+                mapEdit.setText("")
+                memoEdit.setText("")
+
+                suggestWrite.visibility = View.INVISIBLE
+                suggestList.visibility = View.VISIBLE
+            }
+            dlg.show()
+
+        }
+        else {
+            finish() //main화면으로 돌아감
+        }
+
     }
 
     //건의글 리사이클러뷰 어댑터 - 건의글 나열
@@ -423,13 +445,13 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                 dlg.setPositiveButton("동의") { dlg, which ->
                     var map= mutableMapOf<String,Any>()
                     map["agreeNum"] = suggestItem.agreeNum + 1
-                    var suggest = db.collection("suggests").document(suggestItem.docId).update(map)
-
+                    db.collection("suggests").document(suggestItem.docId).update(map)
 
                     dialog.dismiss()
+                    Toast.makeText(context, "이 게시글에 동의하였습니다", Toast.LENGTH_SHORT).show()
+
                 }
                 dlg.show()
-                Toast.makeText(context, "이 게시글에 동의하였습니다", Toast.LENGTH_SHORT).show()
             }
             dialog.detail_closeBtn.setOnClickListener{
                 dialog.dismiss() //닫기
