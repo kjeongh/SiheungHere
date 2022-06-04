@@ -46,6 +46,7 @@ import kotlinx.android.synthetic.main.suggest_map_dialog.*
 import retrofit2.Callback
 import retrofit2.Response
 import kotlinx.android.synthetic.main.suggest_item.view.*
+import okhttp3.internal.notifyAll
 import kotlin.collections.ArrayList
 
 
@@ -124,17 +125,18 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         }
 
         // 레이아웃 관련 변수 설정
-        var scrollIcons = arrayOf(icon_badminton, icon_baseball, icon_cafe, icon_classroom, icon_park, icon_cooling_center,
-            icon_experience, icon_futsal, icon_gallery, icon_livingsport, icon_meeting, icon_parking,
-            icon_practice_room, icon_soccer_field, icon_theater, icon_toilet, icon_wifi)
+        var scrollIcons = arrayOf(icon_wifi, icon_cooling_center, icon_park, icon_toilet, icon_parking, icon_badminton, icon_baseball,
+            icon_cafe, icon_classroom, icon_experience, icon_futsal, icon_gallery, icon_livingsport, icon_meeting,
+            icon_practice_room, icon_soccer_field, icon_theater)
 
-        var sharedTypeName = arrayOf("배드민턴장", "야구장", "카페", "강의실", "공원", "무더위쉼터",
-            "체험/견학", "풋살장", "갤러리/공방", "생활체육시설", "회의실", "주차장",
-            "연습실/학원", "잔디구장", "공연장", "화장실", "와이파이")
+        var sharedTypeName = arrayOf("와이파이", "무더위쉼터", "공원", "화장실", "주차장", "배드민턴장",
+            "야구장", "카페", "강의실", "체험/견학", "풋살장", "갤러리/공방",
+            "생활체육시설", "회의실", "연습실/학원", "잔디구장", "공연장")
 
         firestore = FirebaseFirestore.getInstance()
 
         var recyclerAdapter = RecyclerViewAdapter("wifi") //메인 - wifi부터 보여줌
+
         suggest_recycler.adapter = recyclerAdapter
         suggest_recycler.layoutManager = LinearLayoutManager(this)
 
@@ -292,10 +294,10 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
         //건의글 배열
         private var suggestList : ArrayList<SuggestData> = arrayListOf()
-        private lateinit var itemClickListener : AdapterView.OnItemClickListener
         private var context : Context = this@SuggestActivity
 
         init { //메인 화면 - 전체보기
+
             firestore?.collection("suggests")?.addSnapshotListener { querySnapshot, firebaseFireStoreException ->
                 suggestList.clear() //suggest리스트 비워줌
 
@@ -327,7 +329,9 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
              var viewHolder = (holder as ViewHolder).itemView
 
-            suggestList = ArrayList(suggestList.sortedBy{it.timestamp}) //시간순으로 나열
+            var sortedSuggestList = suggestList.sortedBy { it.timestamp }
+
+            suggestList = ArrayList(sortedSuggestList.reversed()) //최신글을 제일 위로
             viewHolder.suggestList_addr.text = suggestList[position].suggestAddr
             viewHolder.suggestList_agreeNum.text = suggestList[position].agreeNum.toString()
             viewHolder.suggestList_num.text = (position+1).toString()
@@ -411,9 +415,8 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             dialog.suggestDetail_reason.text = suggestItem.suggestReason
 
             dialog.detail_agreeBtn.setOnClickListener{
-                suggestItem.agreeNum++ //동의 수 올리기
+                //동의기능 추가하기
                 Toast.makeText(context, "이 게시글에 동의하였습니다", Toast.LENGTH_SHORT).show()
-                //동의하고 뷰 업데이트할 것!
             }
             dialog.detail_closeBtn.setOnClickListener{
                 dialog.dismiss() //닫기
