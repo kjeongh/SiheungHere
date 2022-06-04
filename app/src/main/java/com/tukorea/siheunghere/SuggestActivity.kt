@@ -47,6 +47,7 @@ import kotlinx.android.synthetic.main.suggest_map_dialog.*
 import retrofit2.Callback
 import retrofit2.Response
 import kotlinx.android.synthetic.main.suggest_item.view.*
+import okhttp3.internal.notify
 import okhttp3.internal.notifyAll
 import kotlin.collections.ArrayList
 
