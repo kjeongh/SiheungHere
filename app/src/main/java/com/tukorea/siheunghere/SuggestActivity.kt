@@ -136,7 +136,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
         firestore = FirebaseFirestore.getInstance()
 
-        var recyclerAdapter = RecyclerViewAdapter("wifi") //메인 - wifi부터 보여줌
+        var recyclerAdapter = RecyclerViewAdapter("와이파이") //메인 - wifi부터 보여줌
 
         suggest_recycler.adapter = recyclerAdapter
         suggest_recycler.layoutManager = LinearLayoutManager(this)
