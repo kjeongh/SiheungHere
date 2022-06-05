@@ -7,8 +7,8 @@
         android:id="@+id/menu_item_contact2"
         android:title="주민자치과 전화번호"/>
     <item
-        android:id="@+id/menu_item_ex1"
-        android:title="메뉴 미리보기 아이템 1"/>
+        android:id="@+id/menu_item_guide"
+        android:title="이용 가이드 보기"/>
     <item
         android:id="@+id/menu_item_ex2"
         android:title="메뉴 미리보기 아이템 2"/>

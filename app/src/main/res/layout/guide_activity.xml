@@ -21,7 +21,7 @@
             android:id="@+id/dot_page1"
             android:layout_width="10dp"
             android:layout_height="10dp"
-            android:src="@drawable/dot_active"
+            android:src="@drawable/dot_inactive"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="1dp"/>
         <ImageView
