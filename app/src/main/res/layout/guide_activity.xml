@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/Viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/layoutDots"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/dot_page1"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/dot_inactive"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"/>
+        <ImageView
+            android:id="@+id/dot_page2"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/dot_inactive"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"/>
+        <ImageView
+            android:id="@+id/dot_page3"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/dot_inactive"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"/>
+        <ImageView
+            android:id="@+id/dot_page4"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/dot_inactive"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/layoutDots"
+        android:alpha=".5"
+        android:background="@android:color/white" />
+
+
+
+    <!--    다음 버튼-->
+    <!--    layout_alignParent로 아래 오른쪽에 위치-->
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/clear"
+        android:text="다음"
+        android:textColor="@android:color/black" />
+
+
+    <!--    스킵 버튼-->
+    <!--    layout_alignParent로 아래 왼쪽에 위치-->
+    <Button
+        android:id="@+id/btn_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/clear"
+        android:text="건너뛰기"
+        android:textColor="@android:color/black" />
+
+
+</RelativeLayout>
