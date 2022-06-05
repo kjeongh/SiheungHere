@@ -32,7 +32,7 @@
 <!--작은 아이콘 좌측 여백-->
     <dimen name="small_icon_marginLeft">20dp</dimen>
 <!--건의글 상세 작은아이콘 사이즈-->
-    <dimen name="small_icon_width">12dp</dimen>
-    <dimen name="small_icon_height">15dp</dimen>
+    <dimen name="small_icon_width">16dp</dimen>
+    <dimen name="small_icon_height">19dp</dimen>
 
 </resources>
