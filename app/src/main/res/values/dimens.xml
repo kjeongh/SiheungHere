@@ -6,7 +6,7 @@
     <dimen name="info_icon_margin">3dp</dimen>
 <!--이름-->
     <dimen name="info_title_margin">3dp</dimen>
-    <dimen name="info_title_textsize">14dp</dimen>
+    <dimen name="info_title_textsize">18dp</dimen>
 <!--이미지-->
     <dimen name="info_image_width">150dp</dimen>
     <dimen name="info_image_height">100dp</dimen>
@@ -29,5 +29,10 @@
     <dimen name="previous_next_icon">30dp</dimen>
 <!--페이지 번호-->
     <dimen name="page_num_size">20sp</dimen>
+<!--작은 아이콘 좌측 여백-->
+    <dimen name="small_icon_marginLeft">20dp</dimen>
+<!--건의글 상세 작은아이콘 사이즈-->
+    <dimen name="small_icon_width">12dp</dimen>
+    <dimen name="small_icon_height">15dp</dimen>
 
 </resources>

@@ -5,17 +5,17 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:padding="6dp">
+    style="@style/dialog_padding">
 
     <TextView
         android:id="@+id/info_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/info_title_margin"
         android:layout_gravity="center"
+        android:layout_margin="@dimen/info_title_margin"
         android:text="건의글 상세보기"
         android:textSize="@dimen/info_title_textsize"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <com.naver.maps.map.MapView
         android:id="@+id/map_view"
@@ -30,11 +30,11 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="11dp"
-            android:layout_height="@dimen/info_smallicon_size"
+            android:layout_width="@dimen/small_icon_width"
+            android:layout_height="@dimen/small_icon_height"
             android:layout_marginRight="@dimen/info_smallicon_marginright"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/info_location" />
+            android:layout_marginLeft="@dimen/small_icon_marginLeft"
+            android:background="@drawable/map_point" />
 
         <TextView
             android:id="@+id/suggestDetail_txtAddr"
@@ -52,11 +52,11 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="11dp"
-            android:layout_height="@dimen/info_smallicon_size"
+            android:layout_width="@dimen/small_icon_width"
+            android:layout_height="@dimen/small_icon_height"
             android:layout_marginRight="@dimen/info_smallicon_marginright"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/info_location" />
+            android:layout_marginLeft="@dimen/small_icon_marginLeft"
+            android:background="@drawable/etc_reason" />
 
         <TextView
             android:layout_width="match_parent"
@@ -69,50 +69,45 @@
         android:id="@+id/suggestDetail_reason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"/>
+        android:padding="20dp"
+        android:background="@drawable/memo_border"
+        android:layout_margin="20dp" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/detail_agreeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="8dp"
             android:text="동의"
             app:backgroundTint="#DD8503"></Button>
 
 
         <Button
-            android:id="@+id/detail_closeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-
-            android:layout_marginBottom="10dp"
-            android:layout_toRightOf="@+id/detail_agreeBtn"
-            android:text="닫기"
-            app:backgroundTint="#DD8503"></Button>
-
-        <Button
             android:id="@+id/detail_deleteBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_toRightOf="@+id/detail_closeBtn"
-            android:text="삭제"
-            android:visibility="invisible"
             android:enabled="false"
+            android:text="삭제"
+            android:visibility="gone"
             app:backgroundTint="#DD8503"></Button>
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/detail_closeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="닫기"
+            app:backgroundTint="#DD8503"></Button>
+
+
+    </LinearLayout>
 
 
 </LinearLayout>
