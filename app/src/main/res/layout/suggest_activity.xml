@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:textColor="@color/black"
+                android:fontFamily="@font/defaultlight"
                 android:text="건의 글 게시판 이용 시 로그인이 필요합니다."
                 />
 
@@ -58,6 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="건의글 목록"
+                    android:fontFamily="@font/title"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     android:layout_margin="20dp"/>
@@ -128,6 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="새 건의글 작성"
+                    android:fontFamily="@font/title"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_margin="20dp"/>
@@ -157,8 +160,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="자원 종류"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:lineSpacingExtra="5dp"
+                        android:fontFamily="@font/title"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="17sp"
                         android:layout_margin="10dp"/>
                 </LinearLayout>
                 <LinearLayout
@@ -173,8 +178,9 @@
                         android:layout_height="wrap_content"
                         android:hint="자원을 설정해 주세요."
                         android:padding="8dp"
+                        android:fontFamily="@font/defaultlight"
                         android:background="@drawable/memo_border"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:layout_margin="10dp"
                         android:textColor="@color/black"
                         android:focusable="false"/>
@@ -196,9 +202,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="위치"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:text="위 치"
+                        android:fontFamily="@font/title"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="17sp"
                         android:layout_margin="10dp"/>
                 </LinearLayout>
                 <LinearLayout
@@ -212,11 +219,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="위치를 설정해 주세요."
+                        android:fontFamily="@font/defaultlight"
                         android:padding="8dp"
                         android:background="@drawable/memo_border"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:layout_margin="10dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/blue"
                         android:focusable="false"/>
                 </LinearLayout>
             </LinearLayout>
@@ -237,8 +245,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="건의 사유"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:fontFamily="@font/title"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="17sp"
                         android:layout_margin="10dp"/>
                 </LinearLayout>
                 <LinearLayout
@@ -258,7 +267,8 @@
                         android:padding="8dp"
                         android:background="@drawable/memo_border"
                         android:hint="내용 작성"
-                        android:textSize="20sp"
+                        android:fontFamily="@font/defaultlight"
+                        android:textSize="17sp"
                         android:maxLength="100"/>
                     <TextView
                         android:id="@+id/memoLimit"
@@ -284,7 +294,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#DD8503"
-                    android:text="작성"/>
+                    android:fontFamily="@font/title"
+                    android:textColor="@color/white"
+                    android:layout_margin="30dp"
+                    android:text="작 성"/>
             </LinearLayout>
 
         </LinearLayout>

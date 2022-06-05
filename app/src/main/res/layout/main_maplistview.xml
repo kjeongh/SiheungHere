@@ -32,6 +32,7 @@
                 android:id="@+id/mapName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/title"
                 android:text="(ABC행복학습타운) 모임터(210호)"
                 android:layout_marginBottom="5dp"
                 />
@@ -64,6 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0.5 km"
+                        android:fontFamily="@font/title"
                         android:textColor="@color/blue"
                         />
                 </LinearLayout>

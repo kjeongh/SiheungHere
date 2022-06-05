@@ -44,6 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:fontFamily="@font/defaultlight"
                     android:text="검색된 자원이 없습니다\n범위를 조정하여 검색해 주세요"/>
 
 

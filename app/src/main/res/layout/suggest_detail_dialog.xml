@@ -14,6 +14,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/info_title_margin"
         android:text="건의글 상세보기"
+        android:fontFamily="@font/title"
         android:textSize="@dimen/info_title_textsize"
         android:textStyle="bold"/>
 
@@ -62,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="건의사유"
-            android:textStyle="bold"
+            android:fontFamily="@font/title"
             android:textSize="14dp" />
     </LinearLayout>
 
@@ -87,7 +88,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="동의"
+            android:text="동 의"
+            android:fontFamily="@font/title"
+            android:textColor="@color/white"
             app:backgroundTint="#DD8503"></Button>
 
 
@@ -98,8 +101,10 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:enabled="false"
-            android:text="삭제"
+            android:text="삭 제"
+            android:fontFamily="@font/title"
             android:visibility="gone"
+            android:textColor="@color/white"
             app:backgroundTint="#DD8503"></Button>
 
         <Button
@@ -107,7 +112,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="닫기"
+            android:text="닫 기"
+            android:textColor="@color/white"
+            android:fontFamily="@font/title"
             app:backgroundTint="#DD8503"></Button>
 
 
