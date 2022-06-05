@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -252,6 +253,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             }
         }
 
+
+        // 최초 실행시 이용 가이드 액티비티 시작
+        startGuide()
+    }
+
+    // 데이터 값 확인하여 가이드 실행하는 함수
+    private fun startGuide(){
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val guide = pref.getInt("guide", 0) // 0이면 가이드 시작, 아니면 실행하지 않음
+        if (guide == 0){
+            pref.edit().putInt("guide", 1).apply()
+            startActivity(Intent(this, GuideActivity::class.java))
+        }
     }
 
     //툴바에서 메뉴버튼 클릭시 동작

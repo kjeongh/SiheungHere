@@ -122,7 +122,6 @@ class GuideActivity: AppCompatActivity() {
         var guide_mascot_src = arrayOf(R.drawable.guide_mascot1, R.drawable.guide_mascot2, R.drawable.guide_mascot3, R.drawable.guide_mascot4)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerViewHolder {
-            Log.d("TEST", "onCreate")
             var p = PagerViewHolder(parent, viewType)
             return p
         }
@@ -130,7 +129,6 @@ class GuideActivity: AppCompatActivity() {
         override fun getItemCount(): Int = 4
 
         override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
-            Log.d("TEST", "onBind, ${position}")
             //gif 재생
             Glide.with(holder.v).load(guide_img_src[position]).into(holder.v.guide_img)
             //내용 설정
