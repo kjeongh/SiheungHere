@@ -27,6 +27,7 @@
         android:layout_marginLeft="20dp"
         android:layout_gravity="center_vertical"
         android:text=""
+        android:fontFamily="@font/title"
         android:textSize="14dp"
         android:textStyle="bold"/>
 
@@ -53,14 +54,15 @@
         android:layout_gravity="center_vertical"
         android:background="@drawable/etc_agree"/>
 
-    <TextView
-        android:id="@+id/suggestList_agreeNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_gravity="center_vertical"
-        android:textSize="13dp"
-        android:text="0" />
+        <TextView
+            android:id="@+id/suggestList_agreeNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:text="0"
+            android:fontFamily="@font/defaultbold"
+            android:textSize="13dp" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

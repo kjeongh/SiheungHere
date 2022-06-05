@@ -67,6 +67,7 @@
         android:layout_alignParentRight="true"
         android:background="@color/clear"
         android:text="다음"
+        android:fontFamily="@font/title"
         android:textColor="@android:color/black" />
 
 
@@ -80,6 +81,7 @@
         android:layout_alignParentLeft="true"
         android:background="@color/clear"
         android:text="건너뛰기"
+        android:fontFamily="@font/title"
         android:textColor="@android:color/black" />
 
 
