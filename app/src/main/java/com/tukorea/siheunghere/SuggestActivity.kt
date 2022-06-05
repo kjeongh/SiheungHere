@@ -219,7 +219,8 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                         "agreeNum" to 0,
                         "latitude" to latitude,
                         "longitude" to longitude,
-                        "timestamp" to Timestamp.now()
+                        "timestamp" to Timestamp.now(),
+                        "agreeId" to listOf(kakao_id)
                     )
                     db.collection("suggests")
                         .add(suggest)
@@ -444,6 +445,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             dialog.setContentView(R.layout.suggest_detail_dialog)
             dialog.suggestDetail_txtAddr.text = suggestItem.suggestAddr
             dialog.suggestDetail_reason.text = suggestItem.suggestReason
+
             if (kakao_id == suggestItem.kakaoUserId){
                 dialog.detail_deleteBtn.isEnabled = true
                 dialog.detail_deleteBtn.visibility = View.VISIBLE
@@ -451,19 +453,30 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
             dialog.detail_agreeBtn.setOnClickListener{
 
-                var dlg = AlertDialog.Builder(context)
-                dlg.setMessage("동의하시겠습니까? 한 번 동의하면 취소할 수 없습니다.")
-                dlg.setNegativeButton("취소", null)
-                dlg.setPositiveButton("동의") { dlg, which ->
-                    var map= mutableMapOf<String,Any>()
-                    map["agreeNum"] = suggestItem.agreeNum + 1
-                    db.collection("suggests").document(suggestItem.docId).update(map)
-
-                    dialog.dismiss()
-                    Toast.makeText(context, "이 게시글에 동의하였습니다", Toast.LENGTH_SHORT).show()
-
+                if(kakao_id == suggestItem.kakaoUserId) { //본인의 글은 동의 불가능
+                    Toast.makeText(this@SuggestActivity, "본인의 글은 동의할 수 없습니다", Toast.LENGTH_SHORT).show()
                 }
-                dlg.show()
+                else if(suggestItem.agreeId?.contains(kakao_id) == true) { //이미 동의한 기록이 있으면 동의 불가능
+                    Toast.makeText(this@SuggestActivity, "이미 동의한 글입니다", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    var dlg = AlertDialog.Builder(context)
+                    dlg.setMessage("동의하시겠습니까? 한 번 동의하면 취소할 수 없습니다.")
+                    dlg.setNegativeButton("취소", null)
+                    dlg.setPositiveButton("동의") { dlg, which ->
+                        var agreeNumMap = mutableMapOf<String,Any>()
+                        var agreeIdMap = mutableMapOf<String, Any>()
+
+                        agreeIdMap["agreeId"] = suggestItem.agreeId.plus(kakao_id)
+                        agreeNumMap["agreeNum"] = suggestItem.agreeNum + 1
+                        db.collection("suggests").document(suggestItem.docId).update(agreeNumMap)
+                        db.collection("suggests").document(suggestItem.docId).update(agreeIdMap)
+
+                        dialog.dismiss()
+                        Toast.makeText(context, "이 게시글에 동의하였습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    dlg.show()
+                }
             }
             dialog.detail_closeBtn.setOnClickListener{
                 dialog.dismiss() //닫기
