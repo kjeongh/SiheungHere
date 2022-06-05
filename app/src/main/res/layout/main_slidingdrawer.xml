@@ -5,6 +5,7 @@
     android:orientation="horizontal"
     android:gravity="center"
     android:layout_gravity="bottom">
+
     <SlidingDrawer
         android:id="@+id/slidingdrawer"
         android:layout_width="wrap_content"
@@ -15,8 +16,8 @@
         >
         <ImageButton
             android:id="@+id/handle"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
             android:scaleType="fitCenter"
             android:src="@drawable/etc_arrow_up"
             android:background="@color/clear"
@@ -29,6 +30,12 @@
             android:orientation="vertical"
             android:background="@color/white">
 
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/yellowline" />
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -37,14 +44,13 @@
                     android:id="@+id/mapListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
                 </ListView>
                 <TextView
                     android:id="@+id/noItem"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:fontFamily="@font/defaultlight"
+                    android:lineSpacingExtra="5dp"
                     android:text="검색된 자원이 없습니다\n범위를 조정하여 검색해 주세요"/>
 
 

@@ -28,6 +28,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="와이파이"/>
             </LinearLayout>
 
@@ -46,6 +48,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="무더위쉼터"/>
             </LinearLayout>
 
@@ -64,6 +68,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="공원"/>
 
             </LinearLayout>
@@ -83,6 +89,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="화장실"/>
 
             </LinearLayout>
@@ -102,6 +110,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="주차장"/>
 
             </LinearLayout>
@@ -121,6 +131,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="배드민턴장"/>
 
             </LinearLayout>
@@ -141,6 +153,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="야구장"/>
 
             </LinearLayout>
@@ -160,6 +174,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="카페"/>
 
             </LinearLayout>
@@ -180,6 +196,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="강의실"/>
 
            </LinearLayout>
@@ -199,6 +217,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="체험/견학"/>
 
             </LinearLayout>
@@ -220,6 +240,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="풋살장"/>
 
             </LinearLayout>
@@ -241,6 +263,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="갤러리/공방"/>
 
             </LinearLayout>
@@ -260,6 +284,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="생활체육시설"/>
 
             </LinearLayout>
@@ -279,6 +305,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="회의실"/>
 
             </LinearLayout>
@@ -300,6 +328,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="연습실/학원"/>
 
             </LinearLayout>
@@ -319,6 +349,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="잔디구장"/>
 
             </LinearLayout>
@@ -338,13 +370,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/scrollBar_textSize"
+                    android:fontFamily="@font/title"
+                    android:layout_marginTop="3dp"
                     android:text="공연장"/>
 
             </LinearLayout>
-
-
-
-
-
         </LinearLayout>
     </HorizontalScrollView>

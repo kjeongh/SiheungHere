@@ -48,7 +48,7 @@
                     android:padding="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:text="이 위치에서 재검색"
+                    android:text="  이 위치에서 재검색  "
                     android:fontFamily="@font/title"
                     android:textSize="10sp"
                     android:layout_marginVertical="@dimen/btn_margintop"

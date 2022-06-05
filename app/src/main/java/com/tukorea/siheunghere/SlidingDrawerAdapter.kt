@@ -64,7 +64,7 @@ class SlidingDrawerAdapter(val context : Context) : BaseAdapter(){
         }// 다운로드 실패시 기본 no_image 출력
         listView.mapName.text = NameText[p0]
         listView.mapAddress.text = AddressText[p0]
-        listView.mapTel.text = "문의전화 : " + TelText[p0]
+        listView.mapTel.text = TelText[p0]
         listView.mapDistance.text = DistanceText[p0] + "km"
 
         return listView
