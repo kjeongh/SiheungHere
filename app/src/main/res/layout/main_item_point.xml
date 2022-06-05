@@ -59,6 +59,7 @@
                 android:layout_width="@dimen/info_smallicon_size"
                 android:layout_height="@dimen/info_smallicon_size"
                 android:background="@drawable/info_location"
+                android:layout_marginLeft="@dimen/small_icon_marginLeft"
                 android:layout_marginRight="@dimen/info_smallicon_marginright" />
             <TextView
                 android:id="@+id/info_addr"
@@ -77,6 +78,7 @@
                 android:layout_width="@dimen/info_smallicon_size"
                 android:layout_height="@dimen/info_smallicon_size"
                 android:background="@drawable/info_phone"
+                android:layout_marginLeft="@dimen/small_icon_marginLeft"
                 android:layout_marginRight="@dimen/info_smallicon_marginright" />
             <TextView
                 android:id="@+id/info_tel"
@@ -95,6 +97,8 @@
                 android:layout_width="@dimen/info_smallicon_size"
                 android:layout_height="@dimen/info_smallicon_size"
                 android:background="@drawable/info_distance"
+                android:layout_marginLeft="@dimen/small_icon_marginLeft"
+
                 android:layout_marginRight="@dimen/info_smallicon_marginright" />
             <TextView
                 android:id="@+id/info_dist"
