@@ -35,18 +35,6 @@
             android:background="@color/clear"
             android:src="@drawable/etc_voting"/>
 
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/title_menuBtn"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="35dp"-->
-<!--            android:layout_margin="10dp"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:background="@color/white"-->
-<!--            android:src="@drawable/etc_menu"/>-->
-
-
     </LinearLayout>
-
 </androidx.appcompat.widget.Toolbar>
 

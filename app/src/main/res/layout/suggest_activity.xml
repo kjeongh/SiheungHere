@@ -224,7 +224,9 @@
                         android:background="@drawable/memo_border"
                         android:textSize="17sp"
                         android:layout_margin="10dp"
-                        android:textColor="@color/blue"
+                        android:lineSpacingExtra="5dp"
+
+                        android:textColor="@color/black"
                         android:focusable="false"/>
                 </LinearLayout>
             </LinearLayout>
@@ -267,6 +269,7 @@
                         android:padding="8dp"
                         android:background="@drawable/memo_border"
                         android:hint="내용 작성"
+                        android:lineSpacingExtra="5dp"
                         android:fontFamily="@font/defaultlight"
                         android:textSize="17sp"
                         android:maxLength="100"/>
