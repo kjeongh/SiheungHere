@@ -84,10 +84,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         setContentView(R.layout.suggest_activity)
         // kakao SDK 초기화
         KakaoSdk.init(this, getString(R.string.kakao_native_key))
-        var keyHash = Utility.getKeyHash(this)
-        Log.d("TAG", getString(R.string.kakao_native_key))
-
-
 
         // 카카오 로그인 버튼
         LoginBtn.setOnClickListener {
