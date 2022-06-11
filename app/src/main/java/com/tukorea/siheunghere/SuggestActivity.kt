@@ -33,10 +33,7 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.LocationTrackingMode
-import com.naver.maps.map.MapFragment
-import com.naver.maps.map.NaverMap
-import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
@@ -44,6 +41,7 @@ import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.main_title.*
 import kotlinx.android.synthetic.main.suggest_activity.*
 import kotlinx.android.synthetic.main.suggest_detail_dialog.*
+import kotlinx.android.synthetic.main.suggest_detail_dialog.view.*
 import kotlinx.android.synthetic.main.suggest_item.*
 import kotlinx.android.synthetic.main.suggest_map_dialog.*
 import retrofit2.Callback
@@ -52,6 +50,7 @@ import kotlinx.android.synthetic.main.suggest_item.view.*
 import okhttp3.internal.notify
 import okhttp3.internal.notifyAll
 import kotlin.collections.ArrayList
+import kotlin.math.log
 
 
 class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
@@ -188,6 +187,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                     fm.beginTransaction().add(R.id.map_fragment, it).commit()
                 }
             mapFragment.getMapAsync(this)
+
             // 다이얼로그 출력
             Mapdialog.showDialog()
         }
@@ -365,8 +365,23 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             viewHolder.suggestList_addr.text = suggestList[position].suggestAddr
             viewHolder.suggestList_agreeNum.text = suggestList[position].agreeNum.toString()
             viewHolder.suggestList_num.text = (position+1).toString()
+
             viewHolder.setOnClickListener(){ //클릭시 다이얼로그 띄우기
                 var dlg = suggestDetailDialog(context, suggestList[position])
+
+                latitude = suggestList[position].latitude
+                longitude = suggestList[position].longitude
+
+                val fm = supportFragmentManager
+                try {
+                    val mapFragment = fm.findFragmentById(R.id.dialog_map_fragment) as MapFragment?
+                        ?: MapFragment.newInstance().also {
+                            fm.beginTransaction().replace(R.id.dialog_map_fragment, it).commit()
+                        }
+                    mapFragment.getMapAsync(this@SuggestActivity)
+                } catch (e : Exception) {
+                    Log.e("TAG","프래그먼트 생성 실패", e)
+                }
                 dlg.showDialog()
             }
         }
@@ -375,7 +390,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             return suggestList.size
         }
     }
-
 
     // 위치선택 다이얼로그
     inner class MapDialog(context : Context){
@@ -438,7 +452,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
         fun showDialog() {
             dialog.show()
-
         }
         init {
             dialog.setContentView(R.layout.suggest_detail_dialog)
@@ -499,34 +512,57 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
         // 현재 위치에서 시작
+
         naverMap.locationSource = FusedLocationSource(this, VariableOnMap.LOCATION_PERMISSTION_REQUEST_CODE)
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
         // 해당 좌표 클릭 시 이벤트
-        naverMap.setOnMapClickListener { point, coord ->
-            //네이버 지도에서 선택시 마커 표시
-            marker.position = LatLng(coord.latitude, coord.longitude)   // 좌표
+
+        if(suggestWrite.visibility == View.VISIBLE) {
+            Log.d("map", "onMapReady() called : fragment in suggestWrite")
+
+            naverMap.setOnMapClickListener { point, coord ->
+                //네이버 지도에서 선택시 마커 표시
+                marker.position = LatLng(coord.latitude, coord.longitude)   // 좌표
+                // 데이터 베이스에 저장할 좌표 설정
+                latitude = coord.latitude
+                longitude = coord.longitude
+                marker.icon = OverlayImage.fromResource(R.drawable.map_point)
+                marker.width = VariableOnMap.MARKER_SIZE
+                marker.height = VariableOnMap.MARKER_SIZE
+                marker.map = naverMap
+
+                var coords = coord.longitude.toString() + "," + coord.latitude.toString()
+
+                // 좌표 -> 주소 변환 APi 실행
+                RetrofitBuilder.getApiService().reverseGeo(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET, coords, "json", "roadaddr,addr").enqueue(object : Callback<ReverseGeoResponse> {
+                    // api 호출 성공시
+                    override fun onResponse(call: Call<ReverseGeoResponse>, response: Response<ReverseGeoResponse>) {
+                        mapEdit.setText(response.body().toString())
+                    }
+                    // api 호출 실패시
+                    override fun onFailure(call: Call<ReverseGeoResponse>, t: Throwable) {
+                        Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+        }
+        else {
+            Log.d("map", "onMapReady() called : fragment in dialog")
+            marker.position = LatLng(latitude, longitude)   // 좌표
             // 데이터 베이스에 저장할 좌표 설정
-            latitude = coord.latitude
-            longitude = coord.longitude
+
+            try {
+                val cameraUpdate = CameraUpdate.scrollTo(LatLng(latitude, longitude))
+                naverMap.moveCamera(cameraUpdate)
+            } catch (e : Error) {
+                Log.e("TAG", "카메라 이동 실패", e)
+            }
+
+
             marker.icon = OverlayImage.fromResource(R.drawable.map_point)
             marker.width = VariableOnMap.MARKER_SIZE
             marker.height = VariableOnMap.MARKER_SIZE
             marker.map = naverMap
-            var coords = coord.longitude.toString() + "," + coord.latitude.toString()
-            
-            // 좌표 -> 주소 변환 APi 실행
-            RetrofitBuilder.getApiService().reverseGeo(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET, coords, "json", "roadaddr,addr").enqueue(object : Callback<ReverseGeoResponse> {
-                // api 호출 성공시
-                override fun onResponse(call: Call<ReverseGeoResponse>, response: Response<ReverseGeoResponse>) {
-                    // 위치 표시 텍스트에 주소 출력
-                    mapEdit.setText(response.body().toString())
-                    //Log.d("Test", response.body().toString())
-                }
-                // api 호출 실패시
-                override fun onFailure(call: Call<ReverseGeoResponse>, t: Throwable) {
-                    Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
-                }
-            })
         }
     }
 }
