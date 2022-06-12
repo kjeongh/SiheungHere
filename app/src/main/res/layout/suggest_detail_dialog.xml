@@ -19,13 +19,13 @@
         android:textSize="@dimen/info_title_textsize"
         android:textStyle="bold"/>
 
-    <fragment
-        android:id="@+id/dialog_map_fragment"
+    <LinearLayout
+        android:id="@+id/dialog_fragment_container"
         android:layout_gravity="center"
         android:layout_margin="30dp"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:name="com.naver.maps.map.MapFragment" />
+        android:orientation="vertical" />
 
 
     <LinearLayout

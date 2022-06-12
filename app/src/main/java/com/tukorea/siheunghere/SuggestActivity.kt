@@ -68,9 +68,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
     private val db = Firebase.firestore
     private var firestore : FirebaseFirestore? = null
 
-    //상세정보 다이얼로그
-    private lateinit var suggestDialog : Dialog
-
     //카카오 로그인 데이터
     lateinit var kakao_id : String
     lateinit var kakao_nickname : String
@@ -376,21 +373,20 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                 latitude = suggestList[position].latitude
                 longitude = suggestList[position].longitude
 
-                mapFragment = fm.findFragmentById(R.id.dialog_map_fragment) as MapFragment
-                var ft : FragmentTransaction = supportFragmentManager.beginTransaction()
-                ft.remove(mapFragment).commit()
-                try {
-                    mapFragment = fm.findFragmentById(R.id.dialog_map_fragment) as MapFragment?
-                        ?: MapFragment.newInstance().also {
-                            fm.beginTransaction().add(R.id.dialog_map_fragment, it).commit()
-                        }
-                    Log.d("TAG","fm.beginTransaction().add called")
-                    mapFragment.getMapAsync(this@SuggestActivity)
+                val bundle = Bundle()
+                bundle.putDouble("latitude",latitude)
+                bundle.putDouble("longitude",longitude)
 
+
+                var dialogMapFragment = DialogMapFragment()
+
+                dialogMapFragment.arguments = bundle
+                try{
+                    fm.beginTransaction().replace(R.id.navermap, dialogMapFragment).commit()
+                    dlg.showDialog()
                 } catch (e : Exception) {
-                    throw e
+                    Log.e("TAG", "프래그먼트 add 에러", e)
                 }
-                dlg.showDialog()
 
             }
         }
@@ -557,14 +553,14 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             }
         }
         else {
-            Log.d("TAG", "onMapReady() called : fragment in dialog")
-            marker.position = LatLng(latitude, longitude)   // 좌표
-            // 데이터 베이스에 저장할 좌표 설정
-
-            marker.icon = OverlayImage.fromResource(R.drawable.map_point)
-            marker.width = VariableOnMap.MARKER_SIZE
-            marker.height = VariableOnMap.MARKER_SIZE
-            marker.map = naverMap
+//            Log.d("TAG", "onMapReady() called : fragment in dialog")
+//            marker.position = LatLng(latitude, longitude)   // 좌표
+//            // 데이터 베이스에 저장할 좌표 설정
+//
+//            marker.icon = OverlayImage.fromResource(R.drawable.map_point)
+//            marker.width = VariableOnMap.MARKER_SIZE
+//            marker.height = VariableOnMap.MARKER_SIZE
+//            marker.map = naverMap
         }
     }
 }
