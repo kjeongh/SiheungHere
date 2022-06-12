@@ -17,6 +17,8 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
@@ -325,6 +327,8 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         //건의글 배열
         private var suggestList : ArrayList<SuggestData> = arrayListOf()
         private var context : Context = this@SuggestActivity
+        val fm = supportFragmentManager
+
 
         init { //메인 화면 - 전체보기
 
@@ -357,8 +361,8 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
         //onCreateViewHolder에서 만든 view와 실제 데이터 연결
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-             var viewHolder = (holder as ViewHolder).itemView
-
+            var viewHolder = (holder as ViewHolder).itemView
+            var mapFragment : MapFragment
             var sortedSuggestList = suggestList.sortedBy { it.timestamp }
 
             suggestList = ArrayList(sortedSuggestList.reversed()) //최신글을 제일 위로
@@ -372,17 +376,22 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                 latitude = suggestList[position].latitude
                 longitude = suggestList[position].longitude
 
-                val fm = supportFragmentManager
+                mapFragment = fm.findFragmentById(R.id.dialog_map_fragment) as MapFragment
+                var ft : FragmentTransaction = supportFragmentManager.beginTransaction()
+                ft.remove(mapFragment).commit()
                 try {
-                    val mapFragment = fm.findFragmentById(R.id.dialog_map_fragment) as MapFragment?
+                    mapFragment = fm.findFragmentById(R.id.dialog_map_fragment) as MapFragment?
                         ?: MapFragment.newInstance().also {
-                            fm.beginTransaction().replace(R.id.dialog_map_fragment, it).commit()
+                            fm.beginTransaction().add(R.id.dialog_map_fragment, it).commit()
                         }
+                    Log.d("TAG","fm.beginTransaction().add called")
                     mapFragment.getMapAsync(this@SuggestActivity)
+
                 } catch (e : Exception) {
-                    Log.e("TAG","프래그먼트 생성 실패", e)
+                    throw e
                 }
                 dlg.showDialog()
+
             }
         }
 
@@ -449,6 +458,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
     inner class suggestDetailDialog(context : Context, suggestItem : SuggestData) {
         private var dialog = Dialog(context)
+
 
         fun showDialog() {
             dialog.show()
@@ -518,7 +528,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         // 해당 좌표 클릭 시 이벤트
 
         if(suggestWrite.visibility == View.VISIBLE) {
-            Log.d("map", "onMapReady() called : fragment in suggestWrite")
+            Log.d("TAG", "onMapReady() called : fragment in suggestWrite")
 
             naverMap.setOnMapClickListener { point, coord ->
                 //네이버 지도에서 선택시 마커 표시
@@ -547,17 +557,9 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             }
         }
         else {
-            Log.d("map", "onMapReady() called : fragment in dialog")
+            Log.d("TAG", "onMapReady() called : fragment in dialog")
             marker.position = LatLng(latitude, longitude)   // 좌표
             // 데이터 베이스에 저장할 좌표 설정
-
-            try {
-                val cameraUpdate = CameraUpdate.scrollTo(LatLng(latitude, longitude))
-                naverMap.moveCamera(cameraUpdate)
-            } catch (e : Error) {
-                Log.e("TAG", "카메라 이동 실패", e)
-            }
-
 
             marker.icon = OverlayImage.fromResource(R.drawable.map_point)
             marker.width = VariableOnMap.MARKER_SIZE
