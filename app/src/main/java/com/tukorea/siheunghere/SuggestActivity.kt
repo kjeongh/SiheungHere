@@ -559,8 +559,6 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         else {
             Log.d("TAG", "onMapReady() called : fragment in dialog")
             marker.position = LatLng(latitude, longitude)   // 좌표
-            // 데이터 베이스에 저장할 좌표 설정
-
             marker.icon = OverlayImage.fromResource(R.drawable.map_point)
             marker.width = VariableOnMap.MARKER_SIZE
             marker.height = VariableOnMap.MARKER_SIZE
