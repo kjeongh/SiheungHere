@@ -6,18 +6,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
-import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.kakao.sdk.common.util.Utility
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.CircleOverlay
@@ -38,26 +39,6 @@ import com.tukorea.siheunghere.VariableOnMap as VM
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     NavigationView.OnNavigationItemSelectedListener {
-
-    // < ----- 구현해야할 것 ----- >
-    // < test >
-    // 1. 자원을 저장할 데이터 객체(주소, 종류, 전화번호, 사진) -> 완료
-    // - 각 marker 아이콘 설정 -> 완료
-
-    // 2. 현위치와 거리계산
-    // - 위치 중심으로 그려진 원 안에 있는 자원들만 데이터베이스에서 읽어오기 -> 완료
-    // - 이 위치에서 재검색 누르면 선택한 자원 필터는 초기화 -> 완료
-
-    // 3. 그 외의 것
-    // - 자원 필터링 -> 위에서 거리계산된 것들 중에서 선택한 자원만 보여주면 될듯 -> test 전
-    // - 마커 생성 함수가 return 하는 marker는 각 객체에 변수로 저장 -> 완료
-    // - 필터링으로 걸러지는 자원 제외, marker를 다 null로 설정(안보이게) -> 완료
-
-    // 4. 마커 다이얼로그
-    // - firebase storage에서 사진 불러오기
-    // dialog에 정보 넣기
-
-    // 5. 시청에서 데이터 주면 변환해서 firestore에 넣기
 
     // 지도 관련 변수
     private lateinit var naverMap: NaverMap                     // 지도 객체
