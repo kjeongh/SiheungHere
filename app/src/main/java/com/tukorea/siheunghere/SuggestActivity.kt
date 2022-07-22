@@ -9,13 +9,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.size
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,10 +32,7 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.LocationTrackingMode
-import com.naver.maps.map.MapFragment
-import com.naver.maps.map.NaverMap
-import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
@@ -135,10 +131,12 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
         firestore = FirebaseFirestore.getInstance()
 
-        var recyclerAdapter = RecyclerViewAdapter("와이파이") //메인 - wifi부터 보여줌
+        var dlg = suggestDetailDialog(this)
+        var recyclerAdapter = RecyclerViewAdapter("와이파이", this, dlg) //메인 - wifi부터 보여줌
 
         suggest_recycler.adapter = recyclerAdapter
         suggest_recycler.layoutManager = LinearLayoutManager(this)
+
 
         //타이틀바 타이틀 버튼 - 홈 화면 이동
         title_titleBtn.setOnClickListener() {
@@ -167,7 +165,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         //건의글 자원별 필터링
         for (i in scrollIcons.indices) {
             scrollIcons[i].setOnClickListener {
-                suggest_recycler.adapter = RecyclerViewAdapter(sharedTypeName[i]) //어댑터 재설정
+                suggest_recycler.adapter = RecyclerViewAdapter(sharedTypeName[i], this, dlg) //어댑터 재설정
                 recyclerAdapter.notifyDataSetChanged()
             }
         }
@@ -320,11 +318,17 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     //건의글 리사이클러뷰 어댑터 - 건의글 나열
-    inner class RecyclerViewAdapter(type : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class RecyclerViewAdapter(type : String, context : Context, dlg : suggestDetailDialog) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+        OnMapReadyCallback {
+
+        private lateinit var naverMap: NaverMap
+        private var dialog = dlg
 
         //건의글 배열
         private var suggestList : ArrayList<SuggestData> = arrayListOf()
-        private var context : Context = this@SuggestActivity
+        private var context : Context = context
+
+        private var data : SuggestData? = null
 
         init { //메인 화면 - 전체보기
 
@@ -366,14 +370,55 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
             viewHolder.suggestList_agreeNum.text = suggestList[position].agreeNum.toString()
             viewHolder.suggestList_num.text = (position+1).toString()
             viewHolder.setOnClickListener(){ //클릭시 다이얼로그 띄우기
-                var dlg = suggestDetailDialog(context, suggestList[position])
-                dlg.showDialog()
+                data = suggestList[position]
+                dialog.setData(context, suggestList[position])
+
+                // NaverMap 객체 얻어오기
+                val suggestFm = supportFragmentManager
+                val suggestMapFragment = suggestFm.findFragmentById(R.id.mapSuggest) as MapFragment?
+                    ?: MapFragment.newInstance().also {
+                        suggestFm.beginTransaction().add(R.id.mapSuggest, it).commit()
+                    }
+                suggestFm.beginTransaction().replace(R.id.mapSuggest, suggestMapFragment).commit()
+                suggestMapFragment.getMapAsync(this)
+
+
+                dialog.showDialog()
             }
         }
 
         override fun getItemCount(): Int {
             return suggestList.size
         }
+
+        // 네이버 지도 준비
+        override fun onMapReady(naverMap: NaverMap) {
+            this.naverMap = naverMap
+            // 마커 표시
+            marker.position = LatLng(data!!.latitude, data!!.longitude)
+            marker.icon = OverlayImage.fromResource(R.drawable.map_point)
+            marker.width = VariableOnMap.MARKER_SIZE
+            marker.height = VariableOnMap.MARKER_SIZE
+            marker.map = naverMap
+
+            // 카메라 이동
+            val cameraUpdate = CameraUpdate.scrollTo(LatLng(data!!.latitude, data!!.longitude))
+            naverMap.moveCamera(cameraUpdate)
+
+            // ui 설정
+            val uiSettings = naverMap.uiSettings
+            uiSettings.isZoomControlEnabled = false
+            uiSettings.isScaleBarEnabled = false
+            uiSettings.isScrollGesturesEnabled = false
+
+            // 해당 좌표 클릭 시 이벤트
+            naverMap.setOnMapClickListener { point, coord ->
+
+                Log.d("TEST", data.toString())
+
+            }
+        }
+
     }
 
 
@@ -384,6 +429,7 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
 
         // 다이얼로그 띄우기
         fun showDialog() {
+
             dialog.show()
         }
         init {
@@ -433,15 +479,14 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
-    inner class suggestDetailDialog(context : Context, suggestItem : SuggestData) {
-        private var dialog = Dialog(context)
+    inner class suggestDetailDialog(context : Context) {
+        var dialog = Dialog(context)
 
         fun showDialog() {
             dialog.show()
 
         }
-        init {
-            dialog.setContentView(R.layout.suggest_detail_dialog)
+        fun setData(context: Context, suggestItem : SuggestData){
             dialog.suggestDetail_txtAddr.text = suggestItem.suggestAddr
             dialog.suggestDetail_reason.text = suggestItem.suggestReason
 
@@ -492,6 +537,14 @@ class SuggestActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
                 dlg.show()
             }
+
+        }
+        init {
+            dialog.setContentView(R.layout.suggest_detail_dialog)
+            dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+            dialog.setCancelable(true)
+            dialog.setCanceledOnTouchOutside(true)
+
         }
     }
 
