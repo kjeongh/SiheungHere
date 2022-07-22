@@ -1,8 +1,6 @@
 package com.tukorea.siheunghere
 
 
-import com.google.gson.annotations.SerializedName
-
 data class ReverseGeoResponse(
     val results: List<Result>,
     val status: Status
