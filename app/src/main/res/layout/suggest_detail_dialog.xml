@@ -2,133 +2,154 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    style="@style/dialog_padding">
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
     <TextView
         android:id="@+id/info_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/info_title_margin"
+        android:layout_margin="10dp"
         android:text="건의글 상세보기"
         android:fontFamily="@font/title"
         android:textSize="@dimen/info_title_textsize"
         android:textStyle="bold"/>
 
-    <com.naver.maps.map.MapView
-        android:id="@+id/map_view"
-        android:layout_gravity="center"
-        android:layout_margin="30dp"
-        android:layout_width="250dp"
-        android:layout_height="250dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="15dp">
-
-        <ImageView
-            android:layout_width="@dimen/small_icon_width"
-            android:layout_height="@dimen/small_icon_height"
-            android:layout_marginRight="@dimen/info_smallicon_marginright"
-            android:layout_marginLeft="@dimen/small_icon_marginLeft"
-            android:background="@drawable/map_point" />
-
-        <TextView
-            android:id="@+id/suggestDetail_txtAddr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="@dimen/info_detail_textsize"
-            android:lineSpacingExtra="5dp"
-            android:text="주소" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="@dimen/small_icon_width"
-            android:layout_height="@dimen/small_icon_height"
-            android:layout_marginRight="@dimen/info_smallicon_marginright"
-            android:layout_marginLeft="@dimen/small_icon_marginLeft"
-            android:background="@drawable/etc_reason"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="건의사유"
-            android:fontFamily="@font/title"
-            android:textSize="14dp" />
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
-        android:background="@drawable/memo_border"
-        android:layout_height="120dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:padding="20dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/suggestDetail_reason"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lineSpacingExtra="5dp"
-/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+
+            <fragment
+                android:id="@+id/mapSuggest"
+                android:layout_gravity="center"
+                android:layout_margin="30dp"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:name="com.naver.maps.map.MapFragment"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp">
+
+                <ImageView
+                    android:layout_width="@dimen/small_icon_width"
+                    android:layout_height="@dimen/small_icon_height"
+                    android:layout_marginRight="@dimen/info_smallicon_marginright"
+                    android:layout_marginLeft="@dimen/small_icon_marginLeft"
+                    android:background="@drawable/map_point" />
+
+                <TextView
+                    android:id="@+id/suggestDetail_txtAddr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/info_detail_textsize"
+                    android:lineSpacingExtra="5dp"
+                    android:text="주소" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/small_icon_width"
+                    android:layout_height="@dimen/small_icon_height"
+                    android:layout_marginRight="@dimen/info_smallicon_marginright"
+                    android:layout_marginLeft="@dimen/small_icon_marginLeft"
+                    android:background="@drawable/etc_reason"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="건의사유"
+                    android:fontFamily="@font/title"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@drawable/memo_border"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/suggestDetail_reason"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="5dp"
+                    />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/detail_agreeBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="동 의"
+                    android:fontFamily="@font/title"
+                    android:textColor="@color/white"
+                    app:backgroundTint="#DD8503"></Button>
+
+
+                <Button
+                    android:id="@+id/detail_deleteBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:enabled="false"
+                    android:text="삭 제"
+                    android:fontFamily="@font/title"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    app:backgroundTint="#DD8503"></Button>
+
+                <Button
+                    android:id="@+id/detail_closeBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="닫 기"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/title"
+                    app:backgroundTint="#DD8503"></Button>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
     </ScrollView>
 
 
-    <LinearLayout
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/detail_agreeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="동 의"
-            android:fontFamily="@font/title"
-            android:textColor="@color/white"
-            app:backgroundTint="#DD8503"></Button>
 
 
-        <Button
-            android:id="@+id/detail_deleteBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:enabled="false"
-            android:text="삭 제"
-            android:fontFamily="@font/title"
-            android:visibility="gone"
-            android:textColor="@color/white"
-            app:backgroundTint="#DD8503"></Button>
-
-        <Button
-            android:id="@+id/detail_closeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="닫 기"
-            android:textColor="@color/white"
-            android:fontFamily="@font/title"
-            app:backgroundTint="#DD8503"></Button>
-
-
-    </LinearLayout>
 
 
 </LinearLayout>
